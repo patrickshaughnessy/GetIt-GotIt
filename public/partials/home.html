@@ -1,0 +1,25 @@
+<div class="homeBackground"></div>
+
+<div class="container-fluid text-center homeArea">
+  <div class="homeWrapper">
+    <div class="row">
+      <div class="col-xs-12">
+        <button class="btn btn-primary btn-lg" ui-sref="teacher-classroom">Start A Class</button>
+      </div>
+      <p>-- or --</p>
+      <div class="col-xs-12">
+        <button class="btn btn-primary btn-lg" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Join A Class</button>
+        <div class="collapse" id="collapseExample">
+          <form class="form-inline" ng-submit="goToClass(classID)">
+            <div class="form-group">
+              <div class="input-group input-group-lg">
+                <span class="input-group-addon" id="sizing-addon1">#</span>
+                <input ng-model="classID" type="text" class="form-control" placeholder="Classroom ID" aria-describedby="sizing-addon1">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

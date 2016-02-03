@@ -1,0 +1,31 @@
+{
+  "name": "getit-gotit",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Patrick Shaughnessy <pshaughn86@gmail.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.4.9",
+    "angular-ui-router": "^0.2.17",
+    "angularfire": "^1.1.3",
+    "firebase": "^2.4.0",
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.2.0",
+    "angular-bootstrap-simple-chat": "^0.4.0"
+  },
+  "resolutions": {
+    "angular": "^1.4.9"
+  }
+}

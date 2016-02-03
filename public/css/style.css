@@ -1,0 +1,105 @@
+.btn-warning {
+  background-color: #EE4037;
+}
+
+
+.background {
+  background: url('https://static.pexels.com/photos/2092/creative-desk-pens-school.jpg');
+  background-repeat: no-repeat;
+  background-size:cover;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  z-index: -1;
+  margin: 0;
+}
+
+.titleWrapper {
+  position: absolute;
+  bottom: 50%;
+}
+
+.titleWrapper .row {
+  background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
+  color: white;
+  width: 100vw;
+  padding-bottom: 2%;
+}
+
+.homeBackground {
+  background-image: url('http://i.imgur.com/tVmwcOy.jpg');
+  background-repeat: no-repeat;
+  background-size:cover;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  z-index: -1;
+  margin: 0;
+}
+
+.homeWrapper {
+  position: absolute;
+  bottom: 50%;
+}
+
+.homeWrapper .row {
+  color: white;
+  width: 100vw;
+  padding-bottom: 2%;
+}
+
+.studentArea {
+  color: white;
+  height: 100vh;
+  width: 100vw;
+}
+.studentArea span {
+  font-size: 2em;
+}
+
+.helpButtonWrapper {
+  position: absolute;
+  height: 25vw;
+  width: 25%;
+  right: 0;
+}
+.helpButton {
+  height: 100%;
+  width: 100%;
+  border-radius: 100%;
+}
+
+.needHelpButtonWrapper {
+  position: absolute;
+  height: 50vw;
+  width: 50%;
+  top: 20%;
+  left: 25%;
+}
+
+.needHelpButton {
+  height: 100%;
+  width: 100%;
+  border-radius: 100%;
+  position: absolute;
+}
+
+
+.chatArea {
+  position: absolute;
+  bottom: 10%;
+  width: 100%;
+  text-align: left;
+}
+
+.chatArea .container {
+  background-color: white;
+  border: 3px solid black;
+  height: 70vh;
+  width: 80%;
+}
+.chatInput {
+  width: 80%;
+  left: 10%;
+  border: 3px solid black;
+}
