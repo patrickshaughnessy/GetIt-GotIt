@@ -100,9 +100,19 @@
   border: 3px solid black;
   height: 70vh;
   width: 80%;
+  overflow-y: scroll;
 }
 .chatInput {
   width: 80%;
   left: 10%;
   border: 3px solid black;
+}
+.chatArea li {
+  list-style: none;
+}
+.chatArea ul {
+  padding-left: 1%;
+}
+#bottom {
+  display:none;
 }

@@ -9,23 +9,17 @@
 <div class="chatArea">
   <div class="container">
     <div class="row">
-      <div class="col-xs-12 text-left">
+      <div class="col-xs-12">
         <ul>
-          <li>message 1</li>
-          <li>message 2</li>
-        </ul>
-      </div>
-      <div class="col-xs-12 text-right">
-        <ul>
-          <li class="text-right">message 3</li>
+          <li ng-repeat="message in messages | orderBy:'+' " ng-class="{'text-right': message.sender.uid !== user.uid}">{{message.sender.uid === user.uid ? 'Me' : 'Helpee'}} - {{message.text}}</li>
         </ul>
       </div>
     </div>
   </div>
   <div class="input-group chatInput">
-    <input class="form-control" type="text" placeholder="What do you need help with?" >
+    <input class="form-control" type="text" placeholder="What do you need help with?" ng-model="newMessageText" >
     <span class="input-group-btn">
-      <button class="btn btn-default" type="button">Send!</button>
+      <button class="btn btn-default" type="button" ng-click="addMessage()" >Send!</button>
     </span>
   </div>
 </div>
