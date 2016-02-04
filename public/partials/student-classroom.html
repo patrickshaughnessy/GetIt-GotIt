@@ -4,9 +4,9 @@
     <div class="col-xs-12 text-center">
       <button class="btn btn-default" ng-click="leaveClass()">Leave Class</button>
       <span>My points: 200</span>
-      help button - {{displayHelpButton()}}
+      {{displayHelpButton.display}}
       <div class="helpButtonWrapper">
-        <button ng-click="helpSomeone()" class="helpButton btn btn-primary">Help Someone Get It</button>
+        <button ng-click="helpSomeone()" class="helpButton btn btn-primary" ng-class="{displayHelp: displayHelpButton.display}">Help Someone Get It</button>
       </div>
     </div>
   </div>

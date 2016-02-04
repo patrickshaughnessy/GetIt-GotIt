@@ -20,22 +20,29 @@ angular
     }
 
     //display help button
+    classroomRef.child('chatrooms').on('value', function(snap){
+      // conditions:
+      // no chatrooms - don't display
+      // chatrooms are full - don't display
+      // any chatroom only has helpee
 
-    // classroomRef.child('chatrooms').on('value', function(snap){
-    //   // conditions:
-    //   // no chatrooms - don't display
-    //   // chatrooms are full - don't display
-    //   // any chatroom only has helpee
-    //
-    //   snap.forEach(function(chatroomSnap){
-    //     if (Object.keys(chatroomSnap.val()).length === 1){
-    //       $scope.displayHelpButton = true;
-    //       return true;
-    //     } else {
-    //       $scope.displayHelpButton = false;
-    //     }
-    //   });
-    // })
+      snap.forEach(function(chatroomSnap){
+        if (Object.keys(chatroomSnap.val()).length === 1){
+          classroomRef.child('displayHelpButton').set({
+            display: true
+          });
+          return true;
+        } else {
+          classroomRef.child('displayHelpButton').set({
+            display: false
+          });
+        }
+      });
+    })
+
+    var displayHelpButtonRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/displayHelpButton`);
+    var syncObj = $firebaseObject(displayHelpButtonRef);
+    syncObj.$bindTo($scope, 'displayHelpButton');
 
     $scope.helpSomeone = function(){
       // join chatroom of user that needs help
@@ -60,5 +67,6 @@ angular
       classroomRef.child(`students/${user.uid}`).remove();
       $state.go('home');
     }
+
 
   });

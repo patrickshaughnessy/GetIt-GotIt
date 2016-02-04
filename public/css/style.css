@@ -2,7 +2,6 @@
   background-color: #EE4037;
 }
 
-
 .background {
   background: url('https://static.pexels.com/photos/2092/creative-desk-pens-school.jpg');
   background-repeat: no-repeat;
@@ -67,6 +66,10 @@
   height: 100%;
   width: 100%;
   border-radius: 100%;
+  display:none;
+}
+.displayHelp {
+  display: block;
 }
 
 .needHelpButtonWrapper {
