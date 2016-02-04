@@ -2,18 +2,35 @@
 
 angular
   .module('app')
-  .controller("homeCtrl", function($state, $scope, $firebaseObject) {
-    var ref = new Firebase("https://getitgotit.firebaseio.com/data");
+  .controller("homeCtrl", function(AuthService, $state, $scope, $firebaseObject) {
+    var user = AuthService.checkAuth();
 
-    // download the data into a local object
-    var syncObject = $firebaseObject(ref);
+    var classroomsRef = new Firebase("https://getitgotit.firebaseio.com/classrooms");
 
-    // synchronize the object with a three-way data binding
-    // click on `index.html` above to see it used in the DOM!
-    syncObject.$bindTo($scope, "data");
+    $scope.startNewClass = function(){
+      classroomsRef.once('value', function(snap){
+        var newClass = {teacher: user}
 
+        var newClassID = snap.exists() ? snap.val().length : 0;
+        classroomsRef.child(newClassID).set(newClass);
+
+        $state.go('teacher-classroom', {classID: newClassID});
+      })
+    }
 
     $scope.goToClass = function(classID){
-      $state.go('student-classroom', {'id': classID});
+      classroomsRef.child(classID).once('value', function(snap){
+        if (snap.exists()) {
+          classroomsRef.child(classID).child('students').child(user.uid).set(user);
+          $state.go('student-classroom', {classID: classID});
+        } else {
+          // handle error
+        }
+      })
     }
+
+    $scope.logout = function(){
+      AuthService.logout();
+    }
+
   });

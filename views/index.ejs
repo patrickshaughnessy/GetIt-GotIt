@@ -17,7 +17,9 @@
     <script src="controllers/homeCtrl.js"></script>
     <script src="controllers/teacherCtrl.js"></script>
     <script src="controllers/studentCtrl.js"></script>
-    <script src="controllers/chatroomCtrl.js"></script>
+    <script src="controllers/chatroomHelpeeCtrl.js"></script>
+    <script src="controllers/chatroomHelperCtrl.js"></script>
+    <script src="services/AuthService.js"></script>
 
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel='stylesheet' href='css/style.css' />
@@ -29,5 +31,23 @@
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1554219404895973',
+          xfbml      : true,
+          version    : 'v2.5'
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
   </body>
 </html>

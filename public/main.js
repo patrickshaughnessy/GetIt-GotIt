@@ -18,24 +18,24 @@ angular
         controller: "homeCtrl"
       })
       .state('teacher-classroom', {
-        url: "/teacher-classroom",
+        url: "/teacher-classroom/:classID",
         templateUrl: "partials/teacher-classroom.html",
         controller: "teacherCtrl"
       })
       .state('student-classroom', {
-        url: "/student-classroom/:id",
+        url: "/student-classroom/:classID",
         templateUrl: "partials/student-classroom.html",
         controller: "studentCtrl"
       })
       .state('chatroom-helpee', {
-        url: "/chatroom-helpee/:id",
+        url: "/student-classroom/:classID/chatroom-helpee/:chatID",
         templateUrl: "partials/chatroom-helpee.html",
-        controller: "chatroomCtrl"
+        controller: "chatroomHelpeeCtrl"
       })
       .state('chatroom-helper', {
-        url: "/chatroom-helper/:id",
+        url: "/student-classroom/:classID/chatroom-helper/:chatID",
         templateUrl: "partials/chatroom-helper.html",
-        controller: "chatroomCtrl"
+        controller: "chatroomHelperCtrl"
       })
 
   });

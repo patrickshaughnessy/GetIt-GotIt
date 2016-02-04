@@ -4,7 +4,7 @@
   <div class="homeWrapper">
     <div class="row">
       <div class="col-xs-12">
-        <button class="btn btn-primary btn-lg" ui-sref="teacher-classroom">Start A Class</button>
+        <button class="btn btn-primary btn-lg" ng-click="startNewClass()">Start A Class</button>
       </div>
       <p>-- or --</p>
       <div class="col-xs-12">
@@ -20,6 +20,7 @@
           </form>
         </div>
       </div>
+      <button class="btn btn-default" ng-click="logout()">logout</button>
     </div>
   </div>
 </div>
