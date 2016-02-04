@@ -2,7 +2,7 @@
 
 angular
   .module('app')
-  .controller("teacherCtrl", function(AuthService, $state, $scope, $firebaseObject) {
+  .controller("teacherCtrl", function(AuthService, $state, $scope, $firebaseObject, $firebaseArray) {
     var user = AuthService.checkAuth();
 
     $scope.classID = $state.params.classID;
@@ -11,6 +11,7 @@ angular
     var studentsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/students`);
     var usersRef = new Firebase(`https://getitgotit.firebaseio.com/users`);
     var helpeesRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpees`);
+    var helpersRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpers`);
 
     var students = $firebaseObject(studentsRef);
     students.$bindTo($scope, 'students');
@@ -18,8 +19,23 @@ angular
     var users = $firebaseObject(usersRef);
     users.$bindTo($scope, 'users');
 
-    var helpees = $firebaseObject(helpeesRef);
-    helpees.$bindTo($scope, 'helpees');
+    var helpees = $firebaseArray(helpeesRef);
+    var helpers = $firebaseArray(helpersRef);
+
+    $scope.fillColor = function(uid){
+      var color = 'green';
+      helpees.forEach(function(s){
+        if (s.$value == uid){
+          color = 'red';
+        }
+      });
+      helpers.forEach(function(s){
+        if (s.$value == uid){
+          color = 'blue'
+        }
+      })
+      return color;
+    }
 
 
     $scope.endClass = function(){

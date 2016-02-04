@@ -5,11 +5,14 @@ angular
   .controller("chatroomHelpeeCtrl", function(AuthService, $state, $scope, $firebaseObject, $firebaseArray, $location, $anchorScroll) {
     $scope.user = AuthService.checkAuth();
     var chatRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}`);
-    var helpeeRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}/helpee/messages`);
+    var helpeeMsgsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}/helpee/messages`);
+    var helpeesRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpees`);
     var classroomRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);
 
-    // create a synchronized array
-     $scope.messages = $firebaseArray(helpeeRef);
+
+    var helpeesList = $firebaseArray(helpeesRef)
+
+     $scope.messages = $firebaseArray(helpeeMsgsRef);
      // add new items to the array
      // the message is automatically added to our Firebase database!
      $scope.addMessage = function() {
@@ -25,13 +28,15 @@ angular
     $scope.backToClass = function(){
       chatRef.remove();
 
-      classroomRef.child('helpees').once('value', function(helpeesSnap){
-        var helpees = helpeesSnap.val();
-        helpees.splice(helpees.indexOf($scope.user.uid), 1);
-        classroomRef.update({
-          helpees: helpees
-        });
-      })
+      var index;
+      helpeesList.forEach(function(s, i){
+        if (s.$value == $scope.user.uid){
+          index = i;
+          return true;
+        }
+      });
+
+      helpeesList.$remove(helpeesList[index]);
 
       $state.go('student-classroom', {classID: $state.params.classID})
     }
