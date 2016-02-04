@@ -12,7 +12,7 @@
     <div class="row">
       <div class="col-xs-12">
         <ul>
-          <li ng-repeat="message in messages | orderBy:'-' " ng-class="{'text-right': message.sender.uid !== user.uid}">{{message.sender.uid === user.uid ? 'Me' : 'Helper'}} - {{message.text}}</li>
+          <li ng-repeat="message in messages | orderBy:'-'" class="text-right" ng-class="{'myMessage': message.sender.uid === user.uid}">{{message.sender.uid === user.uid ? 'Me' : 'User ' + user.uid.slice(-10)}}: {{message.text}}</li>
           <li id="bottom"></li>
         </ul>
       </div>

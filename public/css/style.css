@@ -14,8 +14,8 @@
 }
 
 .titleWrapper {
-  position: absolute;
-  bottom: 50%;
+  /*position: absolute;
+  bottom: 50%;*/
 }
 
 .titleWrapper .row {
@@ -115,6 +115,7 @@
 .chatArea ul {
   padding-left: 1%;
 }
-#bottom {
-  display:none;
+.myMessage {
+  background-color: beige;
+  text-align: left;
 }

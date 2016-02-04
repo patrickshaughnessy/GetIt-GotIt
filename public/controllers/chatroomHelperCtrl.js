@@ -8,6 +8,10 @@ angular
 
     var helpeeRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}/helpee/messages`);
 
+    chatRef.child('helpee').on('child_removed', function(snap){
+      $scope.backToClass();
+    })
+
     // create a synchronized array
      $scope.messages = $firebaseArray(helpeeRef);
      // add new items to the array

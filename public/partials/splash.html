@@ -8,9 +8,31 @@
       </div>
       <br>
       <div class="col-xs-12">
-        <button class="btn btn-primary" ng-click="login()" >Log In With Facebook</button>
+        <button class="btn btn-primary" ng-click="loginWithFacebook()" >Log In With Facebook</button>
         <p>-- or --</p>
-        <button class="btn btn-success" ng-click="loginAnonymously()" >Log In As A Guest</button>
+        <form>
+          <div class="form-group">
+            <label for="signupEmail">Email address</label>
+            <input type="email" class="form-control" id="signupEmail" placeholder="Email" ng-model="signupEmail">
+          </div>
+          <div class="form-group">
+            <label for="signupPassword">Password</label>
+            <input type="password" class="form-control" id="signupPassword" placeholder="Password" ng-model="signupPassword">
+          </div>
+          <button type="submit" class="btn btn-success" ng-click="signUpWithEmail()">Sign Up</button>
+        </form>
+        <p>-- Login --</p>
+        <form>
+          <div class="form-group">
+            <label for="loginEmail">Email address</label>
+            <input type="email" class="form-control" id="loginEmail" placeholder="Email" ng-model="loginEmail">
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" class="form-control" id="loginPassword" placeholder="Password" ng-model="loginPassword">
+          </div>
+          <button type="submit" class="btn btn-success" ng-click="loginWithEmail()">Login</button>
+        </form>
       </div>
     </div>
   </div>

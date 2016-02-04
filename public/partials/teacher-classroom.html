@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-xs-12 text-center">
-      <span>Classroom ID: 1</span>
-      <button class="btn btn-danger btn-lg pull-right" ui-sref="home">End Class</button>
+      <span>Classroom ID: {{classID}}</span>
+      <button class="btn btn-danger btn-lg pull-right" ng-click="endClass()">End Class</button>
     </div>
   </div>
   <div class="row">
@@ -11,14 +11,8 @@
     </div>
   </div>
   <div class="row text-center">
-    <div class="col-xs-4">
-      <p>Student Card</p>
-    </div>
-    <div class="col-xs-4">
-      <p>Student Card</p>
-    </div>
-    <div class="col-xs-4">
-      <p>Student Card</p>
+    <div class="col-xs-4" ng-repeat="student in students">
+      {{student.uid}}
     </div>
   </div>
 </div>
