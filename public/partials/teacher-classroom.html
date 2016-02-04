@@ -12,7 +12,11 @@
   </div>
   <div class="row text-center">
     <div class="col-xs-4" ng-repeat="student in students">
-      {{student.uid}}
+      <svg width="50" height="50">
+        <circle cx="25" cy="25" r="25" fill={{fillColor(student.uid)}} />
+      </svg>
+      <!-- <img ng-src={{student[student.provider].profileImageURL}} alt=""> -->
+      <p>{{users[student.uid].name}}</p>
     </div>
   </div>
 </div>
