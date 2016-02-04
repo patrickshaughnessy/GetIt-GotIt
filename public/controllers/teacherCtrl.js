@@ -37,6 +37,17 @@ angular
       return color;
     }
 
+    $scope.percentage = '100%';
+
+    helpeesRef.on('value', function(snap){
+      var helpeeNum = snap.numChildren();
+      studentsRef.once('value', function(s){
+        var studentsNum = s.numChildren();
+        $scope.percentage = ((1 - (helpeeNum / studentsNum)) * 100).toString() + '%';
+      })
+    })
+
+
 
     $scope.endClass = function(){
       classroomRef.remove();
