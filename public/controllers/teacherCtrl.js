@@ -37,15 +37,27 @@ angular
       return color;
     }
 
-    $scope.percentage = '100%';
+    var studentsNum;
+    var helpeesNum;
+    studentsRef.on('value', function(snap){
+      studentsNum = snap.numChildren();
+      updatePercentage();
+    })
 
     helpeesRef.on('value', function(snap){
-      var helpeeNum = snap.numChildren();
-      studentsRef.once('value', function(s){
-        var studentsNum = s.numChildren();
-        $scope.percentage = ((1 - (helpeeNum / studentsNum)) * 100).toString() + '%';
-      })
+      helpeesNum = snap.numChildren();
+      updatePercentage();
     })
+
+    function updatePercentage() {
+      console.log(helpeesNum, studentsNum);
+      if (studentsNum === 0){
+        $scope.percentage = 'Waiting For Students...';
+      } else {
+        $scope.percentage = ((1 - helpeesNum/studentsNum)*100).toString() + '%';
+      }
+    }
+
 
 
 
