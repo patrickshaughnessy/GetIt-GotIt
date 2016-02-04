@@ -101,6 +101,7 @@
   height: 70vh;
   width: 80%;
   overflow-y: scroll;
+  transform: rotate(180deg);
 }
 .chatInput {
   width: 80%;
@@ -109,6 +110,7 @@
 }
 .chatArea li {
   list-style: none;
+  transform: rotate(180deg);
 }
 .chatArea ul {
   padding-left: 1%;

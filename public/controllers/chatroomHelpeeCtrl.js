@@ -17,7 +17,7 @@ angular
          sender: $scope.user
        });
        $scope.newMessageText = '';
-
+       
      };
 
 
