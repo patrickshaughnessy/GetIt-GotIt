@@ -5,7 +5,6 @@ angular
   .directive('studentArea', function($window){
 
     var link = function(scope, elem, attrs){
-      var students;
 
       var width = $('.studentCirclesRow')[0].clientWidth;
       var height = $('.studentCirclesRow')[0].clientHeight;
@@ -29,60 +28,60 @@ angular
       // .append('g');
 
 
-      var cx = function(d, i){
+      var cx = function(d, i, s){
         if (d.color == 'green'){
-          var numRows = Math.ceil(students.length/5);
+          var numRows = Math.ceil(s.length/5);
           var currentRow = Math.ceil((i+1)/5);
           var interval;
-          if (students.length % 5 === 0 || currentRow !== numRows){
+          if (s.length % 5 === 0 || currentRow !== numRows){
             interval = Math.round(50/6);
           } else {
-            interval = Math.round(50/((students.length % 5) + 1));
+            interval = Math.round(50/((s.length % 5) + 1));
           }
           return (((i%5)+1) * interval) + 50;
         } else if (d.color == 'blue'){
-          var numRows = Math.ceil(students.length/5);
+          var numRows = Math.ceil(s.length/5);
           var currentRow = Math.ceil((i+1)/5);
           var interval;
-          if (students.length % 5 === 0 || currentRow !== numRows){
+          if (s.length % 5 === 0 || currentRow !== numRows){
             interval = Math.round(50/6);
           } else {
-            interval = Math.round(50/((students.length % 5) + 1));
+            interval = Math.round(50/((s.length % 5) + 1));
           }
           return (((i%5)+1) * interval);
         } else {
-          var numRows = Math.ceil(students.length/5);
+          var numRows = Math.ceil(s.length/5);
           var currentRow = Math.ceil((i+1)/5);
           var interval;
-          if (students.length % 5 === 0 || currentRow !== numRows){
+          if (s.length % 5 === 0 || currentRow !== numRows){
             interval = Math.round(50/6);
           } else {
-            interval = Math.round(50/((students.length % 5) + 1));
+            interval = Math.round(50/((s.length % 5) + 1));
           }
           return (((i%5)+1) * interval);
         }
       }
 
-      var cy = function(d, i){
+      var cy = function(d, i, s){
         if (d.color == 'blue'){
-          var numRows = Math.ceil(students.length/5);
+          var numRows = Math.ceil(s.length/5);
           var interval = Math.round(100/(numRows + 1));
           var currentRow = Math.ceil((i+1)/5);
           return currentRow * interval;
         } else if (d.color == 'red'){
-          var numRows = Math.ceil(students.length/5);
+          var numRows = Math.ceil(s.length/5);
           var interval = Math.round(100/(numRows + 1));
           var currentRow = Math.ceil((i+1)/5);
           return currentRow * interval;
         } else {
-          var numRows = Math.ceil(students.length/5);
+          var numRows = Math.ceil(s.length/5);
           var interval = Math.round(100/(numRows + 1));
           var currentRow = Math.ceil((i+1)/5);
           return currentRow * interval;
         }
       }
 
-      var r = function(d, i){
+      var r = function(d, i, s){
         if (d.color == 'red'){
           return radius*2;
         } else {
@@ -90,20 +89,20 @@ angular
         }
       }
 
-      var cxGreen = function(d, i){
-        var numRows = Math.ceil(students.length/5);
+      var cxGreen = function(d, i, s){
+        var numRows = Math.ceil(s.length/5);
         var currentRow = Math.ceil((i+1)/5);
         var interval;
-        if (students.length % 5 === 0 || currentRow !== numRows){
+        if (s.length % 5 === 0 || currentRow !== numRows){
           interval = Math.round(100/6);
         } else {
-          interval = Math.round(100/((students.length % 5) + 1));
+          interval = Math.round(100/((s.length % 5) + 1));
         }
         return ((i%5)+1) * interval;
       }
 
-      var cyGreen = function(d, i){
-        var numRows = Math.ceil(students.length/5);
+      var cyGreen = function(d, i, s){
+        var numRows = Math.ceil(s.length/5);
         var interval = Math.round(100/(numRows + 1));
         var currentRow = Math.ceil((i+1)/5);
         return currentRow * interval;
@@ -112,22 +111,43 @@ angular
 
       var allGreenStudents = function(students){
         return students.every(function(student){
-          return student.color == 'green';
+          return !student.helpee && !student.helper;
         });
       }
 
+      var getAllGreenCoords = function(d, i, s){
+        return {x: cxGreen(d, i, s), y: cyGreen(d, i, s)}
+      }
+
+      var getRedCoords = function(d, i, s){
+        return {x: cx(d, i, s), y: cy(d, i, s)};
+      }
+      var getGreenCoords = function(d, i, s){
+        return {x: cx(d, i, s), y: cy(d, i, s)};
+      }
+      var getBlueCoords = function(d, i, s){
+        return {x: cx(d, i, s), y: cy(d, i, s)};
+      }
+
       var update = function(){
-        students = angular.fromJson(scope.students).map(function(d){
-          if (d.helpee){
-            d.color = 'red';
-            return d;
-          } else if (d.helper){
-            d.color = 'blue';
-            return d;
-          } else {
+        var students = angular.fromJson(scope.students).map(function(d, i, s){
+          if (allGreenStudents(s)){
             d.color = 'green';
+            d.coords = getAllGreenCoords(d, i, s);
             return d;
           }
+
+          if (d.helpee){
+            d.color = 'red';
+            d.coords = getRedCoords(d, i, s);
+          } else if (d.helper){
+            d.color = 'blue';
+            d.coords = getBlueCoords(d, i, s);
+          } else {
+            d.color = 'green';
+            d.coords = getAllGreenCoords(d, i, s);
+          }
+          return d;
         });
 
 
@@ -135,59 +155,14 @@ angular
           return;
         }
 
-        if (allGreenStudents(students)){
-          var circle = svg.select('g').selectAll('circle')
-              .data(students);
-
-          circle.enter().append('circle')
-              .attr("r", 0)
-            .transition()
-              .attr("cy", function(d, i){
-                return cyGreen(d, i);
-              })
-              .attr("cx", function(d, i) {
-                return cxGreen(d, i);
-              })
-              .style('fill', function(d) { return d.color })
-              .attr("r", function(d, i) {
-                return r(d, i);
-              });
-
-          circle
-              .attr("r", 0)
-            .transition()
-              .attr("cy", function(d, i){
-                return cyGreen(d, i);
-              })
-              .attr("cx", function(d, i) {
-                return cxGreen(d, i);
-              })
-              .attr("r", function(d, i) {
-                return r(d, i);
-              })
-              .style('fill', function(d) { return d.color });
-
-          circle.exit()
-            .transition()
-              .attr('r', 0)
-              .remove();
-
-          return;
-        }
-
-        // else mix of reds, blues, greens
         var circle = svg.select('g').selectAll('circle')
             .data(students);
 
         circle.enter().append('circle')
             .attr("r", 0)
           .transition()
-            .attr("cy", function(d, i){
-              return cy(d, i);
-            })
-            .attr("cx", function(d, i) {
-              return cx(d, i);
-            })
+            .attr("cy", function(d, i){ return d.coords.y})
+            .attr("cx", function(d, i) { return d.coords.x})
             .style('fill', function(d) { return d.color })
             .attr("r", function(d, i) {
               return r(d, i);
@@ -196,12 +171,8 @@ angular
         circle
             .attr("r", 0)
           .transition()
-            .attr("cy", function(d, i){
-              return cy(d, i);
-            })
-            .attr("cx", function(d, i) {
-              return cx(d, i);
-            })
+            .attr("cy", function(d, i){ return d.coords.y })
+            .attr("cx", function(d, i) { return d.coords.x })
             .attr("r", function(d, i) {
               return r(d, i);
             })
@@ -211,6 +182,43 @@ angular
           .transition()
             .attr('r', 0)
             .remove();
+
+        // // else mix of reds, blues, greens
+        // var circle = svg.select('g').selectAll('circle')
+        //     .data(students);
+        //
+        // circle.enter().append('circle')
+        //     .attr("r", 0)
+        //   .transition()
+        //     .attr("cy", function(d, i){
+        //       return cy(d, i);
+        //     })
+        //     .attr("cx", function(d, i) {
+        //       return cx(d, i);
+        //     })
+        //     .style('fill', function(d) { return d.color })
+        //     .attr("r", function(d, i) {
+        //       return r(d, i);
+        //     });
+        //
+        // circle
+        //     .attr("r", 0)
+        //   .transition()
+        //     .attr("cy", function(d, i){
+        //       return cy(d, i);
+        //     })
+        //     .attr("cx", function(d, i) {
+        //       return cx(d, i);
+        //     })
+        //     .attr("r", function(d, i) {
+        //       return r(d, i);
+        //     })
+        //     .style('fill', function(d) { return d.color });
+        //
+        // circle.exit()
+        //   .transition()
+        //     .attr('r', 0)
+        //     .remove();
 
 
       }
