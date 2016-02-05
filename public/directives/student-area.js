@@ -31,21 +31,54 @@ angular
 
       var cx = function(d, i){
         if (d.color == 'green'){
-          return i * 150 + 500;
+          var numRows = Math.ceil(students.length/5);
+          var currentRow = Math.ceil((i+1)/5);
+          var interval;
+          if (students.length % 5 === 0 || currentRow !== numRows){
+            interval = Math.round(50/6);
+          } else {
+            interval = Math.round(50/((students.length % 5) + 1));
+          }
+          return (((i%5)+1) * interval) + 50;
         } else if (d.color == 'blue'){
-          return i * 100 + 50;
+          var numRows = Math.ceil(students.length/5);
+          var currentRow = Math.ceil((i+1)/5);
+          var interval;
+          if (students.length % 5 === 0 || currentRow !== numRows){
+            interval = Math.round(50/6);
+          } else {
+            interval = Math.round(50/((students.length % 5) + 1));
+          }
+          return (((i%5)+1) * interval);
         } else {
-          return i * 100 + 100;
+          var numRows = Math.ceil(students.length/5);
+          var currentRow = Math.ceil((i+1)/5);
+          var interval;
+          if (students.length % 5 === 0 || currentRow !== numRows){
+            interval = Math.round(50/6);
+          } else {
+            interval = Math.round(50/((students.length % 5) + 1));
+          }
+          return (((i%5)+1) * interval);
         }
       }
 
       var cy = function(d, i){
         if (d.color == 'blue'){
-          return 300;
+          var numRows = Math.ceil(students.length/5);
+          var interval = Math.round(100/(numRows + 1));
+          var currentRow = Math.ceil((i+1)/5);
+          return currentRow * interval;
         } else if (d.color == 'red'){
-          return 150;
+          var numRows = Math.ceil(students.length/5);
+          var interval = Math.round(100/(numRows + 1));
+          var currentRow = Math.ceil((i+1)/5);
+          return currentRow * interval;
         } else {
-          return 50;
+          var numRows = Math.ceil(students.length/5);
+          var interval = Math.round(100/(numRows + 1));
+          var currentRow = Math.ceil((i+1)/5);
+          return currentRow * interval;
         }
       }
 
@@ -66,7 +99,6 @@ angular
         } else {
           interval = Math.round(100/((students.length % 5) + 1));
         }
-        console.log(numRows, currentRow, interval);
         return ((i%5)+1) * interval;
       }
 
@@ -144,7 +176,7 @@ angular
         }
 
         // else mix of reds, blues, greens
-        var circle = svg.selectAll('circle')
+        var circle = svg.select('g').selectAll('circle')
             .data(students);
 
         circle.enter().append('circle')
