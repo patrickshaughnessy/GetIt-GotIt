@@ -62,7 +62,6 @@ angular
             helpersList.$add(user.uid);
 
             studentsList[userIndex].helper = true;
-            console.log('helping', helping);
             studentsList[userIndex].helping = helping;
 
             studentsList.$save(userIndex);

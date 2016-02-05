@@ -34,6 +34,19 @@ angular
         });
       }
 
+      var someRed = function(students){
+        var noHelpers = students.every(function(student){
+          return !student.helper;
+        });
+
+        if (noHelpers){
+          return students.some(function(student){
+            return student.helpee;
+          })
+        }
+        return noHelpers;
+      }
+
       var renderGreenView = function(students){
         var circle = svg.selectAll("circle")
           .data(students)
@@ -51,24 +64,55 @@ angular
         circle.exit().remove();
       }
 
+      var renderRedAndGreenView = function(students){
+
+      }
+
       var update = function(){
         // students = scope.students;
         students = angular.fromJson(scope.students).map(function(d){
-          return d;
+          if (d.helpee){
+            d.color = 'red';
+            return d;
+          } else if (d.helper){
+            d.color = 'blue';
+            return d;
+          } else {
+            d.color = 'green';
+            return d;
+          }
         });
 
         if (!students){
           return;
         }
+        console.log(students);
+        var circle = svg.selectAll('circle')
+            .data(students);
+        circle.exit().remove();
+        circle.enter().append('circle')
+            .attr("cy", 50)
+            .attr("cx", function(d, i) { console.log(i); return i * 100 + 50; })
+            .attr("r", 50)
+            .style('fill', function(d) { return d.color });
+        circle
+            .attr("cy", 50)
+            .attr("cx", function(d, i) { console.log(i); return i * 100 + 50; })
+            .attr("r", 50)
+            .style('fill', function(d) { return d.color });
 
-        if (allStudentsGreen(students)){
-          renderGreenView(students);
-          return;
-        }
+        // if (allStudentsGreen(students)){
+        //   renderGreenView(students);
+        //   return;
+        // }
+        //
+        // if (someRed(students)){
+        //   renderRedAndGreenView(students);
+        //   return;
+        // }
 
 
-
-        var circle = svg.selectAll('circle').remove();
+        // var circle = svg.selectAll('circle').remove();
         // var circle = svg.selectAll("circle")
         //   .data(students)
         //   .attr("cy", 50)

@@ -44,7 +44,15 @@ angular
     $scope.backToClass = function(){
       chatRef.remove();
 
-      helpeesList.$remove(helpeesList[userIndex]);
+      var index;
+      helpeesList.forEach(function(s, i){
+        if (s.$value == $scope.user.uid){
+          index = i;
+          return true;
+        }
+      });
+
+      helpeesList.$remove(helpeesList[index]);
 
       studentsList[userIndex].helpee = false;
       studentsList.$save(userIndex);
