@@ -22,6 +22,8 @@ angular
     var helpees = $firebaseArray(helpeesRef);
     var helpers = $firebaseArray(helpersRef);
 
+    $scope.totalStudents = $firebaseArray(studentsRef);
+
     $scope.fillColor = function(uid){
       var color = 'green';
       helpees.forEach(function(s){
@@ -55,7 +57,6 @@ angular
       } else {
         $scope.percentage = ((1 - helpeesNum/studentsNum)*100).toString() + '%';
       }
-      $scope.totalStudents = studentsNum;
     }
 
 

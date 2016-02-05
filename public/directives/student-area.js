@@ -20,17 +20,16 @@ angular
 
 
       var update = function(){
-        students = scope.students;
-        console.log('students', students);
-
-        var data = Array(+students).fill(1);
+        // students = scope.students;
+        students = angular.fromJson(scope.students);
+        console.log('students', angular.fromJson(students));
 
         if (!students){
           return;
         }
 
         var circle = svg.selectAll("circle")
-            .data(data);
+            .data(students);
 
         circle.enter().append("circle")
             .attr("cy", 50)
