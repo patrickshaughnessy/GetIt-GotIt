@@ -13,6 +13,9 @@ angular
     var helpeesRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpees`);
     var helpersRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpers`);
 
+    var studentsArrayRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/studentsArray`);
+    $scope.studentsList = $firebaseArray(studentsArrayRef);
+
     var students = $firebaseObject(studentsRef);
     students.$bindTo($scope, 'students');
 
