@@ -7,15 +7,26 @@ angular
     var link = function(scope, elem, attrs){
       var students;
 
-      console.log('window', $window.innerWidth, $window.innerHeight)
+      var width = $('.studentCirclesRow')[0].clientWidth;
+      var height = $('.studentCirclesRow')[0].clientHeight;
 
-      var canvas = ['100', '100'],
-          radius = '5%'
+      var canvas = [width, height],
+          radius = '5'
 
-      var svg = d3.select(elem[0]).append("svg")
-        .attr({width: canvas[0] + '%', height: canvas[1] + '%'})
-        .attr("viewBox", "0 0 " + canvas[0] + " " + canvas[1]);
+      var svg = d3.select(elem[0])
+      .append('svg')
+        .attr({width: canvas[0], height: canvas[1]})
+        .attr("viewBox", "0 0 " + 100 + " " + 100);
+      svg.append('g');
 
+
+      // .append('div')
+      // .classed('svg-container', true)
+      // .append("svg")
+      // .attr('preserveAspectRatio', 'xMinYMin meet')
+      // .attr('viewBox', '0 0 100 100')
+      // .classed('svg-content-responsive', true)
+      // .append('g');
 
 
       var cx = function(d, i){
@@ -40,14 +51,22 @@ angular
 
       var r = function(d, i){
         if (d.color == 'red'){
-          return '20%';
+          return radius*2;
         } else {
-          return '10%';
+          return radius;
         }
       }
 
       var cxGreen = function(d, i){
-        var interval = Math.round(100/(students.length + 1));
+        var numRows = Math.ceil(students.length/5);
+        var currentRow = Math.ceil((i+1)/5);
+        var interval;
+        if (students.length % 5 === 0 || currentRow !== numRows){
+          interval = Math.round(100/6);
+        } else {
+          interval = Math.round(100/((students.length % 5) + 1));
+        }
+        console.log(numRows, currentRow, interval);
         return ((i%5)+1) * interval;
       }
 
@@ -79,12 +98,13 @@ angular
           }
         });
 
+
         if (!students){
           return;
         }
 
         if (allGreenStudents(students)){
-          var circle = svg.selectAll('circle')
+          var circle = svg.select('g').selectAll('circle')
               .data(students);
 
           circle.enter().append('circle')
@@ -164,11 +184,17 @@ angular
       }
 
       scope.$watch('students', update);
+      angular.element($window).bind('resize', function(){
+        console.log('resizing');
+        svg.attr('width', $('.studentCirclesRow')[0].clientWidth);
+        svg.attr('height', $('.studentCirclesRow')[0].clientHeight);
+        update();
+      })
 
     }
 
     return {
-      template: '<div class="studentCircles col-xs-12"></div>',
+      template: '<div class="studentCircles"></div>',
       replace: true,
       restrict: 'EA',
       scope: {
