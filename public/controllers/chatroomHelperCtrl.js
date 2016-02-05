@@ -3,11 +3,25 @@
 angular
   .module('app')
   .controller("chatroomHelperCtrl", function(AuthService, $state, $scope, $firebaseObject, $firebaseArray) {
-    $scope.user = AuthService.checkAuth();
+    var user = AuthService.checkAuth();
+    $scope.user = user;
     var chatRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}`);
     var helpeeMsgsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}/helpee/messages`);
     var classroomRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);
     var helpersRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpers`);
+
+    var studentsArrayRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/studentsArray`);
+    var studentsList = $firebaseArray(studentsArrayRef);
+
+    var userIndex;
+    studentsList.$loaded(function(){
+      studentsList.forEach(function(s, i){
+        if (s.student == user.uid){
+          userIndex = i;
+          return true;
+        }
+      });
+    });
 
 
     var helpersList = $firebaseArray(helpersRef)
@@ -40,6 +54,11 @@ angular
       });
 
       helpersList.$remove(helpersList[index]);
+
+
+      studentsList[userIndex].helper = false;
+      studentsList[userIndex].helping = null;
+      studentsList.$save(userIndex);
 
       $state.go('student-classroom', {classID: $state.params.classID})
     }

@@ -10,8 +10,23 @@ angular
     var helpeesRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpees`);
     var helpersRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpers`);
 
+    var studentsArrayRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/studentsArray`);
+    var studentsList = $firebaseArray(studentsArrayRef);
+
     var helpeesList = $firebaseArray(helpeesRef)
     var helpersList = $firebaseArray(helpersRef)
+
+
+    var userIndex;
+    studentsList.$loaded(function(){
+      studentsList.forEach(function(s, i){
+        if (s.student == user.uid){
+          userIndex = i;
+          return true;
+        }
+      });
+      console.log(userIndex);
+    });
 
     $scope.needHelp = function(){
       // create new chatroom for user
@@ -23,6 +38,9 @@ angular
         });
 
         helpeesList.$add(user.uid);
+
+        studentsList[userIndex].helpee = true;
+        studentsList.$save(userIndex);
 
         // send to chatroomID
         $state.go('chatroom-helpee', {classID: $state.params.classID, chatID: newChatID});
@@ -37,9 +55,19 @@ angular
           if (!chatroomSnap.val().helper){
             var chatID = chatroomSnap.key();
 
+            var helping = chatroomSnap.val().helpee.uid;
+
             classroomRef.child(`chatrooms/${chatID}`).update({ helper: user });
 
             helpersList.$add(user.uid);
+
+            studentsList[userIndex].helper = true;
+            console.log('helping', helping);
+            studentsList[userIndex].helping = helping;
+
+            studentsList.$save(userIndex);
+
+
 
             // send to chatroomID
             $state.go('chatroom-helper', {classID: $state.params.classID, chatID: chatID});
@@ -78,6 +106,17 @@ angular
 
     $scope.leaveClass = function(){
       classroomRef.child(`students/${user.uid}`).remove();
+
+      var index;
+      studentsList.forEach(function(s, i){
+        if (s.student == user.uid){
+          index = i;
+          return true;
+        }
+      });
+      console.log('index', index);
+      studentsList.$remove(studentsList[index]);
+
       $state.go('home');
     }
 
