@@ -2,47 +2,43 @@
 
 angular
   .module('app')
-  .controller("studentCtrl", function(AuthService, $state, $scope, $firebaseObject, $firebaseArray) {
-    var user = AuthService.checkAuth();
+  .controller("studentCtrl", function(Auth, currentAuth, $state, $rootScope, $scope, $firebaseObject, $firebaseArray) {
+
+    var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
+    var user = $firebaseObject(userRef);
+    user.$bindTo($scope, 'user');
 
     var classroomRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);
+    var classroom = $firebaseObject(classroomRef);
+    classroom.$bindTo($scope, 'classroom');
+
+    var studentsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/students`);
+    $scope.students = $firebaseArray(studentsRef);
+
+
     var chatroomsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms`);
-    var helpeesRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpees`);
-    var helpersRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpers`);
-
-    var studentsArrayRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/studentsArray`);
-    var studentsList = $firebaseArray(studentsArrayRef);
-
-    var helpeesList = $firebaseArray(helpeesRef)
-    var helpersList = $firebaseArray(helpersRef)
+    $scope.chatrooms = $firebaseArray(chatroomsRef);
 
 
-    var userIndex;
-    studentsList.$loaded(function(){
-      studentsList.forEach(function(s, i){
-        if (s.student == user.uid){
-          userIndex = i;
-          return true;
-        }
-      });
-    });
+    // var helpeesRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpees`);
+    // var helpersRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpers`);
+    //
+    // var studentsArrayRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/studentsArray`);
+    // var studentsList = $firebaseArray(studentsArrayRef);
+    //
+    // var helpeesList = $firebaseArray(helpeesRef)
+    // var helpersList = $firebaseArray(helpersRef)
+
 
     $scope.needHelp = function(){
       // create new chatroom for user
-      classroomRef.child('chatrooms').once('value', function(snap){
-        var newChatID = snap.exists() ? snap.val().length : 0;
+      if (!$scope.user || !$scope.chatrooms) return;
 
-        classroomRef.child(`chatrooms/${newChatID}`).set({
-          helpee: user
-        });
-
-        helpeesList.$add(user.uid);
-
-        studentsList[userIndex].helpee = true;
-        studentsList.$save(userIndex);
-
-        // send to chatroomID
-        $state.go('chatroom-helpee', {classID: $state.params.classID, chatID: newChatID});
+      $scope.chatrooms.$add({ helpee: currentAuth.uid }).then(function(chat){
+        var chatID = chat.key();
+        console.log('added chat with id', chatID);
+        $scope.user.helpee = true;
+        $state.go('chatroom-helpee', {classID: $state.params.classID, chatID: chatID});
       })
     }
 
@@ -75,45 +71,36 @@ angular
       })
     }
 
-    //display help button
-    classroomRef.child('chatrooms').on('value', function(chatroomsSnap){
-
-      if (!chatroomsSnap.exists()){
-        classroomRef.child('displayHelpButton').set({
-          display: false
-        });
-      }
-
-      chatroomsSnap.forEach(function(chatroomSnap){
-        if (chatroomSnap.numChildren() === 1){
-          classroomRef.child('displayHelpButton').set({
-            display: true
-          });
-          return true;
-        }
-        classroomRef.child('displayHelpButton').set({
-          display: false
-        });
-      });
-    })
-
-    var displayHelpButtonRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/displayHelpButton`);
-    var displayHelpButton = $firebaseObject(displayHelpButtonRef);
-    displayHelpButton.$bindTo($scope, 'displayHelpButton');
+    // //display help button
+    // classroomRef.child('chatrooms').on('value', function(chatroomsSnap){
+    //
+    //   if (!chatroomsSnap.exists()){
+    //     classroomRef.child('displayHelpButton').set({
+    //       display: false
+    //     });
+    //   }
+    //
+    //   chatroomsSnap.forEach(function(chatroomSnap){
+    //     if (chatroomSnap.numChildren() === 1){
+    //       classroomRef.child('displayHelpButton').set({
+    //         display: true
+    //       });
+    //       return true;
+    //     }
+    //     classroomRef.child('displayHelpButton').set({
+    //       display: false
+    //     });
+    //   });
+    // })
+    //
+    // var displayHelpButtonRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/displayHelpButton`);
+    // var displayHelpButton = $firebaseObject(displayHelpButtonRef);
+    // displayHelpButton.$bindTo($scope, 'displayHelpButton');
 
 
     $scope.leaveClass = function(){
-      classroomRef.child(`students/${user.uid}`).remove();
-
-      var index;
-      studentsList.forEach(function(s, i){
-        if (s.student == user.uid){
-          index = i;
-          return true;
-        }
-      });
-      studentsList.$remove(studentsList[index]);
-
+      $scope.students.$remove($scope.students.$getRecord($scope.user.class.key));
+      $scope.user.class = null;
       $state.go('home');
     }
 

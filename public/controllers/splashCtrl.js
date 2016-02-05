@@ -2,55 +2,72 @@
 
 angular
   .module('app')
-  .controller("splashCtrl", function(AuthService, $state, $scope, $firebaseObject) {
-    var ref = new Firebase("https://getitgotit.firebaseio.com/");
+  .controller("splashCtrl", function(Auth, currentAuth, $state, $scope, $firebaseObject) {
+
+    var usersRef = new Firebase('https://getitgotit.firebaseio.com/users')
+    var users = $firebaseObject(usersRef);
 
     $scope.loginWithFacebook = function(){
-      ref.authWithOAuthPopup("facebook", function(error, authData) {
-        if (error) {
-          console.log("Authentication Failed!", error);
-        } else {
-          console.log('auth success', authData);
-          $state.go('home');
+      Auth.$authWithOAuthPopup("facebook").then(function(authData) {
+        console.log('users', users[authData.uid], authData.uid);
+        if (!users[authData.uid]){
+          users[authData.uid] = {
+            name: authData.facebook.displayName,
+            avatar: authData.facebook.profileImageURL,
+            points: 0,
+            helpee: false,
+            helper: false,
+            helping: null,
+            teacher: false
+          }
+          users.$save();
         }
-      });
+
+        return $state.go('home');
+      }).catch(function(err){
+        return swal("Authentication Failed!", error, 'error');
+      })
     }
 
     $scope.signUpWithEmail = function(){
-      ref.createUser({
+      Auth.$createUser({
         email    : $scope.signupEmail,
         password : $scope.signupPassword
-      }, function(error, userData) {
-        if (error) {
-          console.log("Error creating user:", error);
-        } else {
-          console.log("Successfully created user account with uid:", userData.uid);
-          ref.authWithPassword({
-            email    : $scope.signupEmail,
-            password : $scope.signupPassword
-          }, function(error, authData) {
-            if (error) {
-              console.log("Login Failed!", error);
-            } else {
-              console.log("Authenticated successfully with payload:", authData);
-              $state.go('home');
-            }
-          });
+      }).then(function(userData) {
+        return Auth.$authWithPassword({
+          email    : $scope.signupEmail,
+          password : $scope.signupPassword
+        });
+      }).then(function(authData) {
+
+        if (!users[authData.uid]){
+          users[authData.uid] = {
+            name: authData.password.email.replace(/@.*/, ''),
+            avatar: 'assets/defaultPic.png',
+            points: 0,
+            helpee: false,
+            helper: false,
+            helping: null,
+            teacher: false
+          }
+          users.$save();
         }
+
+        return $state.go('home');
+      }).catch(function(error) {
+        return swal("Login Failed!", error, 'error');
       });
+
     }
 
     $scope.loginWithEmail = function(){
-      ref.authWithPassword({
+      Auth.$authWithPassword({
         email    : $scope.loginEmail,
         password : $scope.loginPassword
-      }, function(error, authData) {
-        if (error) {
-          console.log("Login Failed!", error);
-        } else {
-          console.log("Authenticated successfully with payload:", authData);
-          $state.go('home');
-        }
+      }).then(function(authData) {
+        return $state.go('home');
+      }).catch(function(error) {
+        return swal("Login Failed!", error, 'error');
       });
     }
 
