@@ -50,12 +50,12 @@ angular
     })
 
     function updatePercentage() {
-      console.log(helpeesNum, studentsNum);
       if (studentsNum === 0){
         $scope.percentage = 'Waiting For Students...';
       } else {
         $scope.percentage = ((1 - helpeesNum/studentsNum)*100).toString() + '%';
       }
+      $scope.totalStudents = studentsNum;
     }
 
 
