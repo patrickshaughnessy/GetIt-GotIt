@@ -10,66 +10,32 @@ angular
       // need # of students
       var students;
 
-      var csize = [500, 300]
+      var csize = [1000, 500]
       //  ,radius = 22;
-      //
+
+      
+
       var svg = d3.select(elem[0]).append("svg")
         .attr({width: csize[0], height: csize[1]})
         .attr("viewBox", "0 0 " + csize[0] + " " + csize[1]);
 
-
-      var getFillColor = function(d){
-        var color = 'green';
-        if (d.helpee){
-          color = 'red';
-        } else if (d.helper) {
-          color = 'blue';
+      var cx = function(d, i){
+        if (d.color == 'green'){
+          return i * 150 + 500;
+        } else {
+          return i * 100 + 50;
         }
-        return color;
       }
 
-      var allStudentsGreen = function(students){
-        return students.every(function(student){
-          return !student.helpee && !student.helper
-        });
-      }
-
-      var someRed = function(students){
-        var noHelpers = students.every(function(student){
-          return !student.helper;
-        });
-
-        if (noHelpers){
-          return students.some(function(student){
-            return student.helpee;
-          })
+      var cy = function(d, i){
+        if (d.color == 'blue'){
+          return 150;
+        } else {
+          return 50;
         }
-        return noHelpers;
-      }
-
-      var renderGreenView = function(students){
-        var circle = svg.selectAll("circle")
-          .data(students)
-          .attr("cy", 50)
-          .attr("cx", function(d, i) { return i * 200 + 50; })
-          .attr("r", 50)
-          .style('fill', function(d, i) { return getFillColor(d)});
-
-        circle.enter().append("circle")
-            .attr("cy", 50)
-            .attr("cx", function(d, i) { return i * 200 + 50; })
-            .attr("r", 50)
-            .style('fill', function(d, i) { return getFillColor(d)});
-
-        circle.exit().remove();
-      }
-
-      var renderRedAndGreenView = function(students){
-
       }
 
       var update = function(){
-        // students = scope.students;
         students = angular.fromJson(scope.students).map(function(d){
           if (d.helpee){
             d.color = 'red';
@@ -86,47 +52,34 @@ angular
         if (!students){
           return;
         }
-        console.log(students);
+
         var circle = svg.selectAll('circle')
             .data(students);
-        circle.exit().remove();
-        circle.enter().append('circle')
-            .attr("cy", 50)
-            .attr("cx", function(d, i) { console.log(i); return i * 100 + 50; })
-            .attr("r", 50)
-            .style('fill', function(d) { return d.color });
-        circle
-            .attr("cy", 50)
-            .attr("cx", function(d, i) { console.log(i); return i * 100 + 50; })
-            .attr("r", 50)
-            .style('fill', function(d) { return d.color });
-
-        // if (allStudentsGreen(students)){
-        //   renderGreenView(students);
-        //   return;
-        // }
-        //
-        // if (someRed(students)){
-        //   renderRedAndGreenView(students);
-        //   return;
-        // }
-
-
-        // var circle = svg.selectAll('circle').remove();
-        // var circle = svg.selectAll("circle")
-        //   .data(students)
-        //   .attr("cy", 50)
-        //   .attr("cx", function(d, i) { return i * 100 + 50; })
-        //   .attr("r", 50)
-        //   .style('fill', function(d, i) { return getFillColor(d)});
-        //
-        // circle.enter().append("circle")
-        //     .attr("cy", 50)
-        //     .attr("cx", function(d, i) { return i * 100 + 50; })
-        //     .attr("r", 50)
-        //     .style('fill', function(d, i) { return getFillColor(d)});
-        //
         // circle.exit().remove();
+        circle.enter().append('circle')
+            .attr("r", 0)
+          .transition()
+            .attr("cy", function(d, i){
+              return cy(d, i);
+            })
+            .attr("cx", function(d, i) {
+              return cx(d, i);
+            })
+            .style('fill', function(d) { return d.color })
+            .attr("r", 50);
+
+        circle
+            .attr("r", 0)
+          .transition()
+            .attr("cy", function(d, i){
+              return cy(d, i);
+            })
+            .attr("cx", function(d, i) {
+              return cx(d, i);
+            })
+            .attr("r", 50)
+            .style('fill', function(d) { return d.color });
+
       }
 
       scope.$watch('students', update);
