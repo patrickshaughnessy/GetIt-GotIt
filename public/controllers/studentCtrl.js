@@ -25,7 +25,6 @@ angular
           return true;
         }
       });
-      console.log(userIndex);
     });
 
     $scope.needHelp = function(){
@@ -113,7 +112,6 @@ angular
           return true;
         }
       });
-      console.log('index', index);
       studentsList.$remove(studentsList[index]);
 
       $state.go('home');
