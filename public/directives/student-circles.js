@@ -7,15 +7,16 @@ angular
     var link = function(scope, elem, attrs){
       var width = $('.studentCirclesRow')[0].clientWidth;
       var height = $('.studentCirclesRow')[0].clientHeight;
+      var radius = width/20;
 
       var updateCanvas = function(){
         width = $('.studentCirclesRow')[0].clientWidth;
         height = $('.studentCirclesRow')[0].clientHeight;
+        radius = width/20;
       }
 
 
-      var canvas = [width, height],
-          radius = width/10;
+      var canvas = [width, height];
 
       var svg = d3.select(elem[0])
         .append('svg')
