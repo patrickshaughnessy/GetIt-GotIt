@@ -2,62 +2,30 @@
 
 angular
   .module('app')
-  .controller("chatroomHelpeeCtrl", function(AuthService, $state, $scope, $firebaseObject, $firebaseArray, $location, $anchorScroll) {
-    var user = AuthService.checkAuth();
-    $scope.user = user;
-    var chatRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}`);
-    var helpeeMsgsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}/helpee/messages`);
-    var helpeesRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpees`);
-    var classroomRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);
+  .controller("chatroomHelpeeCtrl", function(Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray, $location, $anchorScroll) {
 
-    var studentsArrayRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/studentsArray`);
-    var studentsList = $firebaseArray(studentsArrayRef);
+    var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
+    var user = $firebaseObject(userRef);
+    user.$bindTo($scope, 'user');
 
-    var userIndex;
-    studentsList.$loaded(function(){
-      studentsList.forEach(function(s, i){
-        if (s.student == user.uid){
-          userIndex = i;
-          return true;
-        }
+    var chatroomRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}`);
+    var chatroom = $firebaseObject(chatroomRef);
+    chatroom.$bindTo($scope, 'chatroom');
+
+    var messagesRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}/messages`);
+    $scope.messages = $firebaseArray(messagesRef);
+
+    $scope.addMessage = function() {
+      $scope.messages.$add({
+        text: $scope.newMessageText,
+        sender: $scope.chatroom.helpee
       });
-    });
-
-
-
-
-    var helpeesList = $firebaseArray(helpeesRef)
-
-     $scope.messages = $firebaseArray(helpeeMsgsRef);
-     // add new items to the array
-     // the message is automatically added to our Firebase database!
-     $scope.addMessage = function() {
-       $scope.messages.$add({
-         text: $scope.newMessageText,
-         sender: $scope.user
-       });
-       $scope.newMessageText = '';
-
-     };
-
+      $scope.newMessageText = '';
+    };
 
     $scope.backToClass = function(){
-      chatRef.remove();
-
-      var index;
-      helpeesList.forEach(function(s, i){
-        if (s.$value == $scope.user.uid){
-          index = i;
-          return true;
-        }
-      });
-
-      helpeesList.$remove(helpeesList[index]);
-
-      studentsList[userIndex].helpee = false;
-      studentsList.$save(userIndex);
-
-
+      chatroom.$remove();
+      $scope.user.helpee = false;
       $state.go('student-classroom', {classID: $state.params.classID})
     }
 

@@ -2,9 +2,10 @@
 
 angular
   .module('app')
-  .controller("chatroomHelperCtrl", function(AuthService, $state, $scope, $firebaseObject, $firebaseArray) {
-    var user = AuthService.checkAuth();
-    $scope.user = user;
+  .controller("chatroomHelperCtrl", function(Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray) {
+
+    
+
     var chatRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}`);
     var helpeeMsgsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}/helpee/messages`);
     var classroomRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);
