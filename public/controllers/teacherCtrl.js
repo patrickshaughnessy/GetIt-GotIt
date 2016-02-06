@@ -35,6 +35,7 @@ angular
     });
 
 
+
     $scope.endClass = function(){
       classroom.$remove();
       $state.go('home');

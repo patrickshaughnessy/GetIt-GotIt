@@ -2,10 +2,9 @@
 
 angular
   .module('app')
-  .directive('studentArea', function($window){
+  .directive('studentCircles', function($window){
 
     var link = function(scope, elem, attrs){
-
       var width = $('.studentCirclesRow')[0].clientWidth;
       var height = $('.studentCirclesRow')[0].clientHeight;
 
@@ -13,10 +12,10 @@ angular
           radius = '5'
 
       var svg = d3.select(elem[0])
-      .append('svg')
-        .attr({width: canvas[0], height: canvas[1]})
-        .attr("viewBox", "0 0 " + 100 + " " + 100);
-      svg.append('g');
+        .append('svg')
+          .attr({width: canvas[0], height: canvas[1]})
+          .attr("viewBox", "0 0 " + 100 + " " + 100);
+        svg.append('g');
 
 
       // .append('div')
@@ -130,26 +129,32 @@ angular
       }
 
       var update = function(){
+        // need to know:
+        // 1) all green students? - do an all green even layout
+        // 2) not all green, some red, some blues
+        //  - cluster greens together
+        //  - cluster reds together w/ their blue if applicable
+
         var students = angular.fromJson(scope.students).map(function(d, i, s){
+          // 1) all green
           if (allGreenStudents(s)){
             d.color = 'green';
             d.coords = getAllGreenCoords(d, i, s);
             return d;
-          }
-
-          if (d.helpee){
-            d.color = 'red';
-            d.coords = getRedCoords(d, i, s);
-          } else if (d.helper){
-            d.color = 'blue';
-            d.coords = getBlueCoords(d, i, s);
           } else {
-            d.color = 'green';
-            d.coords = getAllGreenCoords(d, i, s);
+            if (d.helpee){
+              d.color = 'red';
+              d.coords = getRedCoords(d, i, s);
+            } else if (d.helper){
+              d.color = 'blue';
+              d.coords = getBlueCoords(d, i, s);
+            } else {
+              d.color = 'green';
+              d.coords = getAllGreenCoords(d, i, s);
+            }
+            return d;
           }
-          return d;
         });
-
 
         if (!students){
           return;
@@ -225,7 +230,6 @@ angular
 
       scope.$watch('students', update);
       angular.element($window).bind('resize', function(){
-        console.log('resizing');
         svg.attr('width', $('.studentCirclesRow')[0].clientWidth);
         svg.attr('height', $('.studentCirclesRow')[0].clientHeight);
         update();

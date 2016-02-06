@@ -49,10 +49,10 @@ angular
 
       // otherwise, log them into the class
       var studentsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${classID}/students`);
-      var studentsList = $firebaseArray(studentsRef);
-      studentsList.$loaded().then(function(list){
-
-        list.$add(currentAuth.uid).then(function(ref){
+      var students = $firebaseArray(studentsRef);
+      students.$loaded().then(function(list){
+        
+        list.$add($scope.user).then(function(ref){
           var key = ref.key();
           $scope.user.class = {
             id: classID,

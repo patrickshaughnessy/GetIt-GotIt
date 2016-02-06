@@ -49,6 +49,12 @@ angular
       $scope.chatrooms.$add({ helpee: currentAuth.uid }).then(function(chat){
         var chatID = chat.key();
         $scope.user.helpee = chatID;
+
+        // update students list in class for viz
+        var index = $scope.students.$indexFor($scope.user.class.key);
+        $scope.students.$getRecord($scope.user.class.key).helpee = chatID;
+        $scope.students.$save(index);
+
         $state.go('chatroom-helpee', {classID: $state.params.classID, chatID: chatID});
       })
     }
@@ -69,6 +75,14 @@ angular
               helping: $scope.chatrooms[index].helpee,
               chatID: chatroom.key()
             }
+
+            // update students list in class for viz
+            var studentsIndex = $scope.students.$indexFor($scope.user.class.key);
+            $scope.students.$getRecord($scope.user.class.key).helper = {
+              helping: $scope.chatrooms[index].helpee,
+              chatID: chatroom.key()
+            }
+            $scope.students.$save(studentsIndex);
 
             $state.go('chatroom-helper', {classID: $state.params.classID, chatID: chatroom.key()});
             return true;

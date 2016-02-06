@@ -4,6 +4,9 @@ angular
   .module('app')
   .controller("chatroomHelperCtrl", function(Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray) {
 
+    var studentsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/students`);
+    $scope.students = $firebaseArray(studentsRef);
+
     var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
     var user = $firebaseObject(userRef);
     user.$bindTo($scope, 'user');
@@ -34,6 +37,12 @@ angular
     $scope.backToClass = function(){
       $scope.chatroom.helper = null;
       $scope.user.helper = false;
+
+      // update students list in class for viz
+      var index = $scope.students.$indexFor($scope.user.class.key);
+      $scope.students.$getRecord($scope.user.class.key).helper = false;
+      $scope.students.$save(index);
+
       $state.go('student-classroom', {classID: $state.params.classID})
     }
 
