@@ -2,71 +2,44 @@
 
 angular
   .module('app')
-  .controller("teacherCtrl", function(AuthService, $state, $scope, $firebaseObject, $firebaseArray) {
-    var user = AuthService.checkAuth();
+  .controller("teacherCtrl", function(Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray, $timeout) {
 
     $scope.classID = $state.params.classID;
 
+    var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
+    var user = $firebaseObject(userRef);
+    user.$bindTo($scope, 'user');
+
     var classroomRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);
+    var classroom = $firebaseObject(classroomRef);
+    classroom.$bindTo($scope, 'classroom');
+
     var studentsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/students`);
-    var usersRef = new Firebase(`https://getitgotit.firebaseio.com/users`);
-    var helpeesRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpees`);
-    var helpersRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/helpers`);
+    $scope.students = $firebaseArray(studentsRef);
 
-    var studentsArrayRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/studentsArray`);
-    $scope.studentsList = $firebaseArray(studentsArrayRef);
+    var chatroomsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms`);
+    $scope.chatrooms = $firebaseArray(chatroomsRef);
 
-    var students = $firebaseObject(studentsRef);
-    students.$bindTo($scope, 'students');
-
-    var users = $firebaseObject(usersRef);
-    users.$bindTo($scope, 'users');
-
-    var helpees = $firebaseArray(helpeesRef);
-    var helpers = $firebaseArray(helpersRef);
-
-    $scope.totalStudents = $firebaseArray(studentsRef);
-
-    $scope.fillColor = function(uid){
-      var color = 'green';
-      helpees.forEach(function(s){
-        if (s.$value == uid){
-          color = 'red';
-        }
-      });
-      helpers.forEach(function(s){
-        if (s.$value == uid){
-          color = 'blue'
-        }
-      })
-      return color;
-    }
-
-    var studentsNum;
-    var helpeesNum;
-    studentsRef.on('value', function(snap){
-      studentsNum = snap.numChildren();
-      updatePercentage();
-    })
-
-    helpeesRef.on('value', function(snap){
-      helpeesNum = snap.numChildren();
-      updatePercentage();
-    })
-
-    function updatePercentage() {
-      if (studentsNum === 0){
-        $scope.percentage = 'Waiting For Students...';
+    var updatePercentage = function(){
+      if ($scope.chatrooms && $scope.students){
+        $scope.percentage = Math.round((1 - ($scope.chatrooms.length / $scope.students.length))*100) + '%';
       } else {
-        $scope.percentage = ((1 - helpeesNum/studentsNum)*100).toString() + '%';
+        $scope.percentage = '...'
       }
+      console.log('in perc', $scope.percentage);
     }
-
-
+    $scope.chatrooms.$watch(function(e){
+      console.log('chats', e)
+      updatePercentage();
+    });
+    $scope.students.$watch(function(e){
+      console.log('studs', e);
+      updatePercentage();
+    });
 
 
     $scope.endClass = function(){
-      classroomRef.remove();
+      classroom.$remove();
       $state.go('home');
     }
 

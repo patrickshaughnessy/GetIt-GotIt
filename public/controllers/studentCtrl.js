@@ -10,8 +10,9 @@ angular
       // make sure user didn't use back button to leave
       $timeout(function(){
         if ($scope.user.helpee){
-          console.log($scope.user);
           $state.go('chatroom-helpee', {classID: $state.params.classID, chatID: $scope.user.helpee});
+        } else if ($scope.user.helper){
+          $state.go('chatroom-helper', {classID: $state.params.classID, chatID: $scope.user.helper.chatID});
         }
       }, 200)
     })
@@ -52,8 +53,6 @@ angular
       })
     }
 
-
-
     $scope.helpSomeone = function(){
       // join chatroom of user that needs help
       chatroomsRef.once('value', function(chatrooms){
@@ -77,7 +76,6 @@ angular
         })
       })
     }
-
 
     $scope.leaveClass = function(){
       $scope.students.$remove($scope.students.$getRecord($scope.user.class.key));
