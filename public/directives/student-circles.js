@@ -115,6 +115,71 @@ angular
 
       }
 
+      var cxLeft = function(d, i, g){
+        // total colums for greens on left;
+        var columns = Math.ceil(g.length/5);
+
+        // width of left area is width/3
+        var interval = Math.round((width/3)/(columns + 1));
+
+        // current column for circle
+        var currentColumn = Math.ceil((i+1)/5);
+
+        // location is the current column of circle in the left area
+        return currentColumn * interval;
+      }
+      var cyLeft = function(d, i, g){
+        // total colums for greens on left
+        var columns = Math.ceil(g.length/5);
+
+        // current column for circle
+        var currentColumn = Math.ceil((i+1)/5);
+
+        var interval;
+        if (g.length % 5 === 0 || currentColumn !== columns){
+          // 1) total greens on left is divisible by 5 or circle is in a row of 5
+          interval = Math.round((height)/6);
+        } else {
+          // 2) circle is in a row with less than 5, space evenly
+          interval = Math.round((height)/((g.length % 5) + 1));
+        }
+
+        // interval calculated based on index
+        return (((i%5)+1) * interval);
+      }
+      var cxRight = function(d, i, g){
+        // total colums for greens on right;
+        var columns = Math.ceil(g.length/5);
+
+        // width of right area is width/3
+        var interval = Math.round((width/3)/(columns + 1));
+
+        // current column for circle
+        var currentColumn = Math.ceil((i+1)/5);
+
+        // location is the current column of circle, offset by 2/3 width
+        return (currentColumn * interval) + (2*width)/3;
+      }
+      var cyRight = function(d, i, g){
+        // total colums for greens on right - same as left?
+        var columns = Math.ceil(g.length/5);
+
+        // current column for circle
+        var currentColumn = Math.ceil((i+1)/5);
+
+        var interval;
+        if (g.length % 5 === 0 || currentColumn !== columns){
+          // 1) total greens on right is divisible by 5 or circle is in a row of 5
+          interval = Math.round((height)/6);
+        } else {
+          // 2) circle is in a row with less than 5, space evenly
+          interval = Math.round((height)/((g.length % 5) + 1));
+        }
+
+        // interval calculated based on index
+        return (((i%5)+1) * interval);
+      }
+
       var allGreenStudents = function(students){
         return students.every(function(student){
           return !student.helpee && !student.helper;
@@ -128,42 +193,78 @@ angular
       var getRedCoords = function(d, i, s){
         return {x: cx(d, i, s), y: cy(d, i, s)};
       }
-      var getGreenCoords = function(d, i, s){
-        return {x: cx(d, i, s), y: cy(d, i, s)};
-      }
       var getBlueCoords = function(d, i, s){
         return {x: cx(d, i, s), y: cy(d, i, s)};
       }
+      var getGreenCoords = function(d, i, g){
+        // split into left & right greens based on index
+        return (i%2 === 0) ? {x: cxLeft(d, i, g), y: cyLeft(d, i, g)} : {x: cxRight(d, i, g), y: cyRight(d, i, g)};
+      }
 
       var update = function(){
-        // need to know:
-        // 1) all green students? - do an all green even layout
-        // 2) not all green, some red, some blues
-        //  - cluster greens together
-        //  - cluster reds together w/ their blue if applicable
-
         updateCanvas();
 
-        var students = angular.fromJson(scope.students).map(function(d, i, s){
-          // 1) all green
-          if (allGreenStudents(s)){
+
+        var students = angular.fromJson(scope.students)
+
+        if (allGreenStudents(students)){
+          // all green students = return evenly distributed
+          students = students.map(function(d, i, s){
             d.color = 'green';
             d.coords = getAllGreenCoords(d, i, s);
             return d;
-          } else {
-            if (d.helpee){
-              d.color = 'red';
-              d.coords = getRedCoords(d, i, s);
-            } else if (d.helper){
-              d.color = 'blue';
-              d.coords = getBlueCoords(d, i, s);
-            } else {
+          });
+        } else {
+          // mix of reds, blues, greens
+          // first separate all
+
+          var greens = students
+            .filter(function(s){
+              return !s.helper && !s.helpee;
+            }).map(function(d, i, g){
               d.color = 'green';
-              d.coords = getAllGreenCoords(d, i, s);
-            }
-            return d;
-          }
-        });
+              d.coords = getGreenCoords(d, i, g);
+              return d
+            });
+
+          var reds = students
+            .filter(function(s){
+              return s.helpee;
+            })
+            .map(function(d, i, r){
+              d.color = 'red';
+              d.coords = getRedCoords(d, i, r);
+              return d;
+            });
+
+          var blues = students
+            .filter(function(s){
+              return s.helper;
+            })
+            .map(function(d, i, b){
+              d.color = 'blue';
+              d.coords = getBlueCoords(d, i, b);
+              return d;
+            });
+
+          // concat to array of students;
+          students = greens.concat(reds, blues);
+        }
+
+        // .map(function(d, i, s){
+        //     if (d.helpee){
+        //       d.color = 'red';
+        //       d.coords = getRedCoords(d, i, s);
+        //     } else if (d.helper){
+        //       d.color = 'blue';
+        //       d.coords = getBlueCoords(d, i, s);
+        //     } else {
+        //       d.color = 'green';
+        //       d.coords = getGreenCoords(d, i, s);
+        //     }
+        //     return d;
+        //   }
+        // });
 
         if (!students){
           return;
