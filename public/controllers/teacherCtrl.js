@@ -26,14 +26,11 @@ angular
       } else {
         $scope.percentage = '...'
       }
-      console.log('in perc', $scope.percentage);
     }
     $scope.chatrooms.$watch(function(e){
-      console.log('chats', e)
       updatePercentage();
     });
     $scope.students.$watch(function(e){
-      console.log('studs', e);
       updatePercentage();
     });
 
