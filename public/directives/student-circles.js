@@ -22,7 +22,7 @@ angular
         .append('svg')
           .attr({width: width, height: height});
           // .attr("viewBox", "0 0 " + 100 + " " + 100);
-        // svg.append('g');
+        svg.append('g');
 
 
       // .append('div')
@@ -177,8 +177,8 @@ angular
 
         svg.attr({width: canvas[0], height: canvas[1]});
 
-        // var circle = svg.select('g').selectAll('circle')
-        var circle = svg.selectAll('circle')
+        var circle = svg.select('g').selectAll('circle')
+        // var circle = svg.selectAll('circle')
             .data(students);
 
         circle.enter().append('circle')
