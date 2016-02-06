@@ -10,9 +10,10 @@ angular
       // make sure user didn't use back button to leave
       $timeout(function(){
         if ($scope.user.helpee){
+          console.log($scope.user);
           $state.go('chatroom-helpee', {classID: $state.params.classID, chatID: $scope.user.helpee});
         }
-      }, 100)
+      }, 200)
     })
 
     var classroomRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);
@@ -31,7 +32,7 @@ angular
         $scope.displayHelp = false;
       }
       snap.forEach(function(child){
-        if (!child.helper){
+        if (!child.val().helper){
           $scope.displayHelp = true;
           return true;
         }
@@ -58,6 +59,7 @@ angular
       chatroomsRef.once('value', function(chatrooms){
 
         chatrooms.forEach(function(chatroom){
+          // find any chatroom with no helper
           if (!chatroom.val().helper){
             var index = $scope.chatrooms.$indexFor(chatroom.key())
 
@@ -69,7 +71,6 @@ angular
               chatID: chatroom.key()
             }
 
-            // send to chatroomID
             $state.go('chatroom-helper', {classID: $state.params.classID, chatID: chatroom.key()});
             return true;
           }
