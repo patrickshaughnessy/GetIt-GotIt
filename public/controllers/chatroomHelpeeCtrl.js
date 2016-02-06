@@ -27,14 +27,13 @@ angular
     };
 
     $scope.backToClass = function(){
-      chatroom.$remove();
-      $scope.user.helpee = false;
-
       // update students list in class for viz
       var index = $scope.students.$indexFor($scope.user.class.key);
       $scope.students.$getRecord($scope.user.class.key).helpee = false;
       $scope.students.$save(index);
 
+      chatroom.$remove();
+      $scope.user.helpee = false;
 
       $state.go('student-classroom', {classID: $state.params.classID})
     }
