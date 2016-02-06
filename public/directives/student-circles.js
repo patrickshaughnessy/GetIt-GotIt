@@ -8,14 +8,20 @@ angular
       var width = $('.studentCirclesRow')[0].clientWidth;
       var height = $('.studentCirclesRow')[0].clientHeight;
 
+      var updateCanvas = function(){
+        width = $('.studentCirclesRow')[0].clientWidth;
+        height = $('.studentCirclesRow')[0].clientHeight;
+      }
+
+
       var canvas = [width, height],
-          radius = '5'
+          radius = width/10;
 
       var svg = d3.select(elem[0])
         .append('svg')
-          .attr({width: canvas[0], height: canvas[1]})
-          .attr("viewBox", "0 0 " + 100 + " " + 100);
-        svg.append('g');
+          .attr({width: width, height: height});
+          // .attr("viewBox", "0 0 " + 100 + " " + 100);
+        // svg.append('g');
 
 
       // .append('div')
@@ -33,9 +39,9 @@ angular
           var currentRow = Math.ceil((i+1)/5);
           var interval;
           if (s.length % 5 === 0 || currentRow !== numRows){
-            interval = Math.round(50/6);
+            interval = Math.round((width/2)/6);
           } else {
-            interval = Math.round(50/((s.length % 5) + 1));
+            interval = Math.round((width/2)/((s.length % 5) + 1));
           }
           return (((i%5)+1) * interval) + 50;
         } else if (d.color == 'blue'){
@@ -45,7 +51,7 @@ angular
           if (s.length % 5 === 0 || currentRow !== numRows){
             interval = Math.round(50/6);
           } else {
-            interval = Math.round(50/((s.length % 5) + 1));
+            interval = Math.round((width/2)/((s.length % 5) + 1));
           }
           return (((i%5)+1) * interval);
         } else {
@@ -53,9 +59,9 @@ angular
           var currentRow = Math.ceil((i+1)/5);
           var interval;
           if (s.length % 5 === 0 || currentRow !== numRows){
-            interval = Math.round(50/6);
+            interval = Math.round((width/2)/6);
           } else {
-            interval = Math.round(50/((s.length % 5) + 1));
+            interval = Math.round((width/2)/((s.length % 5) + 1));
           }
           return (((i%5)+1) * interval);
         }
@@ -64,17 +70,17 @@ angular
       var cy = function(d, i, s){
         if (d.color == 'blue'){
           var numRows = Math.ceil(s.length/5);
-          var interval = Math.round(100/(numRows + 1));
+          var interval = Math.round(height/(numRows + 1));
           var currentRow = Math.ceil((i+1)/5);
           return currentRow * interval;
         } else if (d.color == 'red'){
           var numRows = Math.ceil(s.length/5);
-          var interval = Math.round(100/(numRows + 1));
+          var interval = Math.round(height/(numRows + 1));
           var currentRow = Math.ceil((i+1)/5);
           return currentRow * interval;
         } else {
           var numRows = Math.ceil(s.length/5);
-          var interval = Math.round(100/(numRows + 1));
+          var interval = Math.round(height/(numRows + 1));
           var currentRow = Math.ceil((i+1)/5);
           return currentRow * interval;
         }
@@ -93,16 +99,16 @@ angular
         var currentRow = Math.ceil((i+1)/5);
         var interval;
         if (s.length % 5 === 0 || currentRow !== numRows){
-          interval = Math.round(100/6);
+          interval = Math.round(width/6);
         } else {
-          interval = Math.round(100/((s.length % 5) + 1));
+          interval = Math.round(width/((s.length % 5) + 1));
         }
         return ((i%5)+1) * interval;
       }
 
       var cyGreen = function(d, i, s){
         var numRows = Math.ceil(s.length/5);
-        var interval = Math.round(100/(numRows + 1));
+        var interval = Math.round(height/(numRows + 1));
         var currentRow = Math.ceil((i+1)/5);
         return currentRow * interval;
 
@@ -135,6 +141,8 @@ angular
         //  - cluster greens together
         //  - cluster reds together w/ their blue if applicable
 
+        updateCanvas();
+
         var students = angular.fromJson(scope.students).map(function(d, i, s){
           // 1) all green
           if (allGreenStudents(s)){
@@ -160,7 +168,16 @@ angular
           return;
         }
 
-        var circle = svg.select('g').selectAll('circle')
+        var width = $('.studentCirclesRow')[0].clientWidth;
+        var height = $('.studentCirclesRow')[0].clientHeight;
+
+        var canvas = [width, height],
+            radius = width/10;
+
+        svg.attr({width: canvas[0], height: canvas[1]});
+
+        // var circle = svg.select('g').selectAll('circle')
+        var circle = svg.selectAll('circle')
             .data(students);
 
         circle.enter().append('circle')
