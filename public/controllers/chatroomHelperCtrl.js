@@ -21,7 +21,7 @@ angular
     $scope.addMessage = function() {
       $scope.messages.$add({
         text: $scope.newMessageText,
-        sender: $scope.chatroom.helper
+        sender: $scope.user.$id
       });
       $scope.newMessageText = '';
     };
