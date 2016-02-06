@@ -115,6 +115,10 @@ angular
 
       }
 
+      ////////////////////////////
+      // Calculate Green Coords //
+      ////////////////////////////
+
       var cxLeft = function(d, i, g){
         // total colums for greens on left;
         var columns = Math.ceil(g.length/5);
@@ -163,7 +167,6 @@ angular
       var cyRight = function(d, i, g){
         // total colums for greens on right - same as left?
         var columns = Math.ceil(g.length/5);
-
         // current column for circle
         var currentColumn = Math.ceil((i+1)/5);
 
@@ -175,10 +178,36 @@ angular
           // 2) circle is in a row with less than 5, space evenly
           interval = Math.round((height)/((g.length % 5) + 1));
         }
-
         // interval calculated based on index
         return (((i%5)+1) * interval);
       }
+
+      //////////////////////////
+      // Calculate Red Coords //
+      //////////////////////////
+
+      var cxRed = function(d, i, r){
+        // reds will all be in the middle
+        return width/2;
+      }
+      var cyRed = function(d, i, r){
+        // scale based on how many reds there are
+        var interval = height/(r.length+1);
+        // return coordinate based on index, starting at 1
+        return (i+1) * interval
+      }
+
+      ///////////////////////////
+      // Calculate Blue Coords //
+      ///////////////////////////
+
+      var cxBlue = function(d, i, b, red){
+        return red.coords.x;
+      }
+      var cyBlue = function(d, i, b, red){
+        return red.coords.y + (radius*2);
+      }
+
 
       var allGreenStudents = function(students){
         return students.every(function(student){
@@ -190,15 +219,15 @@ angular
         return {x: cxGreen(d, i, s), y: cyGreen(d, i, s)}
       }
 
-      var getRedCoords = function(d, i, s){
-        return {x: cx(d, i, s), y: cy(d, i, s)};
-      }
-      var getBlueCoords = function(d, i, s){
-        return {x: cx(d, i, s), y: cy(d, i, s)};
+      var getBlueCoords = function(d, i, b, red){
+        return {x: cxBlue(d, i, b, red), y: cyBlue(d, i, b, red)};
       }
       var getGreenCoords = function(d, i, g){
         // split into left & right greens based on index
         return (i%2 === 0) ? {x: cxLeft(d, i, g), y: cyLeft(d, i, g)} : {x: cxRight(d, i, g), y: cyRight(d, i, g)};
+      }
+      var getRedCoords = function(d, i, r){
+        return {x: cxRed(d, i, r), y: cyRed(d, i, r)};
       }
 
       var update = function(){
@@ -242,8 +271,15 @@ angular
               return s.helper;
             })
             .map(function(d, i, b){
+              // get coords of helping
+              var chatID = d.helper.chatID;
+              var red = reds.find(function(r){
+                return r.helpee === chatID;
+              });
+              console.log(red);
+
               d.color = 'blue';
-              d.coords = getBlueCoords(d, i, b);
+              d.coords = getBlueCoords(d, i, b, red);
               return d;
             });
 
