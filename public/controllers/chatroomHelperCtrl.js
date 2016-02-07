@@ -35,7 +35,18 @@ angular
       classroomsRef.once('value', function(classrooms){
         // case 1) classroom still exists && the removed chatroom is current chatroom
         if (classrooms.hasChild($state.params.classID) && (chatroom.key() === $state.params.chatID)){
-          $scope.backToClass();
+          // update students list in class for viz
+          var index = $scope.students.$indexFor($scope.user.class.key);
+          $scope.user.helper = false;
+          // helper successfully helped - added 10 points;
+          $scope.user.points = $scope.user.points + 5;
+          $scope.students.$getRecord($scope.user.class.key).points = $scope.user.points;
+          $scope.students.$getRecord($scope.user.class.key).helper = false;
+
+          $scope.students.$save(index);
+
+          $state.go('student-classroom', {classID: $state.params.classID})
+
         } else if (!classrooms.hasChild($state.params.classID)) {   // case 2) classroom has been removed
           $scope.user.helpee = false;
           $scope.user.helper = false;
@@ -49,8 +60,6 @@ angular
     $scope.backToClass = function(){
       $scope.chatroom.helper = null;
       $scope.user.helper = false;
-
-
 
       // update students list in class for viz
       var index = $scope.students.$indexFor($scope.user.class.key);
