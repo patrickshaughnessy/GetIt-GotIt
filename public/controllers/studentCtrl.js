@@ -21,6 +21,19 @@ angular
     var classroom = $firebaseObject(classroomRef);
     classroom.$bindTo($scope, 'classroom');
 
+    // remove student if teacher ends the class;
+    var classroomsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms`);
+    classroomsRef.on('child_removed', function(removedClassroom){
+
+      if (removedClassroom.key() === $state.params.classID) {
+        console.log('teacher removed my class!');
+        $scope.user.helpee = false;
+        $scope.user.helper = false;
+        $scope.user.class = null;
+        $state.go('home');
+      }
+    })
+
     var studentsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/students`);
     $scope.students = $firebaseArray(studentsRef);
 
