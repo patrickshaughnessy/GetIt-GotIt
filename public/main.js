@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-  .module("app", ["firebase", "ui.router", 'ui.mask'])
+  .module("app", ["firebase", "ui.router", 'ui.mask', 'naif.base64'])
   .config(function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/");
@@ -71,6 +71,16 @@ angular
         url: "/student-classroom/:classID/chatroom-helper/:chatID",
         templateUrl: "partials/chatroom-helper.html",
         controller: "chatroomHelperCtrl",
+        resolve: {
+          "currentAuth": ["Auth", function(Auth) {
+            return Auth.$requireAuth();
+          }]
+        }
+      })
+      .state('profile', {
+        url: "/profile",
+        templateUrl: "partials/profile.html",
+        controller: "profileCtrl",
         resolve: {
           "currentAuth": ["Auth", function(Auth) {
             return Auth.$requireAuth();

@@ -8,8 +8,12 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-4 col-xs-offset-4 text-center percentageArea">
-      <h1>{{percentage}}</h1>
+    <div class="col-xs-4 text-center">
+      <h1 ng-if="points == 0 || !points">...</h1>
+      <h1 ng-if="points > 0">Total Class Points: {{points}}</h1>
+    </div>
+    <div class="col-xs-4 text-center percentageArea">
+      <h1>{{percentage || "..."}}</h1>
     </div>
   </div>
   <div class="row studentCirclesRow">

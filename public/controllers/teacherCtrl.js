@@ -21,17 +21,25 @@ angular
     $scope.chatrooms = $firebaseArray(chatroomsRef);
 
     var updatePercentage = function(){
-      if ($scope.chatrooms && $scope.students){
+      if ($scope.students.length){
         $scope.percentage = Math.round((1 - ($scope.chatrooms.length / $scope.students.length))*100) + '%';
       } else {
-        $scope.percentage = '...'
+        $scope.percentage = '...';
       }
     }
+
+    var updatePoints = function(){
+      $scope.points = $scope.students.reduce(function(a, student){
+        return a + student.points;
+      }, 0);
+    }
+
     $scope.chatrooms.$watch(function(e){
       updatePercentage();
     });
     $scope.students.$watch(function(e){
       updatePercentage();
+      updatePoints();
     });
 
 
@@ -40,7 +48,7 @@ angular
       classroom.$remove();
 
       $scope.user.teacher = false;
-      
+
       $state.go('home');
     }
 
