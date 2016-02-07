@@ -1,11 +1,9 @@
-.btn-warning {
-  background-color: #EE4037;
+body {
+  font-family: 'ABeeZee', sans-serif;
 }
 
-
-.titleWrapper {
-  /*position: absolute;
-  bottom: 50%;*/
+.btn-warning {
+  background-color: #EE4037;
 }
 
 
