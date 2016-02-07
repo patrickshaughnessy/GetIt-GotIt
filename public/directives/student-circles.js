@@ -46,6 +46,11 @@ angular
         return currentRow * interval;
       }
 
+      var crAllGreen = function(d, i, s){
+        
+        return width/20;
+      }
+
       ////////////////////////////
       // Calculate Green Coords //
       ////////////////////////////
@@ -121,8 +126,8 @@ angular
         return (((i%5)+1) * interval);
       }
 
-      var crGreen = function(d, i, r){
-        // equally sized for rows/columns of 5
+      var crGreen = function(d, i, g){
+        //
         return width > height ? width/20 : height/20;
       }
 
@@ -147,7 +152,12 @@ angular
       }
       var crRed = function(d, i, r){
         // fill middle section
-        return (height/(r.length+1))/2;
+        // var colWidth = width/3;
+        // var colHeight = height;
+
+        // console.log('crred',  width > height)
+        // return width > height ? (width/(r.length+1))/2 : (height/(r.length+1))/2
+        return ((width/3)/(r.length+1))/2;
       }
 
 
@@ -188,7 +198,7 @@ angular
           students = students.map(function(d, i, s){
             d.color = 'green';
             d.coords = getAllGreenCoords(d, i, s);
-            d.radius = crGreen(d, i, s);
+            d.radius = crAllGreen(d, i, s);
             return d;
           });
         } else {
@@ -239,11 +249,6 @@ angular
           return;
         }
 
-        // var width = $('.studentCirclesRow')[0].clientWidth;
-        // var height = $('.studentCirclesRow')[0].clientHeight;
-        //
-        // var canvas = [width, height],
-        //     radius = width/10;
 
         svg.attr({width: width, height: height});
 

@@ -38,6 +38,9 @@ angular
 
     $scope.endClass = function(){
       classroom.$remove();
+
+      $scope.user.teacher = false;
+      
       $state.go('home');
     }
 
