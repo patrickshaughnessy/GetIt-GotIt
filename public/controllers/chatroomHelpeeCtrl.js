@@ -26,6 +26,17 @@ angular
       $scope.newMessageText = '';
     };
 
+    // remove student if teacher ends the class;
+    var classroomsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms`);
+    classroomsRef.on('child_removed', function(removedClassroom){
+      if (removedClassroom.key() === $state.params.classID) {
+        $scope.user.helpee = false;
+        $scope.user.helper = false;
+        $scope.user.class = null;
+        $state.go('home');
+      }
+    });
+
     $scope.backToClass = function(){
       // update students list in class for viz
       var index = $scope.students.$indexFor($scope.user.class.key);
