@@ -1,6 +1,6 @@
 node_modules
 public/bower_components
-./build
+build
 
 # Debug log from npm
 npm-debug.log
