@@ -2,6 +2,12 @@
   <div class="profileWrapper">
     <button class="btn backButton" ui-sref="home">Back</button>
     <button class="btn logoutButton" ng-click="logout()">Logout</button>
+    <div class="changeAvatarButton">
+      <form ng-submit="changeAvatar(newAvatar)">
+        <label for="newAvatarUpload">Change Your Picture</label>
+        <input id="newAvatarUpload" ng-change="changeAvatar(newAvatar)" type="file" ng-model="newAvatar" base-sixty-four-input>
+      </form>
+    </div>
     <div class="profileInner">
       <div class="profileCircle">
         <div class="profileImageWrapperOuter"></div>
@@ -13,49 +19,6 @@
         <h4>{{user.name}}</h4>
         <h4>{{user.points}} points</h4>
       </div>
-      <!-- <div class="thumbnail">
-      </div>
-      <div class="col-xs-12">
-        <form ng-submit="changeAvatar(newAvatar)">
-          <input type="file" ng-model="newAvatar" base-sixty-four-input>
-          <input type="submit" value="Submit">
-        </form>
-      </div> -->
     </div>
   </div>
 </div>
-<!--
-<div class="homeBackground">
-  <div class="homeWrapper">
-    <button class="btn profileButton" ui-sref="profile">Profile</button>
-    <button class="btn logoutButton" ng-click="logout()">Logout</button>
-    <div class="homeInner">
-      <div class="homeCircle"></div>
-      <div class="animated bounceIn">
-        <h1>For Teachers:</h1>
-        <div class="col-xs-12">
-          <button class="btn btn-success btn-lg" ng-click="startNewClass()">Start A Class</button>
-        </div>
-      </div>
-      <div class="col-xs-12">
-        <hr class="style-seven">
-      </div>
-      <div class="col-xs-12" ng-show="!user.class" ng-init="showJoinButton = true">
-        <div class="homeStudentWrapper">
-          <div ng-show="showJoinButton" ng-class="{fadeOutRightBig: !showJoinButton}" class="bounceIn animated">
-            <h1>For Students:</h1>
-            <button  class="btn btn-primary btn-lg" type="button" ng-click="showJoinButton = false">Join A Class</button>
-          </div>
-          <div ng-show="!showJoinButton" ng-class="{fadeInLeftBig: !showJoinButton}" class="col-xs-12 col-sm-12 animated" id="classLogin">
-            <form ng-submit="goToClass()">
-              <div class="input-group input-group-lg">
-                <span class="input-group-addon" id="sizing-addon1">ID:</span>
-                <input ui-mask="999-999-999" ng-model="classID" type="text" class="form-control" clearOnBlurPlaceholder="true" ui-mask-placeholder="###-###-###" aria-describedby="sizing-addon1">
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
