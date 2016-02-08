@@ -1,9 +1,4 @@
 {
   "firebase": "getitgotit",
-  "public": "build",
-  "ignore": [
-    "firebase.json",
-    "**/.*",
-    "**/node_modules/**"
-  ]
+  "public": "build"
 }
