@@ -1,5 +1,5 @@
 .splashBackground {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://static.pexels.com/photos/2092/creative-desk-pens-school.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../assets/pencils.jpg');
   background-repeat: no-repeat;
   background-size:cover;
   height: 100vh;
@@ -7,13 +7,13 @@
   position: absolute;
   z-index: -1;
   margin: 0;
+  overflow: scroll;
 }
 
 .splashWrapper {
   height: 100vh;
   width: 100vw;
   position: absolute;
-  overflow: hidden;
   color: white;
   display: table;
 }
@@ -23,4 +23,24 @@
   vertical-align: middle;
   padding-bottom: 25%;
   text-align: center;
+}
+
+.splashLogin {
+  display: table;
+}
+
+.splashLoginInner {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#loginCollapse {
+  position: absolute;
+  margin-top: 5%;
+  background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3))
+}
+
+#loginCollapse form {
+  padding: 1%;
 }

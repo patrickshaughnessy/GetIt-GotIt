@@ -2,6 +2,10 @@ body {
   font-family: 'ABeeZee', sans-serif;
 }
 
+.btn {
+  border-radius: 25px;
+}
+
 .btn-warning {
   background-color: #EE4037;
 }
