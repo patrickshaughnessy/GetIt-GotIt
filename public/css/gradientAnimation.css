@@ -1,3 +1,66 @@
+.profileImageWrapperOuter{
+  background: linear-gradient(
+    0deg,
+    rgba(27, 116, 156, 1),
+    rgba(0, 0, 0, 1),
+    rgba(172, 20, 26, 1),
+    rgba(0, 0, 0, 1),
+    rgba(4, 83, 45, 1)
+    );
+  background-size: 400% 400%;
+
+  -webkit-animation: profileImageWrapperOuter 15s linear infinite;
+  -moz-animation: profileImageWrapperOuter 15s linear infinite;
+  animation: profileImageWrapperOuter 15s linear infinite;
+}
+@-webkit-keyframes profileImageWrapperOuter {
+  0%{background-position:52% 0%}
+  50%{background-position:49% 100%}
+  100%{background-position:52% 0%}
+}
+@-moz-keyframes profileImageWrapperOuter {
+  0%{background-position:52% 0%}
+  50%{background-position:49% 100%}
+  100%{background-position:52% 0%}
+}
+@keyframes profileImageWrapperOuter {
+  0%{background-position:52% 0%}
+  50%{background-position:49% 100%}
+  100%{background-position:52% 0%}
+}
+.profileDisplay{
+  background: linear-gradient(
+    0deg,
+    rgba(27, 116, 156, 1),
+    rgba(0, 0, 0, 1),
+    rgba(0, 0, 0, 1),
+    rgba(172, 20, 26, 1),
+    rgba(0, 0, 0, 1),
+    rgba(0, 0, 0, 1),
+    rgba(4, 83, 45, 1)
+    );
+  background-size: 400% 400%;
+
+  -webkit-animation: profileDisplay 15s linear infinite;
+  -moz-animation: profileDisplay 15s linear infinite;
+  animation: profileDisplay 15s linear infinite;
+}
+@-webkit-keyframes profileDisplay {
+  0%{background-position:52% 0%}
+  50%{background-position:49% 100%}
+  100%{background-position:52% 0%}
+}
+@-moz-keyframes profileDisplay {
+  0%{background-position:52% 0%}
+  50%{background-position:49% 100%}
+  100%{background-position:52% 0%}
+}
+@keyframes profileDisplay {
+  0%{background-position:52% 0%}
+  50%{background-position:49% 100%}
+  100%{background-position:52% 0%}
+}
+
 .studentBackground{
   background: linear-gradient(0deg, #6bb880, #09624c);
   background-size: 400% 400%;
