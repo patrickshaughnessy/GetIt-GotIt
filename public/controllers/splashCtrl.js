@@ -22,7 +22,6 @@ angular
           }
           users.$save();
         }
-
         return $state.go('home');
       }).catch(function(err){
         return swal("Authentication Failed!", error, 'error');
@@ -30,21 +29,32 @@ angular
     }
 
     $scope.loginWithEmail = function(){
-      usersRef
+      Auth.$authWithPassword({
+        email    : $scope.loginEmail,
+        password : $scope.loginPassword
+      }).then(function(authData) {
+        return $state.go('home');
+      }).catch(function(error) {
+        if (error == 'Error: The specified user does not exist.'){
+          // user does not exist - create a new user
+          signUpWithEmail();
+          return;
+        }
+        return swal("Login Failed!", error, 'error');
+      });
     }
 
 
-    $scope.signUpWithEmail = function(){
+    var signUpWithEmail = function(){
       Auth.$createUser({
-        email    : $scope.signupEmail,
-        password : $scope.signupPassword
+        email    : $scope.loginEmail,
+        password : $scope.loginPassword
       }).then(function(userData) {
         return Auth.$authWithPassword({
-          email    : $scope.signupEmail,
-          password : $scope.signupPassword
+          email    : $scope.loginEmail,
+          password : $scope.loginPassword
         });
       }).then(function(authData) {
-
         if (!users[authData.uid]){
           users[authData.uid] = {
             name: authData.password.email.replace(/@.*/, ''),
@@ -57,19 +67,6 @@ angular
           }
           users.$save();
         }
-
-        return $state.go('home');
-      }).catch(function(error) {
-        return swal("Login Failed!", error, 'error');
-      });
-
-    }
-
-    $scope.loginWithEmail = function(){
-      Auth.$authWithPassword({
-        email    : $scope.loginEmail,
-        password : $scope.loginPassword
-      }).then(function(authData) {
         return $state.go('home');
       }).catch(function(error) {
         return swal("Login Failed!", error, 'error');
