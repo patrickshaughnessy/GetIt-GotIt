@@ -29,6 +29,11 @@ angular
       })
     }
 
+    $scope.loginWithEmail = function(){
+      usersRef
+    }
+
+
     $scope.signUpWithEmail = function(){
       Auth.$createUser({
         email    : $scope.signupEmail,
