@@ -1,0 +1,107 @@
+.homeBackground {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../assets/home.jpg');
+  background-repeat: no-repeat;
+  background-size:cover;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  z-index: -2;
+  margin: 0;
+  overflow: scroll;
+}
+
+.profileButton {
+  position: absolute;
+  border-radius: 0;
+  width: 20%;
+  height: 10%;
+  background: linear-gradient(
+    to bottom,
+    rgba(27, 116, 156, 0.8),
+    rgba(0, 0, 0, 0.8),
+    rgba(27, 116, 156, 0.8)
+    );
+}
+.logoutButton {
+  position: absolute;
+  right: 0;
+  border-radius: 0;
+  width: 20%;
+  height: 10%;
+  background: linear-gradient(
+    to bottom,
+    rgba(172, 20, 26, 0.6),
+    rgba(0, 0, 0, 0.8),
+    rgba(172, 20, 26, 0.6)
+    );
+}
+
+.homeCircle {
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(
+    to bottom,
+    rgba(4, 83, 45, 0.8),
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 0, 0.9),
+    rgba(0, 0, 0, 0.8),
+    rgba(184, 51, 56, 0.3)
+    );
+	border-radius: 50%;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+}
+
+.homeWrapper {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  color: white;
+  display: table;
+}
+
+.homeInner {
+  display: table-cell;
+  vertical-align: middle;
+  /*padding-bottom: 25%;*/
+  text-align: center;
+}
+
+#classLogin {
+  /*position: absolute;*/
+  margin-top: 5%;
+  background: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
+  width: 100%;
+}
+
+#classLogin form {
+  padding: 2%;
+}
+
+.homeStudentWrapper {
+  position: absolute;
+  margin: 0 auto;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75%;
+}
+
+hr.style-seven {
+  height: 30px;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px 0 0 0;
+  border-radius: 20px;
+  margin-top: 31px;
+}
+hr.style-seven:before {
+  display: block;
+  content: "";
+  height: 30px;
+  margin-top: -31px;
+  border-style: solid;
+  border-color: white;
+  border-width: 0 0 1px 0;
+  border-radius: 20px;
+}

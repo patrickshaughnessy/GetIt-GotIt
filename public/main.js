@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-  .module("app", ["firebase", "ui.router", 'ui.mask', 'naif.base64'])
+  .module("app", ["firebase", "ui.router", 'ui.mask', 'naif.base64', 'ngAnimate'])
   .config(function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/");
