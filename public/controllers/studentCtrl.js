@@ -108,5 +108,11 @@ angular
       $state.go('home');
     }
 
+    $scope.logout = function(){
+      $scope.students.$remove($scope.students.$getRecord($scope.user.class.key));
+      $scope.user.class = null;
+      Auth.$unauth();
+      $state.go('splash');
+    }
 
   });
