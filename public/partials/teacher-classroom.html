@@ -1,17 +1,21 @@
 <div class="teacherBackground">
-  <button class="btn btn-danger btn-lg endClassButton" ng-click="endClass()">End Class</button>
   <div class="teacherHeader">
-    <h1 class="text-center">
-      Classroom ID: {{classID}}
-    </h1>
-  </div>
-  <div class="teacherAnalytics">
-    <div class="col-xs-4 text-center">
-      <h3 ng-if="points == 0 || !points">...</h3>
-      <h3 ng-if="points > 0">Class Points: {{points}}</h3>
-    </div>
-    <div class="col-xs-4 text-center percentageArea">
-      <h1>{{percentage || "..."}}</h1>
+    <div class="row">
+      <div class="col-xs-12 endClassButton text-center">
+        <h1 ng-click="endClass()">End Class</h1>
+      </div>
+      <div class="col-xs-12">
+        <h1 class="text-center">
+          Classroom ID: &nbsp;{{classID}}
+        </h1>
+      </div>
+      <div class="col-xs-4 text-center">
+        <h3 ng-if="points == 0 || !points">...</h3>
+        <h3 ng-if="points > 0">Class Points: {{points}}</h3>
+      </div>
+      <div class="col-xs-4 text-center">
+        <h1>{{percentage || "..."}}</h1>
+      </div>
     </div>
   </div>
   <div class="studentCirclesArea">
