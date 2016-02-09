@@ -44,8 +44,10 @@ angular
 
       var classID = $scope.classID.replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3');
 
-      // if no class with that ID exists or user is trying to join a different class
-      if (!$scope.classrooms[classID]) return;
+      // if no class with that ID exists, show error message
+      if (!$scope.classrooms[classID]){
+        return swal('Oops', 'No class exists with that ID. Did you type it correctly?', 'error');
+      };
 
       // otherwise, log them into the class
       var studentsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${classID}/students`);
