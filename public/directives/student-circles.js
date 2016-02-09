@@ -184,6 +184,16 @@ angular
         return red.radius - (2*red.radius/3);
       }
 
+      var percentageColor = function(percent, students){
+        var gradient = students.length ? (100 - percent)*0.01 : 0;
+        return {
+          'background': `linear-gradient(
+            to bottom,
+            rgba(172, 20, 26, ${gradient}),
+            rgba(255, 255, 255, 1),
+            rgba(172, 20, 26, ${gradient})
+          `}
+      }
 
 
       var update = function(){
@@ -249,8 +259,12 @@ angular
           return;
         }
 
+        var percentage = +scope.percentage.slice(0, -1);
 
-        svg.attr({width: width, height: height});
+        svg
+        .attr({width: width, height: height})
+        .style(percentageColor(percentage, students));
+
 
         var circle = svg.select('g').selectAll('circle')
             .data(students);
@@ -261,7 +275,7 @@ angular
             .attr("cy", function(d, i){ return d.coords.y })
             .attr("cx", function(d, i) { return d.coords.x })
             .attr("r", function(d, i) { return d.radius })
-            .style('fill', function(d) { return d.color });
+            .style('fill', function(d) { return d.color })
 
         circle
             .attr("r", 0)
@@ -275,6 +289,64 @@ angular
           .transition()
             .attr('r', 0)
             .remove();
+
+        var defs = svg.selectAll('defs')
+            .data(students);
+        defs.enter().append('clipPath')
+            .attr('id', function(d, i) { return `student${i}`})
+          .append('circle')
+            .attr("r", 0)
+          .transition()
+            .attr("cy", function(d, i){ return d.coords.y })
+            .attr("cx", function(d, i) { return d.coords.x })
+            .attr("r", function(d, i) { return d.radius/2 })
+
+        defs
+            .attr('id', function(d, i) { return `student${i}`})
+          .append('circle')
+            .attr("r", 0)
+          .transition()
+            .attr("cy", function(d, i){ return d.coords.y })
+            .attr("cx", function(d, i) { return d.coords.x })
+            .attr("r", function(d, i) { return d.radius/2 })
+
+        defs.exit()
+          .transition()
+            .attr('r', 0)
+            .remove();
+
+
+        var images = svg.selectAll('image')
+            .data(students);
+        images.enter().append('svg:image')
+            .attr('width', 0)
+            .attr('height', 0)
+          .transition()
+            .attr("y", function(d, i){ return d.coords.y - d.radius })
+            .attr("x", function(d, i) { return d.coords.x - d.radius })
+            .attr("width", function(d, i) { return d.radius*2 })
+            .attr("height", function(d, i) { return d.radius*2 })
+            .attr('xlink:href', function(d, i) { return d.avatar })
+            .attr('clip-path', function(d, i) { return `url('#student${i}')` })
+
+        images
+            .attr('width', 0)
+            .attr('height', 0)
+          .transition()
+            .attr("y", function(d, i){ return d.coords.y - d.radius })
+            .attr("x", function(d, i) { return d.coords.x - d.radius })
+            .attr("width", function(d, i) { return d.radius*2 })
+            .attr("height", function(d, i) { return d.radius*2 })
+            .attr('xlink:href', function(d, i) { return d.avatar })
+            .attr('clip-path', function(d, i) { return `url('#student${i}')` })
+
+        images.exit()
+          .transition()
+            .attr('width', 0)
+            .attr('height', 0)
+            .remove();
+
+
 
       }
 
@@ -292,7 +364,8 @@ angular
       replace: true,
       restrict: 'EA',
       scope: {
-        students: '@'
+        students: '@',
+        percentage: '@'
       },
       link: link
     }
