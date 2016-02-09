@@ -9,7 +9,9 @@ angular
     user.$bindTo($scope, 'user').then(function(){
       // make sure user didn't use back button to leave
       $timeout(function(){
-        if ($scope.user.helpee){
+        if (!$scope.user.class || $scope.user.class.id !== $state.params.classID){
+          $state.go('home');
+        } else if ($scope.user.helpee){
           $state.go('chatroom-helpee', {classID: $state.params.classID, chatID: $scope.user.helpee});
         } else if ($scope.user.helper){
           $state.go('chatroom-helper', {classID: $state.params.classID, chatID: $scope.user.helper.chatID});
@@ -118,13 +120,13 @@ angular
     }
 
     // if client closes the browser or disconnects, remove from classroom and reset user info
-    var connectedRef = new Firebase("https://getitgotit.firebaseio.com/.info/connected");
-    connectedRef.on("value", function(snap) {
-      if (snap.val() === true) {
-        console.log('connected')
-      } else {
-        $scope.leaveClass()
-      }
-    });
+    // var connectedRef = new Firebase("https://getitgotit.firebaseio.com/.info/connected");
+    // connectedRef.on("value", function(snap) {
+    //   if (snap.val() === true) {
+    //     console.log('connected')
+    //   } else {
+    //     $scope.leaveClass()
+    //   }
+    // });
 
   });
