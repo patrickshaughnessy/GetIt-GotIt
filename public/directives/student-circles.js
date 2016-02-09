@@ -353,15 +353,15 @@ angular
             .text('')
           .transition()
             .attr("x", function(d, i) { return d.coords.x - d.radius })
-            .attr("y", function(d, i) { return d.coords.y + d.radius + 10 })
-            .text(function(d, i) { return d.name });
+            .attr("y", function(d, i) { return d.coords.y + d.radius + 25 })
+            .text(function(d, i) { return `${d.name} - ${d.points} points` });
 
         names
             .text('')
           .transition()
             .attr("x", function(d, i) { return d.coords.x - d.radius })
-            .attr("y", function(d, i) { return d.coords.y + d.radius + 10 })
-            .text(function(d, i) { return d.name });
+            .attr("y", function(d, i) { return d.coords.y + d.radius + 25 })
+            .text(function(d, i) { return `${d.name} - ${d.points} points` });
 
         names.exit()
           .transition()
