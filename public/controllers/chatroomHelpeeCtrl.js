@@ -29,12 +29,14 @@ angular
     }
 
     $scope.addMessage = function() {
+      $scope.loading = true;
       if (!$scope.newMessageText) return;
       $scope.messages.$add({
         text: $scope.newMessageText,
         sender: $scope.user.$id
       });
       $scope.newMessageText = '';
+      $scope.loading = false;
     };
 
     // remove student if teacher ends the class;
@@ -49,7 +51,7 @@ angular
     });
 
     $scope.backToClass = function(){
-
+      $scope.loading = true;
       // update students list in class for viz
       var index = $scope.students.$indexFor($scope.user.class.key);
       $scope.students.$getRecord($scope.user.class.key).helpee = false;

@@ -25,7 +25,11 @@ angular
     }
 
     $scope.startNewClass = function(){
-      if (!$scope.user || !$scope.classrooms) return;
+      $scope.loading = true;
+      if (!$scope.user || !$scope.classrooms) {
+        $scope.loading = false;
+        return;
+      }
 
       if (!$scope.user.teacher){
         var id = genClassID()
@@ -33,19 +37,26 @@ angular
           teacher: currentAuth.uid
         };
         $scope.user.teacher = id;
-
         $state.go('teacher-classroom', {classID: id});
+      } else {
+        $scope.loading = false;
       }
+
     }
 
     $scope.goToClass = function(){
+      $scope.loading = true;
       // wait for firebase connection, return if not valid input
-      if (!$scope.user || !$scope.classrooms || !$scope.classID) return;
+      if (!$scope.user || !$scope.classrooms || !$scope.classID) {
+        $scope.loading = false;
+        return;
+      }
 
       var classID = $scope.classID.replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3');
 
       // if no class with that ID exists, show error message
       if (!$scope.classrooms[classID]){
+        $scope.loading = false;
         return swal('Oops', 'No class exists with that ID. Did you type it correctly?', 'error');
       };
 
@@ -69,10 +80,12 @@ angular
     }
 
     $scope.rejoinClass = function(){
+      $scope.loading = true;
       $state.go('student-classroom', {classID: $scope.user.class.id});
     }
 
     $scope.logout = function(){
+      $scope.loading = true;
       Auth.$unauth();
       $state.go('splash');
     }

@@ -1,18 +1,18 @@
 <div class="studentBackground">
-  <div class="studentWrapper">
-    <button class="btn btn-primary backButtonStudent" ng-click="leaveClass()">Leave Class</button>
+  <div class="studentWrapper" ng-init="loading = false">
+    <button class="btn btn-primary backButtonStudent" ng-click="leaveClass()" ng-disabled="loading">Leave Class</button>
     <div class="myPoints">
       <span>My Total Points: {{user.points}} <br> Points This Class: {{classroom.students[user.class.key].points}} </span>
     </div>
-    <button class="btn btn-warning logoutButtonStudent" ng-click="logout()">Logout</button>
+    <button class="btn btn-warning logoutButtonStudent" ng-click="logout()" ng-disabled="loading">Logout</button>
     <div class="studentInner">
       <div class="studentDisplay">
       </div>
       <div class="needHelpButtonWrapper">
-        <button ng-click="needHelp()" class="needHelpButton btn btn-warning">I Don't Get It</button>
+        <button ng-click="needHelp()" class="needHelpButton btn btn-warning" ng-disabled="loading">I Don't Get It</button>
       </div>
       <div class="helpButtonWrapper">
-        <button ng-click="helpSomeone()" class="helpButton btn btn-primary" ng-class="{displayHelp: displayHelp}">I Can Help</button>
+        <button ng-click="helpSomeone()" class="helpButton btn btn-primary" ng-class="{displayHelp: displayHelp}" ng-disabled="loading">I Can Help</button>
       </div>
     </div>
   </div>

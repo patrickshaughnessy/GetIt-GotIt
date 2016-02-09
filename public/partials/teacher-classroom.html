@@ -1,8 +1,8 @@
-<div class="teacherBackground">
+<div class="teacherBackground" ng-init="loading = false">
   <div class="teacherHeader">
     <div class="row">
       <div class="col-xs-12 endClassButton text-center">
-        <h1 ng-click="endClass()">End Class</h1>
+        <h1 ng-click="endClass()" ng-disabled="loading">{{loading ? 'One Moment' : 'End Class'}}</h1>
       </div>
       <div class="col-xs-12">
         <h1 class="text-center">

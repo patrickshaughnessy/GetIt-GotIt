@@ -56,8 +56,12 @@ angular
 
 
     $scope.needHelp = function(){
+      $scope.loading = true;
       // create new chatroom for user
-      if (!$scope.user || !$scope.chatrooms) return;
+      if (!$scope.user || !$scope.chatrooms) {
+        $scope.loading = false;
+        return;
+      }
 
       $scope.chatrooms.$add({ helpee: currentAuth.uid }).then(function(chat){
         var chatID = chat.key();
@@ -73,6 +77,7 @@ angular
     }
 
     $scope.helpSomeone = function(){
+      $scope.loading = true;
       // join chatroom of user that needs help
       chatroomsRef.once('value', function(chatrooms){
 
@@ -105,12 +110,14 @@ angular
     }
 
     $scope.leaveClass = function(){
+      $scope.loading = true;
       $scope.students.$remove($scope.students.$getRecord($scope.user.class.key));
       $scope.user.class = null;
       $state.go('home');
     }
 
     $scope.logout = function(){
+      $scope.loading = true;
       $scope.students.$remove($scope.students.$getRecord($scope.user.class.key));
       $scope.user.class = null;
       $timeout(function(){
@@ -118,15 +125,5 @@ angular
         $state.go('splash');
       },100)
     }
-
-    // if client closes the browser or disconnects, remove from classroom and reset user info
-    // var connectedRef = new Firebase("https://getitgotit.firebaseio.com/.info/connected");
-    // connectedRef.on("value", function(snap) {
-    //   if (snap.val() === true) {
-    //     console.log('connected')
-    //   } else {
-    //     $scope.leaveClass()
-    //   }
-    // });
 
   });

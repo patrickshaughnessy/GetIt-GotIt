@@ -25,12 +25,14 @@ angular
     }
 
     $scope.addMessage = function() {
+      $scope.loading = true;
       if (!$scope.newMessageText) return;
       $scope.messages.$add({
         text: $scope.newMessageText,
         sender: $scope.user.$id
       });
       $scope.newMessageText = '';
+      $scope.loading = false;
     };
 
     var classroomsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms`);
@@ -42,6 +44,7 @@ angular
       classroomsRef.once('value', function(classrooms){
         // case 1) classroom still exists && the removed chatroom is current chatroom
         if (classrooms.hasChild($state.params.classID) && (chatroom.key() === $state.params.chatID)){
+          $scope.loading = true;
           // update students list in class for viz
           var index = $scope.students.$indexFor($scope.user.class.key);
           $scope.user.helper = false;
@@ -55,6 +58,7 @@ angular
           $state.go('student-classroom', {classID: $state.params.classID})
 
         } else if (!classrooms.hasChild($state.params.classID)) {   // case 2) classroom has been removed
+          $scope.loading = true;
           $scope.user.helpee = false;
           $scope.user.helper = false;
           $scope.user.class = null;
@@ -64,6 +68,8 @@ angular
     });
 
     $scope.backToClass = function(){
+      $scope.loading = true;
+
       $scope.chatroom.helper = null;
       $scope.user.helper = false;
 

@@ -12,6 +12,7 @@ angular
     var users = $firebaseObject(usersRef);
 
     $scope.loginWithFacebook = function(){
+      $scope.loggingIn = true;
       Auth.$authWithOAuthPopup("facebook").then(function(authData) {
         if (!users[authData.uid]){
           users[authData.uid] = {
@@ -27,11 +28,13 @@ angular
         }
         return $state.go('home');
       }).catch(function(error){
-        return swal("Authentication Failed!", error, 'error');
+        swal("Authentication Failed!", error, 'error');
+        $scope.loggingIn = false;
       })
     }
 
     $scope.loginWithEmail = function(){
+      $scope.loggingIn = true;
       Auth.$authWithPassword({
         email    : $scope.loginEmail,
         password : $scope.loginPassword
@@ -43,7 +46,8 @@ angular
           signUpWithEmail();
           return;
         }
-        return swal("Login Failed!", error, 'error');
+        swal("Login Failed!", error, 'error');
+        $scope.loggingIn = false;
       });
     }
 
@@ -72,7 +76,8 @@ angular
         }
         return $state.go('home');
       }).catch(function(error) {
-        return swal("Login Failed!", error, 'error');
+        swal("Login Failed!", error, 'error');
+        $scope.loggingIn = false;
       });
     }
 

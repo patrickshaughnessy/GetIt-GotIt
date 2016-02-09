@@ -1,8 +1,8 @@
-<div class="chatroomHelpeeBackground">
+<div class="chatroomHelpeeBackground" ng-init="loading = false">
   <div class="container-fluid">
     <div class="row">
       <div class="col-xs-12 text-center">
-        <button class="btn btn-lg btn-primary backToClassHelpee" ng-click="backToClass()">Ok I'm good</button>
+        <button class="btn btn-lg btn-primary backToClassHelpee" ng-click="backToClass()" ng-disabled="loading">Ok I'm good</button>
       </div>
     </div>
   </div>
@@ -20,7 +20,7 @@
     <div class="input-group chatInput">
       <input class="form-control" type="text" placeholder="What do you need help with?" ng-model="newMessageText" ng-keydown="checkEnter($event)">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button" ng-click="addMessage()" >Send!</button>
+        <button class="btn btn-default" type="button" ng-click="addMessage()" ng-disabled="loading">Send!</button>
       </span>
     </div>
   </div>

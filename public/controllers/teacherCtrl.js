@@ -45,6 +45,8 @@ angular
 
 
     $scope.endClass = function(){
+      $scope.loading = true;
+
       classroom.$remove();
 
       $scope.user.teacher = false;
