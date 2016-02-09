@@ -5,8 +5,8 @@ angular
   .directive('studentCircles', function($window){
 
     var link = function(scope, elem, attrs){
-      var width = $('.studentCirclesRow')[0].clientWidth;
-      var height = $('.studentCirclesRow')[0].clientHeight;
+      var width = $('.studentCirclesArea')[0].clientWidth;
+      var height = $('.studentCirclesArea')[0].clientHeight;
 
       var svg = d3.select(elem[0])
         .append('svg')
@@ -47,7 +47,7 @@ angular
       }
 
       var crAllGreen = function(d, i, s){
-        
+
         return width/20;
       }
 
@@ -188,8 +188,8 @@ angular
 
       var update = function(){
 
-        width = $('.studentCirclesRow')[0].clientWidth;
-        height = $('.studentCirclesRow')[0].clientHeight;
+        width = $('.studentCirclesArea')[0].clientWidth;
+        height = $('.studentCirclesArea')[0].clientHeight;
 
         var students = angular.fromJson(scope.students);
 
@@ -280,8 +280,8 @@ angular
 
       scope.$watch('students', update);
       angular.element($window).bind('resize', function(){
-        svg.attr('width', $('.studentCirclesRow')[0].clientWidth);
-        svg.attr('height', $('.studentCirclesRow')[0].clientHeight);
+        svg.attr('width', $('.studentCirclesArea')[0].clientWidth);
+        svg.attr('height', $('.studentCirclesArea')[0].clientHeight);
         update();
       });
 

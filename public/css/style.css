@@ -32,7 +32,7 @@ body {
     rgba(172, 20, 26, 1)
     );
 }
-.chatArea {
+/*.chatArea {
   position: absolute;
   bottom: 10%;
   width: 100%;
@@ -62,29 +62,4 @@ body {
 .myMessage {
   background-color: beige;
   text-align: left;
-}
-
-
-.teacherHeader {
-  background-color: beige;
-}
-
-.studentCirclesRow {
-  height: 70vh;
-  width: 100vw;
-}
-
-.svg-container {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    padding-bottom: 100%; /* aspect ratio */
-    vertical-align: top;
-    overflow: hidden;
-}
-.svg-content-responsive {
-    display: inline-block;
-    position: absolute;
-    top: 10px;
-    left: 0;
-}
+}*/

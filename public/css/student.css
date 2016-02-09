@@ -39,7 +39,7 @@
   overflow: scroll;
 }
 
-.backButton {
+.backButtonStudent {
   position: absolute;
   border-radius: 0;
   width: 30%;
@@ -52,7 +52,7 @@
     );
 }
 
-.logoutButton {
+.logoutButtonStudent {
   position: absolute;
   right: 0;
   border-radius: 0;

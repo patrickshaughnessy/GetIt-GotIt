@@ -1,22 +1,20 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-xs-12 teacherHeader">
-      <h1 class="pull-left">Classroom ID - &nbsp;&nbsp;{{classID}}</h1>
-      <h1 class="pull-right">
-        <button class="btn btn-danger btn-lg" ng-click="endClass()">End Class</button>
-      </h1>
-    </div>
+<div class="teacherBackground">
+  <button class="btn btn-danger btn-lg endClassButton" ng-click="endClass()">End Class</button>
+  <div class="teacherHeader">
+    <h1 class="text-center">
+      Classroom ID: {{classID}}
+    </h1>
   </div>
-  <div class="row">
+  <div class="teacherAnalytics">
     <div class="col-xs-4 text-center">
-      <h1 ng-if="points == 0 || !points">...</h1>
-      <h1 ng-if="points > 0">Total Class Points: {{points}}</h1>
+      <h3 ng-if="points == 0 || !points">...</h3>
+      <h3 ng-if="points > 0">Class Points: {{points}}</h3>
     </div>
     <div class="col-xs-4 text-center percentageArea">
       <h1>{{percentage || "..."}}</h1>
     </div>
   </div>
-  <div class="row studentCirclesRow">
+  <div class="studentCirclesArea">
     <student-circles students="{{students}}"></student-circles>
   </div>
 </div>
