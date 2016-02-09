@@ -62,18 +62,19 @@
 }
 
 .studentBackground{
-  background: linear-gradient(0deg, #6bb880, #09624c);
-  background-size: 400% 400%;
+  background: linear-gradient(
+    0deg,
+    rgba(4, 83, 45, 1),
+    rgba(10, 180, 99, 1),
+    rgba(4, 83, 45, 1)
+    );
+  /* no animation - increase size to create movement effect */
+  background-size: 100% 100%;
 
-  height: 100vh;
-  width: 100vw;
-  position: absolute;
-  z-index: -1;
-  margin: 0;
 
-  -webkit-animation: studentBackground 30s ease infinite;
-  -moz-animation: studentBackground 30s ease infinite;
-  animation: studentBackground 30s ease infinite;
+  -webkit-animation: studentBackground 15s linear infinite;
+  -moz-animation: studentBackground 15s linear infinite;
+  animation: studentBackground 15s linear infinite;
 }
 @-webkit-keyframes studentBackground {
   0%{background-position:52% 0%}

@@ -12,19 +12,19 @@ var onError = function(err) {
 
 gulp.task('clean', function(){
 	return del(['build/**/*']);
-})
+});
 
 gulp.task('build', function(){
 	return gulp.src(['./public/**/*'])
 		.pipe(plumber())
 		.pipe(gulp.dest('./build'));
-})
+});
 
 gulp.task('addIndex', function(){
 	return gulp.src(['./views/index.ejs'])
 		.pipe(plumber())
 		.pipe(rename('index.html'))
 		.pipe(gulp.dest('./build'));
-})
+});
 
 gulp.task('default', ['clean', 'build', 'addIndex']);

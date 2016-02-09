@@ -1,16 +1,31 @@
-<div class="studentBackground"></div>
-<div class="studentArea container-fluid">
-  <div class="row">
-    <div class="col-xs-12 text-center">
-      <button class="btn btn-default" ng-click="leaveClass()">Leave Class</button>
+<div class="studentBackground">
+  <div class="studentWrapper">
+    <button class="btn btn-primary backButton" ng-click="leaveClass()">Leave Class</button>
+    <div class="myPoints">
       <span>My points: {{user.points}}</span>
+    </div>
+    <button class="btn btn-warning logoutButton" ng-click="logout()">Logout</button>
+    <div class="studentInner">
+      <div class="studentDisplay">
+      </div>
+      <div class="needHelpButtonWrapper">
+        <button ng-click="needHelp()" class="needHelpButton btn btn-warning">I Don't Get It</button>
+      </div>
       <div class="helpButtonWrapper">
-        <button ng-click="helpSomeone()" class="helpButton btn btn-primary" ng-class="{displayHelp: displayHelp}">Help Someone Get It</button>
+        <button ng-click="helpSomeone()" class="helpButton btn btn-primary" ng-class="{displayHelp: displayHelp}">I Can Help</button>
       </div>
     </div>
   </div>
-
-  <div class="needHelpButtonWrapper">
-    <button ng-click="needHelp()" class="needHelpButton btn btn-warning">I Don't Get It</button>
-  </div>
 </div>
+
+
+
+<!-- <div class="studentBackground">
+  <div class="studentArea container-fluid">
+    <div class="row">
+      <div class="col-xs-12 text-center">
+      </div>
+    </div>
+
+  </div>
+</div> -->
