@@ -51,8 +51,11 @@ angular
       var studentsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${classID}/students`);
       var students = $firebaseArray(studentsRef);
       students.$loaded().then(function(list){
-
-        list.$add($scope.user).then(function(ref){
+        // set session points to 0 for student
+        var student = {};
+        angular.copy($scope.user, student);
+        student.points = 0;
+        list.$add(student).then(function(ref){
           var key = ref.key();
           $scope.user.class = {
             id: classID,

@@ -45,9 +45,9 @@ angular
           // update students list in class for viz
           var index = $scope.students.$indexFor($scope.user.class.key);
           $scope.user.helper = false;
-          // helper successfully helped - added 10 points;
+          // helper successfully helped - added 5 points;
           $scope.user.points = $scope.user.points + 5;
-          $scope.students.$getRecord($scope.user.class.key).points = $scope.user.points;
+          $scope.students.$getRecord($scope.user.class.key).points = $scope.students.$getRecord($scope.user.class.key).points  + 5
           $scope.students.$getRecord($scope.user.class.key).helper = false;
 
           $scope.students.$save(index);

@@ -58,7 +58,7 @@ angular
       // add points to helpee if helper present;
       if ($scope.chatroom.helper){
         $scope.user.points = $scope.user.points + 1;
-        $scope.students.$getRecord($scope.user.class.key).points = $scope.user.points;
+        $scope.students.$getRecord($scope.user.class.key).points = $scope.students.$getRecord($scope.user.class.key).points + 1;
       };
       $scope.students.$save(index);
 
