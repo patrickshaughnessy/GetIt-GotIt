@@ -18,7 +18,14 @@ angular
     var messagesRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}/messages`);
     $scope.messages = $firebaseArray(messagesRef);
 
+    $scope.checkEnter = function(e){
+      if (e.which === 13){
+        $scope.addMessage()
+      }
+    }
+
     $scope.addMessage = function() {
+      if (!$scope.newMessageText) return;
       $scope.messages.$add({
         text: $scope.newMessageText,
         sender: $scope.user.$id
@@ -55,7 +62,6 @@ angular
         }
       });
     });
-
 
     $scope.backToClass = function(){
       $scope.chatroom.helper = null;
