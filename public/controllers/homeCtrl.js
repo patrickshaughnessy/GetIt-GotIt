@@ -64,17 +64,7 @@ angular
     }
 
     $scope.rejoinClass = function(){
-      // if user is logged in to a class already, let them re-join that class
-      var studentsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$scope.user.class.id}/students`);
-      var students = $firebaseArray(studentsRef);
-      students.$loaded().then(function(list){
-
-        list.$add($scope.user).then(function(ref){
-          var key = ref.key();
-          $scope.user.class.key = key;
-          $state.go('student-classroom', {classID: $scope.user.class.id});
-        });
-      });
+      $state.go('student-classroom', {classID: $scope.user.class.id});
     }
 
     $scope.logout = function(){

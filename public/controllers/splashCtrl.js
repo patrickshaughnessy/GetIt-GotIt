@@ -4,12 +4,15 @@ angular
   .module('app')
   .controller("splashCtrl", function(Auth, currentAuth, $state, $scope, $firebaseObject) {
 
+    if (currentAuth){
+      $state.go('home');
+    }
+
     var usersRef = new Firebase('https://getitgotit.firebaseio.com/users')
     var users = $firebaseObject(usersRef);
 
     $scope.loginWithFacebook = function(){
       Auth.$authWithOAuthPopup("facebook").then(function(authData) {
-        console.log('users', users[authData.uid], authData.uid);
         if (!users[authData.uid]){
           users[authData.uid] = {
             name: authData.facebook.displayName,
@@ -23,7 +26,7 @@ angular
           users.$save();
         }
         return $state.go('home');
-      }).catch(function(err){
+      }).catch(function(error){
         return swal("Authentication Failed!", error, 'error');
       })
     }

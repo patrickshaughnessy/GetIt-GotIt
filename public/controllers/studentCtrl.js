@@ -111,8 +111,20 @@ angular
     $scope.logout = function(){
       $scope.students.$remove($scope.students.$getRecord($scope.user.class.key));
       $scope.user.class = null;
-      Auth.$unauth();
-      $state.go('splash');
+      $timeout(function(){
+        Auth.$unauth();
+        $state.go('splash');
+      },100)
     }
+
+    // if client closes the browser or disconnects, remove from classroom and reset user info
+    var connectedRef = new Firebase("https://getitgotit.firebaseio.com/.info/connected");
+    connectedRef.on("value", function(snap) {
+      if (snap.val() === true) {
+        console.log('connected')
+      } else {
+        $scope.leaveClass()
+      }
+    });
 
   });
