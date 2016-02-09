@@ -299,7 +299,7 @@ angular
           .transition()
             .attr("cy", function(d, i){ return d.coords.y })
             .attr("cx", function(d, i) { return d.coords.x })
-            .attr("r", function(d, i) { return d.radius/2 })
+            .attr("r", function(d, i) { return d.radius/2 });
 
         defs
             .attr('id', function(d, i) { return `student${i}`})
@@ -308,7 +308,7 @@ angular
           .transition()
             .attr("cy", function(d, i){ return d.coords.y })
             .attr("cx", function(d, i) { return d.coords.x })
-            .attr("r", function(d, i) { return d.radius/2 })
+            .attr("r", function(d, i) { return d.radius/2 });
 
         defs.exit()
           .transition()
@@ -322,29 +322,52 @@ angular
             .attr('width', 0)
             .attr('height', 0)
           .transition()
-            .attr("y", function(d, i){ return d.coords.y - d.radius })
             .attr("x", function(d, i) { return d.coords.x - d.radius })
+            .attr("y", function(d, i){ return d.coords.y - d.radius })
             .attr("width", function(d, i) { return d.radius*2 })
             .attr("height", function(d, i) { return d.radius*2 })
             .attr('xlink:href', function(d, i) { return d.avatar })
-            .attr('clip-path', function(d, i) { return `url('#student${i}')` })
+            .attr('clip-path', function(d, i) { return `url('#student${i}')` });
 
         images
             .attr('width', 0)
             .attr('height', 0)
           .transition()
-            .attr("y", function(d, i){ return d.coords.y - d.radius })
             .attr("x", function(d, i) { return d.coords.x - d.radius })
+            .attr("y", function(d, i){ return d.coords.y - d.radius })
             .attr("width", function(d, i) { return d.radius*2 })
             .attr("height", function(d, i) { return d.radius*2 })
             .attr('xlink:href', function(d, i) { return d.avatar })
-            .attr('clip-path', function(d, i) { return `url('#student${i}')` })
+            .attr('clip-path', function(d, i) { return `url('#student${i}')` });
 
         images.exit()
           .transition()
             .attr('width', 0)
             .attr('height', 0)
             .remove();
+
+        var names = svg.selectAll('text')
+            .data(students);
+
+        names.enter().append('text')
+            .text('')
+          .transition()
+            .attr("x", function(d, i) { return d.coords.x - d.radius })
+            .attr("y", function(d, i) { return d.coords.y + d.radius + 10 })
+            .text(function(d, i) { return d.name });
+
+        names
+            .text('')
+          .transition()
+            .attr("x", function(d, i) { return d.coords.x - d.radius })
+            .attr("y", function(d, i) { return d.coords.y + d.radius + 10 })
+            .text(function(d, i) { return d.name });
+
+        names.exit()
+          .transition()
+            .text('')
+            .remove();
+
 
 
 
