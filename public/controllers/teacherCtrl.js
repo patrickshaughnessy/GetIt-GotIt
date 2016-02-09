@@ -2,7 +2,7 @@
 
 angular
   .module('app')
-  .controller("teacherCtrl", function(Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray, $timeout) {
+  .controller("teacherCtrl", function(DataService, Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray, $timeout) {
 
     $scope.classID = $state.params.classID;
 
@@ -47,11 +47,18 @@ angular
     $scope.endClass = function(){
       $scope.loading = true;
 
-      classroom.$remove();
-
-      $scope.user.teacher = false;
-
-      $state.go('home');
+      classroomRef.once('value', function(classData){
+        DataService.save(classData.val()).then(function(success){
+          console.log(success);
+          classroom.$remove();
+          $scope.user.teacher = false;
+          $state.go('home');
+        })
+        .catch(function(err){
+          console.log('error', err);
+          $scope.loading = false;
+        })
+      })
     }
 
   });

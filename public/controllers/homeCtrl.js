@@ -68,6 +68,7 @@ angular
         var student = {};
         angular.copy($scope.user, student);
         student.points = 0;
+        student.id = $scope.user.$id;
         list.$add(student).then(function(ref){
           var key = ref.key();
           $scope.user.class = {
