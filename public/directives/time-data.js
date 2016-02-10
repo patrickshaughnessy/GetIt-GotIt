@@ -30,7 +30,7 @@ angular
           // var date = new Date(d.time);
           // console.log(format(date));
           var coords = {
-            x: d.time*1000,
+            x: d.time,
             y: d.percentage
           }
           return coords;
@@ -53,7 +53,7 @@ angular
 
         var yScale = d3.scale.linear()
             .domain([0, 100])
-            .range([height, 0])
+            .range([height-20, 10])
 
         var lineFunction = d3.svg.line()
           .x(function(d) {
@@ -72,9 +72,8 @@ angular
 
         var xAxis = d3.svg.axis()
             .scale(xAxisScale)
-            .orient('bottom')
-            .ticks(6)
-            .tickFormat(d3.time.format('%H-%M'))
+            .orient('bottom');
+            // .tickFormat(d3.time.format('%H-%M'))
 
         svg.append("g")
             .call(xAxis)
