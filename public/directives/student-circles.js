@@ -262,8 +262,8 @@ angular
         var percentage = +scope.percentage.slice(0, -1);
 
         svg
-        .attr({width: width, height: height})
-        .style(percentageColor(percentage, students));
+          .attr({width: width, height: height})
+          .style(percentageColor(percentage, students));
 
 
         var circle = svg.select('g').selectAll('circle')

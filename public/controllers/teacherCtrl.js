@@ -2,9 +2,12 @@
 
 angular
   .module('app')
-  .controller("teacherCtrl", function(DataService, Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray, $timeout) {
+  .controller("teacherCtrl", function(DataService, Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray, $timeout, $interval) {
 
     $scope.classID = $state.params.classID;
+
+    var dataRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/data`);
+    $scope.timeData = $firebaseArray(dataRef);
 
     var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
     var user = $firebaseObject(userRef);
@@ -43,6 +46,15 @@ angular
     });
 
 
+    // track realtime classroom data over time
+    $interval(function(){
+      var info = {
+        time: Date.now(),
+        percentage: $scope.percentage ? +$scope.percentage.slice(0,-1) : 0
+      };
+
+      $scope.timeData.$add(info);
+    }, 1000)
 
     $scope.endClass = function(){
       $scope.loading = true;
