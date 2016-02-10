@@ -47,7 +47,7 @@ angular
 
 
     // track realtime classroom data over time
-    $interval(function(){
+    var recording = $interval(function(){
       var info = {
         time: Date.now(),
         percentage: $scope.percentage ? +$scope.percentage.slice(0,-1) : 0
@@ -58,6 +58,8 @@ angular
 
     $scope.endClass = function(){
       $scope.loading = true;
+
+      $interval.cancel(recording);
 
       classroomRef.once('value', function(classData){
         DataService.save(classData.val()).then(function(success){
@@ -72,5 +74,7 @@ angular
         })
       })
     }
+
+
 
   });
