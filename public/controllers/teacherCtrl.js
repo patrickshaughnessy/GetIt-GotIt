@@ -54,7 +54,7 @@ angular
       };
 
       $scope.timeData.$add(info);
-    }, 5000)
+    }, 1000)
 
     $scope.endClass = function(){
       $scope.loading = true;

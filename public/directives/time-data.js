@@ -26,9 +26,6 @@ angular
 
 
         var data = angular.fromJson(scope.data).map(function(d, i){
-          // var format = d3.time.format('%c');
-          // var date = new Date(d.time);
-          // console.log(format(date));
           var coords = {
             x: d.time,
             y: d.percentage
