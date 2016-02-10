@@ -20,7 +20,7 @@ angular
         height = 120;
 
         svg.select('path').remove();
-        svg.select('g').remove();
+        svg.selectAll('g').remove();
         svg.attr({'width': width, 'height': height})
 
 
@@ -55,6 +55,10 @@ angular
             .domain([0, 100])
             .range([height-20, 10])
 
+        var yAxisScale = d3.scale.linear()
+            .domain([0, 100])
+            .range([height-20, 10])
+
         var lineFunction = d3.svg.line()
           .x(function(d) {
             return xScale(d.x);
@@ -67,17 +71,26 @@ angular
         var lineGraph = svg.append('path')
             .attr('d', lineFunction(data))
             .attr('stroke', 'black')
-            .attr('stroke-width', 1)
+            .attr('stroke-width', 2)
             .attr('fill', 'none')
 
         var xAxis = d3.svg.axis()
             .scale(xAxisScale)
-            .orient('bottom');
+            .orient('bottom')
+            .ticks(5);
+
+        var yAxis = d3.svg.axis()
+            .scale(yAxisScale)
+            .orient('left')
+            .ticks(5)
             // .tickFormat(d3.time.format('%H-%M'))
 
         svg.append("g")
             .call(xAxis)
-            .attr("transform", "translate(0, " + (height-20) + ")")
+            .attr("transform", "translate("+ (width*0.1)+", " + (height-20) + ")")
+        svg.append("g")
+            .call(yAxis)
+            .attr("transform", "translate("+ (width*0.1)+", " + 0 + ")")
 
       }
 
