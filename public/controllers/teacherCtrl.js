@@ -54,25 +54,30 @@ angular
       };
 
       $scope.timeData.$add(info);
-    }, 1000)
+    }, 5000)
 
     $scope.endClass = function(){
       $scope.loading = true;
 
       $interval.cancel(recording);
 
-      classroomRef.once('value', function(classData){
-        DataService.save(classData.val()).then(function(success){
-          console.log(success);
-          classroom.$remove();
-          $scope.user.teacher = false;
-          $state.go('home');
-        })
-        .catch(function(err){
-          console.log('error', err);
-          $scope.loading = false;
-        })
-      })
+      // uncomment for MongoDB
+      // classroomRef.once('value', function(classData){
+      //   DataService.save(classData.val()).then(function(success){
+      //     console.log(success);
+      //     classroom.$remove();
+      //     $scope.user.teacher = false;
+      //     $state.go('home');
+      //   })
+      //   .catch(function(err){
+      //     console.log('error', err);
+      //     $scope.loading = false;
+      //   })
+      // })
+
+      classroom.$remove();
+      $scope.user.teacher = false;
+      $state.go('home');
     }
 
 
