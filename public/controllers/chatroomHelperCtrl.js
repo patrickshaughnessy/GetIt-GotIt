@@ -31,7 +31,6 @@ angular
       } else {
         return `${message.sender === user.$id ? 'Me' : 'User ' + message.sender.slice(-10)}: ${message.text}`
       }
-
     }
 
     $scope.checkEnter = function(e){
@@ -85,6 +84,11 @@ angular
 
     $scope.backToClass = function(){
       $scope.loading = true;
+
+      $scope.messages.$add({
+        text: `** User ${$scope.user.$id.slice(-10)} has left the chat **`,
+        sender: 'admin'
+      })
 
       $scope.chatroom.helper = null;
       $scope.user.helper = false;
