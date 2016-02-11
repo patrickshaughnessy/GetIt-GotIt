@@ -88,17 +88,18 @@ angular
       $scope.messages.$add({
         text: `** User ${$scope.user.$id.slice(-10)} has left the chat **`,
         sender: 'admin'
+      }).then(function(ref){
+        $scope.chatroom.helper = null;
+        $scope.user.helper = false;
+
+        // update students list in class for viz
+        var index = $scope.students.$indexFor($scope.user.class.key);
+        $scope.students.$getRecord($scope.user.class.key).helper = false;
+        $scope.students.$save(index);
+
+        $state.go('student-classroom', {classID: $state.params.classID})
       })
 
-      $scope.chatroom.helper = null;
-      $scope.user.helper = false;
-
-      // update students list in class for viz
-      var index = $scope.students.$indexFor($scope.user.class.key);
-      $scope.students.$getRecord($scope.user.class.key).helper = false;
-      $scope.students.$save(index);
-
-      $state.go('student-classroom', {classID: $state.params.classID})
     }
 
   });
