@@ -27,3 +27,23 @@
   height: 100vh;
   width: 100vw;
 }
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.x.axis .minor {
+  stroke-opacity: .5;
+}
+
+.y.axis line,
+.y.axis path {
+  fill: none;
+  stroke: #000;
+}
+
+.x.axis line,
+.x.axis path {
+  fill: none;
+  stroke: #000;
+}

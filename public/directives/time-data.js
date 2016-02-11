@@ -24,21 +24,21 @@ angular
         svg.attr({'width': width, 'height': height})
 
 
-
         var data = angular.fromJson(scope.data).map(function(d, i){
           var coords = {
             x: d.time,
             y: d.percentage
           }
           return coords;
-        })
+        });
 
-        var xdata = data.map(function(d){
-          return d.x;
-        })
+        // use previous data snapshot for transition
+        var previousDataSnapshot = data.slice(-((60*5)-1),-1);
+        var currentDataSnapshot = data.slice(-(60*5));
 
-        var xMin = d3.min(data, function(d){ return d.x; })
-        var xMax = d3.max(data, function(d){ return d.x; })
+        var xMin = d3.min(currentDataSnapshot, function(d){ return d.x; })
+        var xMax = d3.max(currentDataSnapshot, function(d){ return d.x; })
+
 
         var xScale = d3.time.scale()
             .domain([xMin, xMax])
@@ -65,11 +65,18 @@ angular
           })
           .interpolate('basis');
 
+        var xTickSize = xScale(currentDataSnapshot[1].x) - xScale(currentDataSnapshot[0].x);
         var lineGraph = svg.append('path')
-            .attr('d', lineFunction(data))
+          .datum(previousDataSnapshot)
+            .attr('d', lineFunction)
             .attr('stroke', 'black')
             .attr('stroke-width', 2)
             .attr('fill', 'none')
+            // .attr('transform', 'translate(' + (xTickSize) + ',0)')
+          // .transition()
+          //   .duration(500)
+          //   .ease('linear')
+          //   .attr('transform', 'translate(0,0)')
 
         var xAxis = d3.svg.axis()
             .scale(xAxisScale)
@@ -80,16 +87,15 @@ angular
             .scale(yAxisScale)
             .orient('left')
             .ticks(5)
-            // .tickFormat(d3.time.format('%H-%M'))
 
         svg.append("g")
+            .attr('class', 'x axis')
             .call(xAxis)
-            .attr("transform", "translate("+ (width*0.1)+", " + (height-20) + ")")
-            .attr('stroke-width', 1)
+            .attr("transform", "translate("+ (width*0.1) +", " + (height-20) + ")");
         svg.append("g")
+            .attr('class', 'y axis')
             .call(yAxis)
-            .attr("transform", "translate("+ (width*0.1)+", " + 0 + ")")
-            .attr('stroke-width', 1)
+            .attr("transform", "translate("+ (width*0.1)+", " + 0 + ")");
 
       }
 
