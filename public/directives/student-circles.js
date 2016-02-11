@@ -6,7 +6,7 @@ angular
 
     var link = function(scope, elem, attrs){
       var width = $('.studentCirclesArea')[0].clientWidth;
-      var height = $('.studentCirclesArea')[0].clientHeight;
+      var height = $('.studentCirclesArea')[0].clientHeight - $('.timeDataArea')[0].clientHeight;
 
       height = height - height*0.2;
 
@@ -188,6 +188,15 @@ angular
 
       var percentageColor = function(percent, students){
         var gradient = students.length ? (100 - percent)*0.01 : 0;
+        if (gradient == 0){
+          return {
+            'background': `linear-gradient(
+              to bottom,
+              rgba(4, 83, 45, 0.7),
+              rgba(4, 83, 45, 0.1),
+              rgba(4, 83, 45, 0.7)
+            `}
+        }
         return {
           'background': `linear-gradient(
             to bottom,
@@ -201,9 +210,7 @@ angular
       var update = function(){
 
         width = $('.studentCirclesArea')[0].clientWidth;
-        height = $('.studentCirclesArea')[0].clientHeight;
-
-        height = height - height*0.2;
+        height = $('.studentCirclesArea')[0].clientHeight - $('.timeDataArea')[0].clientHeight;
 
         var students = angular.fromJson(scope.students);
 
@@ -265,9 +272,10 @@ angular
 
         var percentage = +scope.percentage.slice(0, -1);
 
+        $('.studentCirclesArea').css(percentageColor(percentage, students));
+
         svg
           .attr({width: width, height: height})
-          .style(percentageColor(percentage, students));
 
 
         var circle = svg.select('g').selectAll('circle')
@@ -371,9 +379,6 @@ angular
           .transition()
             .text('')
             .remove();
-
-
-
 
       }
 

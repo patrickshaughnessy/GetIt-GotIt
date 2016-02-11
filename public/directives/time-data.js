@@ -6,8 +6,8 @@ angular
 
     var link = function(scope, elem, attrs){
 
-      var width = $('.timeDataArea')[0].clientWidth - $('.timeDataArea')[0].clientWidth*0.2;
-      var height = 120;
+      var width = $('.studentCirclesArea')[0].clientWidth - $('.studentCirclesArea')[0].clientWidth*0.1;
+      var height = $('.studentCirclesArea')[0].clientHeight - $('.studentCirclesArea')[0].clientHeight*0.8;;
 
       var svg = d3.select(elem[0]).append('svg')
           .attr('width', width)
@@ -16,8 +16,8 @@ angular
 
       var update = function(){
 
-        width = $('.timeDataArea')[0].clientWidth - $('.timeDataArea')[0].clientWidth*0.2;
-        height = 120;
+        width = $('.studentCirclesArea')[0].clientWidth - $('.studentCirclesArea')[0].clientWidth*0.1;
+        height = $('.studentCirclesArea')[0].clientHeight - $('.studentCirclesArea')[0].clientHeight*0.8;;
 
         svg.select('path').remove();
         svg.selectAll('g').remove();
@@ -85,9 +85,11 @@ angular
         svg.append("g")
             .call(xAxis)
             .attr("transform", "translate("+ (width*0.1)+", " + (height-20) + ")")
+            .attr('stroke-width', 1)
         svg.append("g")
             .call(yAxis)
             .attr("transform", "translate("+ (width*0.1)+", " + 0 + ")")
+            .attr('stroke-width', 1)
 
       }
 
@@ -95,7 +97,7 @@ angular
     }
 
     return {
-      template: '<div class="col-xs-12"></div>',
+      template: '<div class="timeDataArea"></div>',
       replace: true,
       restrict: 'EA',
       scope: {

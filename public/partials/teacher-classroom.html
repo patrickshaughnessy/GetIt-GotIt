@@ -4,24 +4,22 @@
       <div class="col-xs-12 endClassButton text-center">
         <h1 ng-click="endClass()" ng-disabled="loading">{{loading ? 'One Moment' : 'End Class'}}</h1>
       </div>
-      <div class="col-xs-12">
-        <h1 class="text-center">
-          Classroom ID: &nbsp;{{classID}}
-        </h1>
-      </div>
-      <div class="col-xs-4 text-center">
-        <h3 ng-if="points == 0 || !points">...</h3>
-        <h3 ng-if="points > 0">Class Points: {{points}}</h3>
-      </div>
-      <div class="col-xs-4 text-center">
-        <h1>{{percentage || "..."}}</h1>
-      </div>
     </div>
   </div>
-  <div class="row timeDataArea">
-    <time-data data="{{timeData}}"></time-data>
-  </div>
   <div class="studentCirclesArea">
+    <div class="col-xs-12">
+      <h1 class="text-center">
+        Classroom ID: &nbsp;{{classID}}
+      </h1>
+    </div>
+    <div class="col-xs-4 text-center">
+      <h3 ng-if="points == 0 || !points">...</h3>
+      <h3 ng-if="points > 0">Class Points: {{points}}</h3>
+    </div>
+    <div class="col-xs-4 text-center">
+      <h1>{{percentage || "..."}}</h1>
+    </div>
+    <time-data data="{{timeData}}"></time-data>
     <student-circles students="{{students}}" percentage="{{percentage}}"></student-circles>
   </div>
 </div>
