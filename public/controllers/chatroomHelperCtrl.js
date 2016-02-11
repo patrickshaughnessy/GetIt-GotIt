@@ -17,6 +17,22 @@ angular
 
     var messagesRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}/messages`);
     $scope.messages = $firebaseArray(messagesRef);
+    $scope.messages.$loaded().then(function(){
+      $scope.messages.$add({
+        text: `** User ${$scope.user.$id.slice(-10)} has joined the chat **`,
+        sender: 'admin'
+      })
+    })
+
+
+    $scope.displayMessage = function(message){
+      if (message.sender == 'admin'){
+        return `--- Begin Chat --- `;
+      } else {
+        return `${message.sender === user.$id ? 'Me' : 'User ' + message.sender.slice(-10)}: ${message.text}`
+      }
+
+    }
 
     $scope.checkEnter = function(e){
       if (e.which === 13){

@@ -8,6 +8,8 @@ angular
       var width = $('.studentCirclesArea')[0].clientWidth;
       var height = $('.studentCirclesArea')[0].clientHeight;
 
+      height = height - height*0.2;
+
       var svg = d3.select(elem[0])
         .append('svg')
           .attr({width: width, height: height});
@@ -200,6 +202,8 @@ angular
 
         width = $('.studentCirclesArea')[0].clientWidth;
         height = $('.studentCirclesArea')[0].clientHeight;
+
+        height = height - height*0.2;
 
         var students = angular.fromJson(scope.students);
 

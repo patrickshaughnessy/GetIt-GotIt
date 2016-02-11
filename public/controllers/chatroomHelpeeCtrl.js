@@ -22,10 +22,21 @@ angular
     var messagesRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms/${$state.params.chatID}/messages`);
     $scope.messages = $firebaseArray(messagesRef);
 
+
     $scope.checkEnter = function(e){
       if (e.which === 13){
         $scope.addMessage()
       }
+    }
+
+    $scope.displayMessage = function(message){
+
+      if (message.sender == 'admin'){
+        return `${message.text}`;
+      } else {
+        return `${message.sender === user.$id ? 'Me' : 'User ' + message.sender.slice(-10)}: ${message.text}`
+      }
+
     }
 
     $scope.addMessage = function() {
