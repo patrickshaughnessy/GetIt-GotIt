@@ -13,7 +13,7 @@ angular
       var svg = d3.select(elem[0])
         .append('svg')
           .attr({width: width, height: height});
-        svg.append('g');
+      svg.append('g');
 
       ////////////////////////////
       // Calculate All Greens   //

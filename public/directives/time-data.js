@@ -6,22 +6,61 @@ angular
 
     var link = function(scope, elem, attrs){
 
-      var width = $('.studentCirclesArea')[0].clientWidth - $('.studentCirclesArea')[0].clientWidth*0.1;
-      var height = $('.studentCirclesArea')[0].clientHeight - $('.studentCirclesArea')[0].clientHeight*0.8;;
+      var width = $('.studentCirclesArea')[0].clientWidth;
+      var height = $('.studentCirclesArea')[0].clientHeight - $('.studentCirclesArea')[0].clientHeight*0.8;
+
+      var margin = {
+        left: width*0.1,
+        right: width*0.1,
+        top: height*0.1,
+        bottom: height*0.15
+      }
 
       var svg = d3.select(elem[0]).append('svg')
           .attr('width', width)
-          .attr('height', height);
+          .attr('height', height)
 
+      svg.append('g')
+          .attr('transform', `translate(${margin.left}, 0)`)
+        .append('defs').append('clipPath')
+            .attr('id', 'clip')
+          .append('rect')
+            .attr('width',  width - margin.left)
+            .attr('height', height);
+      svg.select('g').append('g')
+          .attr('class', 'y axis');
+      svg.select('g').append('g')
+          .attr('class', 'x axis')
+          .attr('clip-path', 'url(#clip)');
+      svg.select('g').append('g')
+          .attr('clip-path', 'url(#clip)')
+          .attr('id', 'lineG');
 
       var update = function(){
 
-        width = $('.studentCirclesArea')[0].clientWidth - $('.studentCirclesArea')[0].clientWidth*0.1;
-        height = $('.studentCirclesArea')[0].clientHeight - $('.studentCirclesArea')[0].clientHeight*0.8;;
+        width = $('.studentCirclesArea')[0].clientWidth;
+        height = $('.studentCirclesArea')[0].clientHeight - $('.studentCirclesArea')[0].clientHeight*0.8;
 
-        svg.select('path').remove();
-        svg.selectAll('g').remove();
-        svg.attr({'width': width, 'height': height})
+        margin = {
+          left: width*0.1,
+          right: width*0.1,
+          top: height*0.1,
+          bottom: height*0.15
+        }
+
+        svg.selectAll('path').remove();
+        // svg.selectAll('g').remove();
+
+        svg
+            .attr('width', width)
+            .attr('height', height)
+          .select('g')
+            .attr('transform', `translate(${margin.left}, 0)`)
+          .select('defs').select('clipPath')
+            // .attr('id', 'clip')
+          .select('rect')
+            .attr('width',  width - margin.left - margin.right - margin.right*0.05)
+            .attr('height', height);
 
 
         var data = angular.fromJson(scope.data).map(function(d, i){
@@ -30,31 +69,18 @@ angular
             y: d.percentage
           }
           return coords;
-        });
+        }).slice(-60*5);
 
-        // use previous data snapshot for transition
-        var previousDataSnapshot = data.slice(-((60*5)-1),-1);
-        var currentDataSnapshot = data.slice(-(60*5));
-
-        var xMin = d3.min(currentDataSnapshot, function(d){ return d.x; })
-        var xMax = d3.max(currentDataSnapshot, function(d){ return d.x; })
-
+        var xMin = d3.min(data, function(d){ return d.x; })
+        var xMax = d3.max(data, function(d){ return d.x; })
 
         var xScale = d3.time.scale()
             .domain([xMin, xMax])
-            .range([width*0.1, width]);
-
-        var xAxisScale = d3.time.scale()
-            .domain([xMin, xMax])
-            .range([0, width])
+            .range([0,  width - margin.right - margin.left]);
 
         var yScale = d3.scale.linear()
             .domain([0, 100])
-            .range([height-20, 10])
-
-        var yAxisScale = d3.scale.linear()
-            .domain([0, 100])
-            .range([height-20, 10])
+            .range([height - margin.bottom - margin.top, 0])
 
         var lineFunction = d3.svg.line()
           .x(function(d) {
@@ -65,37 +91,49 @@ angular
           })
           .interpolate('basis');
 
-        var xTickSize = xScale(currentDataSnapshot[1].x) - xScale(currentDataSnapshot[0].x);
-        var lineGraph = svg.append('path')
-          .datum(previousDataSnapshot)
+        // var xTickSize = xScale(data[data.length-1].x) - xScale(data[data.length-2].x);
+        var xTickSize = xScale(data[1].x) - xScale(data[0].x);
+        // var xTickSize = d3.extent(data, function(d) { return xScale(d.x) });
+
+
+        svg.select('#lineG')
+          .append('path')
+            .datum(data)
+            .attr('transform', `translate(${0}, ${margin.top})`)
             .attr('d', lineFunction)
             .attr('stroke', 'black')
             .attr('stroke-width', 2)
             .attr('fill', 'none')
-            // .attr('transform', 'translate(' + (xTickSize) + ',0)')
-          // .transition()
-          //   .duration(500)
-          //   .ease('linear')
-          //   .attr('transform', 'translate(0,0)')
+          .transition()
+            .duration(1000)
+            .ease('linear')
+            .attr('transform', `translate(${-xTickSize}, ${margin.top})`);
 
         var xAxis = d3.svg.axis()
-            .scale(xAxisScale)
+            .scale(xScale)
             .orient('bottom')
             .ticks(5);
 
+        var transition = d3.select({}).transition()
+            .duration(1000)
+            .ease("linear");
+
+        svg.select('.x.axis')
+          .transition()
+            .duration(1000)
+            .ease('linear')
+            .attr("transform", `translate(${0}, ${height - margin.bottom})`)
+          .call(xAxis)
+            .attr("transform", `translate(${xTickSize}, ${height - margin.bottom})`)
+
         var yAxis = d3.svg.axis()
-            .scale(yAxisScale)
+            .scale(yScale)
             .orient('left')
             .ticks(5)
 
-        svg.append("g")
-            .attr('class', 'x axis')
-            .call(xAxis)
-            .attr("transform", "translate("+ (width*0.1) +", " + (height-20) + ")");
-        svg.append("g")
-            .attr('class', 'y axis')
+        svg.select('.y.axis')
             .call(yAxis)
-            .attr("transform", "translate("+ (width*0.1)+", " + 0 + ")");
+            .attr("transform", `translate(0, ${margin.top})`);
 
       }
 
