@@ -9,37 +9,44 @@
     <div class="row">
       <div class="col-xs-3">
         <h4>Average Students per class</h4>
-        <h5>23</h5>
+        <h5>{{averageStudentsPerClass}}</h5>
       </div>
       <div class="col-xs-3">
         <h4>Average comprehension per class</h4>
-        <h5>78%</h5>
+        <h5>{{averageComprehensionPerClass}}</h5>
       </div>
       <div class="col-xs-3">
         <h4>Total Classes</h4>
-        <h5>62</h5>
+        <h5>{{totalClasses}}</h5>
       </div>
       <div class="col-xs-3">
         <h4>Total Students Taught</h4>
-        <h5>258</h5>
+        <h5>{{totalStudentsTaught}}</h5>
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-6">
-        <h3>dropdown</h3>
-        <p>some class data</p>
+      <div class="col-xs-12">
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            View A Class
+            <span class="caret"></span>
+          </button>
+          {{classesArray}}
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a ng-click="showClassDetails('reset')">Select A Date</a></li>
+            <li ng-repeat="(date, class) in classesData"><a ng-click="showClassDetails(date)">{{ date | date:'medium' }}</a></li>
+          </ul>
+        </div>
       </div>
-      <div class="col-xs-6">
-        <h3>dropdown</h3>
-        <p>some class data</p>
+    </div>
+    <div class="row" ng-if="timeData">
+      <div class="col-xs-12">
+        <h1 class="text-center">Now viewing class data from {{classDate | date : 'medium'}}</h1>
       </div>
+      <percentage-graph data="{{timeData}}"></percentage-graph>
       <div class="col-xs-6">
-        <h3>dropdown</h3>
-        <p>some class data</p>
-      </div>
-      <div class="col-xs-6">
-        <h3>dropdown</h3>
-        <p>some class data</p>
+        <h3>Total Students: {{totalStudents}}</h3>
+        <h3>Average Comprehension Rate: {{avgComp}}%</h3>
       </div>
     </div>
   </div>

@@ -64,7 +64,8 @@ angular
         time: Date.now(),
         percentage: (!$scope.percentage || $scope.percentage == '...') ? 0 : +$scope.percentage.slice(0,-1),
         chatrooms: $scope.chatrooms || null,
-        points: $scope.points || null
+        points: $scope.points || null,
+        students: $scope.students || null
       };
       $scope.timeData.$add(info);
     }, 1000)
