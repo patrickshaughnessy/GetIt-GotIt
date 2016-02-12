@@ -23,9 +23,17 @@ angular
     var chatroomsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms`);
     $scope.chatrooms = $firebaseArray(chatroomsRef);
 
+    var green;
     var updatePercentage = function(){
       if ($scope.students.length){
         $scope.percentage = Math.round((1 - ($scope.chatrooms.length / $scope.students.length))*100) + '%';
+        if ($scope.percentage == '100%' && !green){
+          document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+          green = true;
+        } else if ($scope.percentage != '100%'){
+          document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/redcircle.ico");
+          green = false;
+        }
       } else {
         $scope.percentage = '...';
       }

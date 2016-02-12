@@ -62,14 +62,19 @@ angular
             .attr('width',  width - margin.left - margin.right - margin.right*0.05)
             .attr('height', height);
 
-
         var data = angular.fromJson(scope.data).map(function(d, i){
           var coords = {
             x: d.time,
             y: d.percentage
           }
           return coords;
-        }).slice(-60*5);
+        });
+
+        var filler = Array(300).fill({x: 0, y: 100}).map(function(e, i){
+          return {x: data[0].x - (1000*i), y:100}
+        }).reverse();
+
+        data = data.length < 300 ? filler.concat(data).slice(-300) : data.slice(-300);
 
         var xMin = d3.min(data, function(d){ return d.x; })
         var xMax = d3.max(data, function(d){ return d.x; })
@@ -96,6 +101,10 @@ angular
         // var xTickSize = d3.extent(data, function(d) { return xScale(d.x) });
 
 
+        // var duration = data.length < (60*5) ? 1000 + (xTickSize) : 1000;
+
+        var duration = 1000;
+
         svg.select('#lineG')
           .append('path')
             .datum(data)
@@ -105,7 +114,7 @@ angular
             .attr('stroke-width', 2)
             .attr('fill', 'none')
           .transition()
-            .duration(1000)
+            .duration(duration)
             .ease('linear')
             .attr('transform', `translate(${-xTickSize}, ${margin.top})`);
 
@@ -114,15 +123,11 @@ angular
             .orient('bottom')
             .ticks(5);
 
-        var transition = d3.select({}).transition()
-            .duration(1000)
-            .ease("linear");
-
         svg.select('.x.axis')
+          .attr("transform", `translate(${0}, ${height - margin.bottom})`)
           .transition()
-            .duration(1000)
+            .duration(duration)
             .ease('linear')
-            .attr("transform", `translate(${0}, ${height - margin.bottom})`)
           .call(xAxis)
             .attr("transform", `translate(${xTickSize}, ${height - margin.bottom})`)
 
