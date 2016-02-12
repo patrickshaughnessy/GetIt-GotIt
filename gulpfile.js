@@ -1,26 +1,3 @@
-// 'use strict';
-//
-// var gulp = require('gulp');
-// var del = require('del');
-// var rename = require('gulp-rename');
-//
-// gulp.task('clean', function(cb){
-// 	del(['build/**/*']).then(paths => cb())
-// });
-//
-// gulp.task('build', ['clean'], function(cb){
-// 	gulp.src(['./public/**/*'])
-// 		.pipe(gulp.dest('./build'));
-// });
-//
-// gulp.task('addIndex', ['clean'], function(cb){
-// 	gulp.src(['./views/index.ejs'])
-// 		.pipe(rename('index.html'))
-// 		.pipe(gulp.dest('./build'));
-// });
-//
-// gulp.task('default', ['clean', 'build', 'addIndex']);
-
 'use strict';
 
 var del = require('del');
@@ -76,18 +53,21 @@ gulp.task('partials', ['clean'], function(cb){
 		cb();
 })
 
-gulp.task('statics', ['assets', 'bower', 'css', 'partials']);
-
 gulp.task('index', ['clean'], function(cb){
-	gulp.src('./views/index.ejs')
+	gulp.src('views/index.ejs')
 		.pipe(rename('index.html'))
 		.pipe(gulp.dest('build'));
 		cb();
 })
 
-gulp.task('watch', ['statics', 'js', 'index'], function(){
+gulp.task('statics', ['assets', 'bower', 'css', 'partials', 'index']);
+
+gulp.task('watch', ['js', 'statics'], function(){
 	gulp.watch('public/**/*', ['default']);
-	gulp.watch('.views/index.ejs', ['default']);
+	gulp.watch('views/index.ejs', ['default']);
 });
 
-gulp.task('default', ['clean', 'js', 'statics', 'watch'])
+gulp.task('development', ['clean', 'js', 'statics', 'watch']);
+gulp.task('production', ['clean', 'js', 'statics']);
+
+gulp.task('default', [process.env.NODE_ENV === 'production' ? 'production' : 'development']);
