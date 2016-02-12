@@ -87,6 +87,16 @@ angular
           }]
         }
       })
+      .state('teacher-stats', {
+        url: "/stats",
+        templateUrl: "partials/teacher-stats.html",
+        controller: "statsCtrl",
+        resolve: {
+          "currentAuth": ["Auth", function(Auth) {
+            return Auth.$requireAuth();
+          }]
+        }
+      })
 
   })
   .run(["$rootScope", "$state", function($rootScope, $state) {

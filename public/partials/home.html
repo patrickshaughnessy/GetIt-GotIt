@@ -8,6 +8,8 @@
         <h1>For Teachers:</h1>
         <div class="col-xs-12">
           <button class="btn btn-success btn-lg" ng-click="startNewClass()" ng-disabled="loading">{{loading ? 'One Moment' : 'Start A Class'}}</button>
+          <span>- or -</span>
+          <button class="btn btn-success btn-lg" ui-sref="teacher-stats" ng-disabled="loading">{{loading ? 'One Moment' : 'View Stats'}}</button>
         </div>
       </div>
       <div class="col-xs-12">

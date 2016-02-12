@@ -13,6 +13,10 @@ angular
     var user = $firebaseObject(userRef);
     user.$bindTo($scope, 'user');
 
+    var classesDataRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData`);
+    var classesData = $firebaseObject(classesDataRef);
+    classesData.$bindTo($scope, 'classesData');
+
     var classroomRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);
     var classroom = $firebaseObject(classroomRef);
     classroom.$bindTo($scope, 'classroom');
@@ -58,7 +62,9 @@ angular
     var recording = $interval(function(){
       var info = {
         time: Date.now(),
-        percentage: (!$scope.percentage || $scope.percentage == '...') ? 0 : +$scope.percentage.slice(0,-1)
+        percentage: (!$scope.percentage || $scope.percentage == '...') ? 0 : +$scope.percentage.slice(0,-1),
+        chatrooms: $scope.chatrooms || null,
+        points: $scope.points || null
       };
       $scope.timeData.$add(info);
     }, 1000)
@@ -67,6 +73,14 @@ angular
       $scope.loading = true;
 
       $interval.cancel(recording);
+
+      classesData[Date.now()] = $scope.timeData;
+      classesData.$save().then(function(){
+        classroom.$remove();
+        $scope.user.teacher = false;
+        document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+        $state.go('home');
+      })
 
       // uncomment for MongoDB
       // classroomRef.once('value', function(classData){
@@ -82,9 +96,6 @@ angular
       //   })
       // })
 
-      classroom.$remove();
-      $scope.user.teacher = false;
-      $state.go('home');
     }
 
 
