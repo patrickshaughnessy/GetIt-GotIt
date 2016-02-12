@@ -4,6 +4,8 @@ angular
   .module('app')
   .controller("chatroomHelperCtrl", function(Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray) {
 
+    document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/bluecircle.ico");
+
     var studentsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/students`);
     $scope.students = $firebaseArray(studentsRef);
 
@@ -96,6 +98,8 @@ angular
         var index = $scope.students.$indexFor($scope.user.class.key);
         $scope.students.$getRecord($scope.user.class.key).helper = false;
         $scope.students.$save(index);
+
+        document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
 
         $state.go('student-classroom', {classID: $state.params.classID})
       })

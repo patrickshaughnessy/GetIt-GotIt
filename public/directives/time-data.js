@@ -70,8 +70,8 @@ angular
           return coords;
         });
 
-        var filler = Array(300).fill({x: 0, y: 100}).map(function(e, i){
-          return {x: data[0].x - (1000*i), y:100}
+        var filler = Array(300).fill({x: 0, y: 0}).map(function(e, i){
+          return {x: data[0].x - (1000*i), y:0}
         }).reverse();
 
         data = data.length < 300 ? filler.concat(data).slice(-300) : data.slice(-300);

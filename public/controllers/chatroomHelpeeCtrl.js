@@ -4,6 +4,8 @@ angular
   .module('app')
   .controller("chatroomHelpeeCtrl", function(Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray, $location, $anchorScroll) {
 
+    document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/redcircle.ico");
+
     var usersRef = new Firebase(`https://getitgotit.firebaseio.com/users`);
     var users = $firebaseObject(usersRef);
     users.$bindTo($scope, 'users');
@@ -76,6 +78,8 @@ angular
       $scope.students.$save(index);
 
       chatroom.$remove();
+
+      document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
 
       $state.go('student-classroom', {classID: $state.params.classID})
     }
