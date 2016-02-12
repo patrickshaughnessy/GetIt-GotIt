@@ -15,7 +15,7 @@ gulp.task('clean', function(cb){
 	del(['build/**/*']).then(paths => cb())
 });
 
-gulp.task('js', ['clean'], function(cb){
+gulp.task('jsprod', ['clean'], function(cb){
 	gulp.src(['public/main.js', 'public/js/**/*.js'])
 		.pipe(sourcemaps.init())
 		.pipe(concat('app.min.js'))
@@ -25,6 +25,13 @@ gulp.task('js', ['clean'], function(cb){
 		}))
 		.pipe(uglify())
 		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('build'));
+		cb()
+})
+
+gulp.task('jsdev', ['clean'], function(cb){
+	gulp.src(['public/main.js', 'public/js/**/*.js'])
+		.pipe(concat('app.min.js'))
 		.pipe(gulp.dest('build'));
 		cb()
 })
@@ -62,12 +69,12 @@ gulp.task('index', ['clean'], function(cb){
 
 gulp.task('statics', ['assets', 'bower', 'css', 'partials', 'index']);
 
-gulp.task('watch', ['js', 'statics'], function(){
+gulp.task('watch', ['jsdev', 'statics'], function(){
 	gulp.watch('public/**/*', ['default']);
 	gulp.watch('views/index.ejs', ['default']);
 });
 
-gulp.task('development', ['clean', 'js', 'statics', 'watch']);
-gulp.task('production', ['clean', 'js', 'statics']);
+gulp.task('development', ['clean', 'jsdev', 'statics', 'watch']);
+gulp.task('production', ['clean', 'jsprod', 'statics']);
 
 gulp.task('default', [process.env.NODE_ENV === 'production' ? 'production' : 'development']);

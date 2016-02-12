@@ -58,9 +58,8 @@ angular
     var recording = $interval(function(){
       var info = {
         time: Date.now(),
-        percentage: $scope.percentage ? +$scope.percentage.slice(0,-1) : 0
+        percentage: (!$scope.percentage || $scope.percentage == '...') ? 0 : +$scope.percentage.slice(0,-1)
       };
-
       $scope.timeData.$add(info);
     }, 1000)
 

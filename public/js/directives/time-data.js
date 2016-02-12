@@ -70,6 +70,7 @@ angular
           return coords;
         });
 
+        if (!data.length) return;
         var filler = Array(300).fill({x: 0, y: 0}).map(function(e, i){
           return {x: data[0].x - (1000*i), y:0}
         }).reverse();
