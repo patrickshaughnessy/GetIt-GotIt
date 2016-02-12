@@ -72,6 +72,8 @@ angular
 
           $scope.students.$save(index);
 
+          document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+
           $state.go('student-classroom', {classID: $state.params.classID})
 
         } else if (!classrooms.hasChild($state.params.classID)) {   // case 2) classroom has been removed
@@ -79,6 +81,9 @@ angular
           $scope.user.helpee = false;
           $scope.user.helper = false;
           $scope.user.class = null;
+
+          document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+
           $state.go('home');
         }
       });

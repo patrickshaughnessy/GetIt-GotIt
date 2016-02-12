@@ -59,6 +59,9 @@ angular
         $scope.user.helpee = false;
         $scope.user.helper = false;
         $scope.user.class = null;
+
+        document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+
         $state.go('home');
       }
     });
