@@ -31,10 +31,13 @@
             View A Class
             <span class="caret"></span>
           </button>
-          {{classesArray}}
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li><a ng-click="showClassDetails('reset')">Select A Date</a></li>
-            <li ng-repeat="(id, class) in classesData"><a ng-click="showClassDetails(id)">{{class.time | date : 'medium'}}</a></li>
+            <li>
+              <a ng-click="showClassDetails('reset')">Select A Date</a>
+            </li>
+            <li ng-repeat="class in classesData | orderBy:'-time'">
+              <a ng-click="showClassDetails(class.id)">{{class.time | date : 'medium'}}</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -42,9 +45,9 @@
     <div class="row" ng-if="!showNone">
       <div class="col-xs-12">
         <h1 class="text-center">Now viewing class data from</h1>
-        <h1 class="text-center">{{currentClass.time | date : 'medium'}}</h1>
+        <h1 class="text-center">{{currentClassTime | date : 'medium'}}</h1>
       </div>
-      <percentage-graph data="{{timeData}}"></percentage-graph>
+      <percentage-graph data="{{currentClassData}}"></percentage-graph>
       <div class="col-xs-6">
         <h3>Total Students: {{totalStudents}}</h3>
         <h3>Average Comprehension Rate: {{avgComp}}%</h3>
