@@ -5,10 +5,19 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var cors = require('cors');
 
 var routes = require('./routes/index');
 
 var app = express();
+
+app.use(cors());
+app.options('*', function(req, res, next){
+  response.header("Access-Control-Allow-Origin", "*");
+  response.header("Access-Control-Allow-Headers", "X-Requested-With");
+  response.header("Access-Control-Allow-Methods", "GET, POST", "PUT", "DELETE");
+  next();
+});
 
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/getitgotit');
 
@@ -19,8 +28,8 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'assets/greencircle.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

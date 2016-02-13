@@ -34,14 +34,15 @@
           {{classesArray}}
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
             <li><a ng-click="showClassDetails('reset')">Select A Date</a></li>
-            <li ng-repeat="(date, class) in classesData"><a ng-click="showClassDetails(date)">{{ date | date:'medium' }}</a></li>
+            <li ng-repeat="(id, class) in classesData"><a ng-click="showClassDetails(id)">{{class.time | date : 'medium'}}</a></li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="row" ng-if="timeData">
+    <div class="row" ng-if="!showNone">
       <div class="col-xs-12">
-        <h1 class="text-center">Now viewing class data from {{classDate | date : 'medium'}}</h1>
+        <h1 class="text-center">Now viewing class data from</h1>
+        <h1 class="text-center">{{currentClass.time | date : 'medium'}}</h1>
       </div>
       <percentage-graph data="{{timeData}}"></percentage-graph>
       <div class="col-xs-6">

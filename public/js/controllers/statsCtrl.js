@@ -15,9 +15,17 @@ angular
     classesDataRef.once('value', function(allClasses){
 
       var allClassesArray = [];
-      allClasses.forEach(function(classSnap){
-        allClassesArray.push(classSnap.val());
-      })
+
+      allClasses.forEach(function(classData){
+        var data = classData.val().data;
+
+        var classArray = [];
+        for (var key in data){
+          classArray.push(data[key]);
+        }
+
+        allClassesArray.push(classArray);
+      });
 
       var totalStudentsArray = allClassesArray.map(function(classinfo){
         return classinfo.reduce(function(most, snap){
@@ -48,14 +56,28 @@ angular
 
     })
 
-    $scope.showClassDetails = function(date){
-      if (date === 'reset'){
-        $scope.timeData = null;
-        return;
-      }
-      $scope.classDate = date;
+    // classesDataRef.once('value', function(allClasses){
+    //   var allClassesArray = [];
+    //   allClasses.forEach(function(classSnap){
+    //     allClassesArray.push(classSnap.val().data);
+    //   })
+    //
 
-      var classDataRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${date}`);
+    // })
+
+
+    $scope.showNone = true;
+    $scope.showClassDetails = function(id){
+      if (id === 'reset'){
+        return $scope.showNone = true;
+      }
+      $scope.showNone = false;
+
+      var currentClassRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${id}`);
+      var currentClass = $firebaseObject(currentClassRef);
+      currentClass.$bindTo($scope, 'currentClass')
+
+      var classDataRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${id}/data`);
       $scope.timeData = $firebaseArray(classDataRef);
 
       $scope.timeData.$loaded().then(function(){

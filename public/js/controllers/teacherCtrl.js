@@ -6,16 +6,20 @@ angular
 
     $scope.classID = $state.params.classID;
 
-    var dataRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/data`);
+    var classDataRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${$state.params.classID}`);
+    var classData = $firebaseObject(classDataRef);
+    classData.$bindTo($scope, 'classData').then(function(){
+      if (!$scope.classData.time){
+        $scope.classData.time = Date.now();
+      }
+    })
+
+    var dataRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${$state.params.classID}/data`);
     $scope.timeData = $firebaseArray(dataRef);
 
     var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
     var user = $firebaseObject(userRef);
     user.$bindTo($scope, 'user');
-
-    var classesDataRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData`);
-    var classesData = $firebaseObject(classesDataRef);
-    classesData.$bindTo($scope, 'classesData');
 
     var classroomRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);
     var classroom = $firebaseObject(classroomRef);
@@ -75,20 +79,21 @@ angular
 
       $interval.cancel(recording);
 
-      classesData[Date.now()] = $scope.timeData;
-      classesData.$save().then(function(){
-        classroom.$remove();
-        $scope.user.teacher = false;
-        document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
-        $state.go('home');
-      })
+      classroom.$remove();
+
+      $scope.user.teacher = false;
+
+      document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+
+      $state.go('home');
 
       // uncomment for MongoDB
-      // classroomRef.once('value', function(classData){
+      // dataRef.once('value', function(classData){
       //   DataService.save(classData.val()).then(function(success){
       //     console.log(success);
       //     classroom.$remove();
       //     $scope.user.teacher = false;
+      //     document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
       //     $state.go('home');
       //   })
       //   .catch(function(err){
