@@ -6,6 +6,8 @@ angular
 
     moment().format();
 
+    var usersRef = new Firebase(`https://getitgotit.firebaseio.com/users`);
+
     var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
     var user = $firebaseObject(userRef);
     user.$bindTo($scope, 'user');
@@ -91,11 +93,21 @@ angular
         $scope.duration = getTotalClassTime(classDataArray);
 
         $scope.classPoints = getTotalPoints(classDataArray);
+
+        $scope.studentList = getStudentList(classDataArray);
+
+        $scope.viewStudentStats = function(studentID){
+          $scope.showStudentStats = true;
+          $scope.studentStats = getStudentStats(studentID, classDataArray, $scope.studentList);
+          debugger;
+        }
+
       })
 
       function getTotalClassTime(data){
-        var end = moment(data[data.length-1].time);
-        var beginning = moment(data[0].time);
+        var end = moment( d3.max(data, function(d){ return d.time }) );
+        var beginning = moment( d3.min(data, function(d){ return d.time }) );
+        // var beginning = moment(data[0].time);
         return end.from(beginning, true);
       }
 
@@ -109,34 +121,73 @@ angular
 
       }
 
-      function getStudentStats(classSnap){
+      function getStudentList(data){
+        var list = {};
 
+        data.forEach(function(snap){
+          if (snap.students){
+            for (var idx in snap.students){
+              if (!list[snap.students[idx].id]){
+                list[snap.students[idx].id] = snap.students[idx]
+              }
+            }
+          }
+        });
 
+        return list;
+      }
+
+      function getStudentStats(studentID, data, studentList){
+
+        var studentInfo = studentList[studentID];
+
+        var studentSnaps = data.filter(function(snap){
+          return snap.students ? snap.students.some(function(s){
+            return s.id === studentID
+          }) : false;
+        }).map(function(snap){
+          var student = snap.students.find(function(s){
+            return s.id === studentID;
+          });
+          var time = snap.time;
+
+          return {student: student, time: time};
+        })
 
         var stats = {
-          studentInfo: studentInfo(),
-          totalTimeInClass: studentTotalTimeInClass(),
-          helpeeTime: studentTimeAsHelpee(),
-          helperTime: studentTimeAsHelper(),
+          studentInfo: {
+            avatar: studentInfo.avatar,
+            name: studentInfo.name,
+            id: studentInfo.id
+          },
+          totalTimeInClass: getTotalClassTime(studentSnaps),
+          helpeeTime: studentTimeAsHelpee(studentSnaps),
+          helperTime: studentTimeAsHelper(studentSnaps),
           chatHistory: studentChatHistory(),
           avgComprehensionRate: studentAverageComprehensionRateForClass(),
           ratio: studentHelpeeHelperRatio()
         };
 
-        function studentInfo(student){
-          // get user data
+        function studentTimeAsHelpee(studentSnaps){
+          var helpeeTimeArray = studentSnaps.filter(function(snap){
+            return snap.student.helpee;
+          });
+
+          // * 1000 to convert snap of length 1 second to milliseconds
+          var helpeeTime = moment.duration(helpeeTimeArray.length*1000)
+
+          return helpeeTime.humanize()
         }
 
-        function studentTotalTimeInClass(){
+        function studentTimeAsHelper(studentSnaps){
+          var helperTimeArray = studentSnaps.filter(function(snap){
+            return snap.student.helper;
+          });
 
-        }
+          // * 1000 to convert snap of length 1 second to milliseconds
+          var helperTime = moment.duration(helperTimeArray.length*1000)
 
-        function studentTimeAsHelpee(){
-
-        }
-
-        function studentTimeAsHelper(){
-
+          return helperTime.humanize()
         }
 
         function studentChatHistory(){

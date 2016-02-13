@@ -42,7 +42,7 @@
         </div>
       </div>
     </div>
-    <div class="row" ng-if="!showNone">
+    <div class="row" ng-if="!showNone" ng-init="showStudentStats = false">
       <div class="col-xs-12">
         <h1 class="text-center">Now viewing class data from</h1>
         <h3 class="text-center">{{currentClassTime | date : 'medium'}}</h3>
@@ -53,6 +53,23 @@
         <p>Average Comprehension Rate: {{avgComp}}%</p>
         <p>Duration: {{duration}}</p>
         <p>Total Points: {{classPoints}}</p>
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            View A Student
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <!-- <li>
+              <a ng-click="showClassDetails('reset')">Select A Student</a>
+            </li> -->
+            <li ng-repeat="student in studentList | orderBy:'name'">
+              <a ng-click="viewStudentStats(student.id)">{{student.name}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-xs-12" ng-if="showStudentStats">
+        {{studentStats}}
       </div>
     </div>
   </div>
