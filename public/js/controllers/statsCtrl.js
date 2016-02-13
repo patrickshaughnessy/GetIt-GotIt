@@ -9,8 +9,6 @@ angular
     user.$bindTo($scope, 'user');
 
     var classesDataRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData`);
-    // var classesData = $firebaseObject(classesDataRef);
-    // classesData.$bindTo($scope, 'classesData')
 
     classesDataRef.once('value', function(allClasses){
 
@@ -33,7 +31,6 @@ angular
       });
 
       $scope.classesData = allClassesArray;
-      console.log($scope.classesData)
 
       var totalStudentsArray = allClassesArray.map(function(classinfo){
         return classinfo.data.reduce(function(most, snap){
