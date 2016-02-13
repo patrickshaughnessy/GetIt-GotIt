@@ -4,6 +4,8 @@ angular
   .module('app')
   .controller("statsCtrl", function(DataService, Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray, $timeout, $interval) {
 
+    moment().format();
+
     var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
     var user = $firebaseObject(userRef);
     user.$bindTo($scope, 'user');
@@ -86,7 +88,71 @@ angular
           return total + snap.percentage;
         }, 0)/classDataArray.length);
 
+        $scope.duration = getTotalClassTime(classDataArray);
+
+        $scope.classPoints = getTotalPoints(classDataArray);
       })
+
+      function getTotalClassTime(data){
+        var end = moment(data[data.length-1].time);
+        var beginning = moment(data[0].time);
+        return end.from(beginning, true);
+      }
+
+      function getTotalPoints(data){
+        return data.reduce(function(most, snap){
+          return snap.points && snap.points > most ? snap.points : most;
+        }, 0)
+      }
+
+      function getLowComprehensionTimes(classSnap, threshold){
+
+      }
+
+      function getStudentStats(classSnap){
+
+
+
+        var stats = {
+          studentInfo: studentInfo(),
+          totalTimeInClass: studentTotalTimeInClass(),
+          helpeeTime: studentTimeAsHelpee(),
+          helperTime: studentTimeAsHelper(),
+          chatHistory: studentChatHistory(),
+          avgComprehensionRate: studentAverageComprehensionRateForClass(),
+          ratio: studentHelpeeHelperRatio()
+        };
+
+        function studentInfo(student){
+          // get user data
+        }
+
+        function studentTotalTimeInClass(){
+
+        }
+
+        function studentTimeAsHelpee(){
+
+        }
+
+        function studentTimeAsHelper(){
+
+        }
+
+        function studentChatHistory(){
+
+        }
+
+        function studentAverageComprehensionRateForClass(){
+
+        }
+
+        function studentHelpeeHelperRatio(){
+
+        }
+
+        return stats;
+      }
 
     }
 
