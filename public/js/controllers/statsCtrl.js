@@ -79,6 +79,13 @@ angular
       classesDataRef.child(id).once('value', function(classData){
         $scope.currentClassTime = classData.val().time;
 
+        var chatrooms = classData.val().chatrooms;
+        var chatroomsArray = [];
+        for (var key in chatrooms){
+          chatroomsArray.push(chatrooms[key]);
+        }
+        $scope.chatrooms = chatroomsArray;
+
         var data = classData.val().data;
         var classDataArray = [];
         for (var key in data){
@@ -101,7 +108,7 @@ angular
         $scope.studentList = getStudentList(classDataArray);
 
         $scope.viewStudentStats = function(studentID){
-          $scope.studentStats = getStudentStats(studentID, classDataArray, $scope.studentList);
+          $scope.studentStats = getStudentStats(studentID, classDataArray, $scope.studentList, chatroomsArray);
         }
 
       })
@@ -138,7 +145,7 @@ angular
         return list;
       }
 
-      function getStudentStats(studentID, data, studentList){
+      function getStudentStats(studentID, data, studentList, chatroomsArray){
 
         var studentInfo = studentList[studentID];
 
@@ -178,7 +185,7 @@ angular
           totalTimeInClass: getTotalClassTime(studentSnaps),
           helpeeTime: studentTimeAsHelpee(studentSnaps),
           helperTime: studentTimeAsHelper(studentSnaps),
-          chatHistory: studentChatHistory(studentSnaps),
+          chatHistory: studentChatHistory(chatroomsArray),
           avgComprehensionRate: studentAverageComprehensionRateForClass(studentSnaps),
         };
 
@@ -204,21 +211,18 @@ angular
           return helperTime.humanize()
         }
 
-        function studentChatHistory(studentSnaps){
-          var helpeeChatrooms = studentSnaps.filter(function(snap){
-            return snap.student.helpee;
-          }).map(function(snap){
-            return snap.chatrooms;
-          })
+        function studentChatHistory(chatroomsArray){
+          var helpeeChats = chatroomsArray.filter(function(snap){
+            return snap.helper === studentID
+          });
+          var helperChats = chatroomsArray.filter(function(snap){
+            return snap.helper === studentID
+          });
 
-          var helperChatrooms = studentSnaps.filter(function(snap){
-            return snap.student.helper;
-          }).map(function(snap){
-            return snap.chatrooms;
-          })
-
-          debugger;
-
+          return {
+            helpeeChats: helpeeChats,
+            helperChats: helperChats
+          }
         }
 
         function studentAverageComprehensionRateForClass(data){
@@ -226,10 +230,6 @@ angular
             return snap.student.helpee;
           });
           return Math.round(((data.length - helpeeTimeArray.length)/data.length)*100) + '%';
-        }
-
-        function studentHelpeeHelperRatio(){
-
         }
 
         return stats;

@@ -31,6 +31,14 @@ angular
     var chatroomsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms`);
     $scope.chatrooms = $firebaseArray(chatroomsRef);
 
+    var teacherChatroomsRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${$state.params.classID}/chatrooms`);
+    $scope.teacherChatrooms = $firebaseArray(teacherChatroomsRef);
+
+    // flash chatroom info to teacher chatrooms record on chatroom end
+    chatroomsRef.on('child_removed', function(snap){
+      $scope.teacherChatrooms.$add(snap.val());
+    })
+
     var green;
     var updatePercentage = function(){
       if ($scope.students.length){

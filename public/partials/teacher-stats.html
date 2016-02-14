@@ -95,7 +95,14 @@
         <h4 class="modal-title" id="myModalLabel">{{studentStats.studentInfo.name}}'s Chat History</h4>
       </div>
       <div class="modal-body">
-        {{studentStats.chatHistory}}
+        <p>As Helpee</p>
+        <ul ng-repeat="chat in studentStats.chatHistory.helpeeChats">
+          <li ng-repeat="message in chat.messages">{{message.sender}}: {{message.text}}</li>
+        </ul>
+        <p>As Helper</p>
+        <ul ng-repeat="chat in studentStats.chatHistory.helperChats">
+          <li ng-repeat="message in chat.messages">{{message.sender}}: {{message.text}}</li>
+        </ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
