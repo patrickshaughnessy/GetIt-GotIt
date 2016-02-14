@@ -4,8 +4,6 @@ angular
   .module('app')
   .controller("statsCtrl", function(DataService, Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray, $timeout, $interval) {
 
-    moment().format();
-
     var usersRef = new Firebase(`https://getitgotit.firebaseio.com/users`);
 
     var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
@@ -107,6 +105,12 @@ angular
 
         $scope.studentList = getStudentList(classDataArray);
 
+        $scope.displayMessage = function(message){
+          var sender = $scope.studentList[message.sender] ? $scope.studentList[message.sender].name : undefined;
+          var message = message.text;
+          return sender ? `${sender}  :  ${message}` : `- Begin Chat -`
+        }
+
         $scope.viewStudentStats = function(studentID){
           $scope.studentStats = getStudentStats(studentID, classDataArray, $scope.studentList, chatroomsArray);
         }
@@ -141,7 +145,6 @@ angular
             }
           }
         });
-
         return list;
       }
 
@@ -213,7 +216,7 @@ angular
 
         function studentChatHistory(chatroomsArray){
           var helpeeChats = chatroomsArray.filter(function(snap){
-            return snap.helper === studentID
+            return snap.helpee === studentID
           });
           var helperChats = chatroomsArray.filter(function(snap){
             return snap.helper === studentID

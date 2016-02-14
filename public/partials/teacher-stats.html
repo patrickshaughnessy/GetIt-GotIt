@@ -75,11 +75,9 @@
           <p>Time as helpee: {{studentStats.helpeeTime}}</p>
           <p>Time as helper: {{studentStats.helperTime}}</p>
           <p>Average Comprehension Rate: {{studentStats.avgComprehensionRate}}</p>
-          <!-- Button trigger modal -->
           <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
             Chat History
           </button>
-
         </div>
       </div>
     </div>
@@ -95,18 +93,17 @@
         <h4 class="modal-title" id="myModalLabel">{{studentStats.studentInfo.name}}'s Chat History</h4>
       </div>
       <div class="modal-body">
-        <p>As Helpee</p>
+        <p ng-if="studentStats.chatHistory.helpeeChats.length">As Helpee</p>
         <ul ng-repeat="chat in studentStats.chatHistory.helpeeChats">
-          <li ng-repeat="message in chat.messages">{{message.sender}}: {{message.text}}</li>
+          <li ng-repeat="message in chat.messages">{{displayMessage(message)}}</li>
         </ul>
-        <p>As Helper</p>
+        <p ng-if="studentStats.chatHistory.helperChats.length">As Helper</p>
         <ul ng-repeat="chat in studentStats.chatHistory.helperChats">
-          <li ng-repeat="message in chat.messages">{{message.sender}}: {{message.text}}</li>
+          <li ng-repeat="message in chat.messages">{{displayMessage(message)}}</li>
         </ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>

@@ -123,7 +123,7 @@ angular
       $timeout(function(){
         Auth.$unauth();
         $state.go('splash');
-      },100)
+      },200)
     }
 
   });
