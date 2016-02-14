@@ -18,10 +18,16 @@ angular
     var classroomsRef = new Firebase("https://getitgotit.firebaseio.com/classrooms");
     var classrooms = $firebaseObject(classroomsRef);
     classrooms.$bindTo($scope, 'classrooms');
+    var classroomsIDsRef = new Firebase("https://getitgotit.firebaseio.com/classroomsIDs");
+    var classroomsIDs = $firebaseObject(classroomsIDsRef);
+    classroomsIDs.$bindTo($scope, 'classroomsIDs');
 
     var genClassID = function(){
       var id = (parseInt(Math.random()*1000000000, 10)).toString().replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3');
-      return $scope.classrooms[id] || id.length !== 11 ? genClassID() : id;
+      if (!$scope.classroomsIDs){
+        return id;
+      }
+      return $scope.classroomsIDs[id] || id.length !== 11 ? genClassID() : id;
     }
 
     $scope.startNewClass = function(){
@@ -32,7 +38,10 @@ angular
       }
 
       if (!$scope.user.teacher){
-        var id = genClassID()
+        var id = genClassID();
+        $scope.classroomsIDs[id] = {
+          teacher: currentAuth.uid
+        };
         $scope.classrooms[id] = {
           teacher: currentAuth.uid
         };
