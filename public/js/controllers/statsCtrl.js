@@ -12,6 +12,10 @@ angular
 
     var classesDataRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData`);
 
+    ////////////////////////////
+    /// POPULATE TOTALS DATA ///
+    ////////////////////////////
+
     classesDataRef.once('value', function(allClasses){
 
       var allClassesArray = [];
@@ -58,10 +62,14 @@ angular
 
       $scope.averageStudentsPerClass = avgStudentsPerClass ? avgStudentsPerClass : '---';
       $scope.averageComprehensionPerClass = avgComprehensionPerClass ? avgComprehensionPerClass + '%' : '---';
-      $scope.totalClasses = totalClasses ? totalClasses : '---';
+      $scope.totalClassesTaught = totalClasses ? totalClasses : '---';
       $scope.totalStudentsTaught = totalStudentsTaught ? totalStudentsTaught : '---';
 
     })
+
+    ///////////////////////////////
+    /// POPULATE DATA PER CLASS ///
+    ///////////////////////////////
 
     $scope.showNone = true;
     $scope.showClassDetails = function(id){
@@ -197,7 +205,6 @@ angular
             return snap.student.helpee;
           });
 
-          // * 1000 to convert snap of length 1 second to milliseconds
           var helpeeTime = moment.duration(helpeeTimeArray.length*1000)
 
           return helpeeTime.humanize()
@@ -208,7 +215,6 @@ angular
             return snap.student.helper;
           });
 
-          // * 1000 to convert snap of length 1 second to milliseconds
           var helperTime = moment.duration(helperTimeArray.length*1000)
 
           return helperTime.humanize()

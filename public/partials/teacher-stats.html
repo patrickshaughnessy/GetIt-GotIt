@@ -3,31 +3,35 @@
     <div class="row">
       <div class="col-xs-12 text-center statsHeader">
         <button class="btn btn-primary btn-lg pull-left statsBackButton" ui-sref="home">Back</button>
-        <h4>Check out your stats, {{user.name || 'yo'}}!</h4>
+        <h3>Check out your stats, {{user.name || 'yo'}}!</h3>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-3">
-        <h4>Average Students per class</h4>
-        <h5>{{averageStudentsPerClass}}</h5>
-      </div>
-      <div class="col-xs-3">
-        <h4>Average comprehension per class</h4>
-        <h5>{{averageComprehensionPerClass}}</h5>
-      </div>
-      <div class="col-xs-3">
-        <h4>Total Classes</h4>
-        <h5>{{totalClasses}}</h5>
-      </div>
-      <div class="col-xs-3">
-        <h4>Total Students Taught</h4>
-        <h5>{{totalStudentsTaught}}</h5>
-      </div>
-    </div>
-    <div class="row">
+    <div class="row statsTotalsArea">
       <div class="col-xs-12">
+        <table class="table text-center">
+          <thead>
+            <tr>
+              <th>Average Students Per Class</th>
+              <th>Average Comprehension Rate</th>
+              <th>Total Classes Taught</th>
+              <th>Total Students Taught</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{averageStudentsPerClass}}</td>
+              <td>{{averageComprehensionPerClass}}</td>
+              <td>{{totalClassesTaught}}</td>
+              <td>{{totalStudentsTaught}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-2 col-xs-offset-5 text-center">
         <div class="dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <button class="btn btn-primary btn-lg dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             View A Class
             <span class="caret"></span>
           </button>
@@ -42,19 +46,41 @@
         </div>
       </div>
     </div>
-    <div class="row" ng-if="!showNone">
-      <div class="col-xs-12">
-        <h1 class="text-center">Now viewing class data from</h1>
-        <h3 class="text-center">{{currentClassTime | date : 'medium'}}</h3>
+    <div class="row statsDataArea" ng-if="!showNone">
+      <div class="col-xs-12 text-center studentStatsHeader">
+        <h3>Now viewing class data from</h3>
+        <h1>{{currentClassTime | date : 'medium'}}</h1>
       </div>
-      <percentage-graph data="{{currentClassData}}"></percentage-graph>
-      <div class="col-xs-6">
-        <p>Total Students: {{totalStudents}}</p>
-        <p>Average Comprehension Rate: {{avgComp}}%</p>
-        <p>Duration: {{duration}}</p>
-        <p>Total Points: {{classPoints}}</p>
+      <div class="col-xs-6 percentageGraph">
+        <percentage-graph data="{{currentClassData}}"></percentage-graph>
+      </div>
+      <div class="col-xs-6 statsClassTotalsArea">
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>Total Students</td>
+              <td>:</td>
+              <td>{{totalStudents}}</td>
+            </tr>
+            <tr>
+              <td>Average Comprehension Rate</td>
+              <td>:</td>
+              <td>{{avgComp}}%</td>
+            </tr>
+            <tr>
+              <td>Duration</td>
+              <td>:</td>
+              <td>{{duration}}</td>
+            </tr>
+            <tr>
+              <td>Total Points</td>
+              <td>:</td>
+              <td>{{classPoints}}</td>
+            </tr>
+          </tbody>
+        </table>
         <div class="dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <button class="btn btn-primary btn-lg dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             View A Student
             <span class="caret"></span>
           </button>
@@ -65,17 +91,37 @@
           </ul>
         </div>
       </div>
-      <div class="col-xs-12" ng-if="studentStats">
-        <div class="col-xs-4">
+      <div class="col-xs-12 studentStatsArea" ng-if="studentStats">
+        <div class="col-xs-4 col-xs-offset-1">
           <img class="studentProfileImg" ng-src="{{studentStats.studentInfo.avatar}}" alt="Profile Pic">
         </div>
-        <div class="col-xs-8">
-          <h3>{{studentStats.studentInfo.name}}</h3>
-          <p>Total time in class: {{studentStats.totalTimeInClass}}</p>
-          <p>Time as helpee: {{studentStats.helpeeTime}}</p>
-          <p>Time as helper: {{studentStats.helperTime}}</p>
-          <p>Average Comprehension Rate: {{studentStats.avgComprehensionRate}}</p>
-          <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+        <div class="col-xs-6 col-xs-offset-1">
+          <h2 class="text-center">{{studentStats.studentInfo.name}}</h2>
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>Total Time In Class</td>
+                <td>:</td>
+                <td>{{studentStats.totalTimeInClass}}</td>
+              </tr>
+              <tr>
+                <td>Time As Helpee</td>
+                <td>:</td>
+                <td>{{studentStats.helpeeTime}}</td>
+              </tr>
+              <tr>
+                <td>Time As Helper</td>
+                <td>:</td>
+                <td>{{studentStats.helperTime}}</td>
+              </tr>
+              <tr>
+                <td>Average Comprehension Rate</td>
+                <td>:</td>
+                <td>{{studentStats.avgComprehensionRate}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#chatHistoryModal">
             Chat History
           </button>
         </div>
@@ -85,7 +131,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="chatHistoryModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

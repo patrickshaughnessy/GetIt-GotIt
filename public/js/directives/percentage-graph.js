@@ -21,51 +21,42 @@ angular
           .attr('height', height)
 
       svg.append('g')
-          .attr('transform', `translate(${margin.left}, 0)`)
-        // .append('defs').append('clipPath')
-        //     .attr('id', 'clip')
-        //   .append('rect')
-        //     .attr('width',  width - margin.left)
-        //     .attr('height', height);
+          .attr('transform', `translate(${margin.left}, 0)`);
       svg.select('g').append('g')
           .attr('class', 'y axis');
       svg.select('g').append('g')
-          .attr('class', 'x axis')
-          // .attr('clip-path', 'url(#clip)');
+          .attr('class', 'yaxisLabel');
       svg.select('g').append('g')
-          // .attr('clip-path', 'url(#clip)')
+          .attr('class', 'x axis');
+      svg.select('g').append('g')
+          .attr('class', 'xaxisLabel');
+      svg.select('g').append('g')
           .attr('id', 'lineG');
-
-
 
       var update = function(){
         if (!scope.data){
           return;
         }
 
-
-        width = elem[0].clientWidth;
+        width = $('.percentageGraph')[0].clientWidth;
         height = $('.statsBackground')[0].clientHeight*0.5;
 
         margin = {
           left: width*0.1,
-          right: width*0.1,
+          right: width*0.2,
           top: height*0.1,
           bottom: height*0.15
         }
 
         svg.selectAll('path').remove();
-        // svg.selectAll('g').remove();
+        svg.select('.xaxisLabel').select('text').remove();
+        svg.select('.yaxisLabel').select('text').remove();
 
         svg
             .attr('width', width)
             .attr('height', height)
           .select('g')
             .attr('transform', `translate(${margin.left}, 0)`)
-          // .select('defs').select('clipPath')
-          // .select('rect')
-          //   .attr('width',  width - margin.left - margin.right - margin.right*0.05)
-          //   .attr('height', height);
 
         var percentages = angular.fromJson(scope.data).map(function(d, i){
           var coords = {
@@ -97,27 +88,16 @@ angular
           })
           .interpolate('basis');
 
-        // var xTickSize = xScale(percentages[percentages.length-1].x) - xScale(percentages[percentages.length-2].x);
         var xTickSize = xScale(percentages[1].x) - xScale(percentages[0].x);
-        // var xTickSize = d3.extent(percentages, function(d) { return xScale(d.x) });
-
-
-        // var duration = percentages.length < (60*5) ? 1000 + (xTickSize) : 1000;
-
-        // var duration = 1000;
 
         svg.select('#lineG')
           .append('path')
             .datum(percentages)
-            .attr('transform', `translate(${0}, ${margin.top})`)
+            .attr('transform', `translate(${margin.left}, ${margin.top})`)
             .attr('d', lineFunction)
             .attr('stroke', 'black')
             .attr('stroke-width', 2)
             .attr('fill', 'none')
-          // .transition()
-          //   .duration(duration)
-          //   .ease('linear')
-          //   .attr('transform', `translate(${-xTickSize}, ${margin.top})`);
 
         var xAxis = d3.svg.axis()
             .scale(xScale)
@@ -125,12 +105,12 @@ angular
             .ticks(5);
 
         svg.select('.x.axis')
-          .attr("transform", `translate(${0}, ${height - margin.bottom})`)
-          // .transition()
-          //   .duration(duration)
-          //   .ease('linear')
-          .call(xAxis)
-            // .attr("transform", `translate(${xTickSize}, ${height - margin.bottom})`)
+            .attr("transform", `translate(${margin.left}, ${height - margin.bottom})`)
+            .call(xAxis);
+
+        svg.select('.xaxisLabel').append('text')
+            .attr('transform', `translate(${(width/2) - margin.left}, ${height})`)
+            .text('Time')
 
         var yAxis = d3.svg.axis()
             .scale(yScale)
@@ -138,16 +118,24 @@ angular
             .ticks(5)
 
         svg.select('.y.axis')
+            .attr("transform", `translate(${margin.left}, ${margin.top})`)
             .call(yAxis)
-            .attr("transform", `translate(0, ${margin.top})`);
+
+        svg.select('.yaxisLabel').append('text')
+            .attr('transform', `translate(${0}, ${(height/2)+margin.bottom+margin.top}) rotate(-90)`)
+            .text('Comprehension %')
 
       }
 
       scope.$watch('data', update);
+      angular.element($window).bind('resize', function(){
+        update();
+      });
+
     }
 
     return {
-      template: '<div class="col-xs-6 percentageGraph"></div>',
+      template: '<div></div>',
       replace: true,
       restrict: 'EA',
       scope: {
