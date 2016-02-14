@@ -42,7 +42,7 @@
         </div>
       </div>
     </div>
-    <div class="row" ng-if="!showNone" ng-init="showStudentStats = false">
+    <div class="row" ng-if="!showNone">
       <div class="col-xs-12">
         <h1 class="text-center">Now viewing class data from</h1>
         <h3 class="text-center">{{currentClassTime | date : 'medium'}}</h3>
@@ -59,17 +59,47 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <!-- <li>
-              <a ng-click="showClassDetails('reset')">Select A Student</a>
-            </li> -->
             <li ng-repeat="student in studentList | orderBy:'name'">
               <a ng-click="viewStudentStats(student.id)">{{student.name}}</a>
             </li>
           </ul>
         </div>
       </div>
-      <div class="col-xs-12" ng-if="showStudentStats">
-        {{studentStats}}
+      <div class="col-xs-12" ng-if="studentStats">
+        <div class="col-xs-4">
+          <img class="studentProfileImg" ng-src="{{studentStats.studentInfo.avatar}}" alt="Profile Pic">
+        </div>
+        <div class="col-xs-8">
+          <h3>{{studentStats.studentInfo.name}}</h3>
+          <p>Total time in class: {{studentStats.totalTimeInClass}}</p>
+          <p>Time as helpee: {{studentStats.helpeeTime}}</p>
+          <p>Time as helper: {{studentStats.helperTime}}</p>
+          <p>Average Comprehension Rate: {{studentStats.avgComprehensionRate}}</p>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+            Chat History
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{studentStats.studentInfo.name}}'s Chat History</h4>
+      </div>
+      <div class="modal-body">
+        {{studentStats.chatHistory}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
