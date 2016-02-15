@@ -44,10 +44,10 @@ angular
       if ($scope.students.length){
         $scope.percentage = Math.round((1 - ($scope.chatrooms.length / $scope.students.length))*100) + '%';
         if ($scope.percentage == '100%' && !green){
-          document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+          // document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
           green = true;
         } else if ($scope.percentage != '100%'){
-          document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/redcircle.ico");
+          // document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/redcircle.ico");
           green = false;
         }
       } else {
@@ -91,7 +91,7 @@ angular
 
       $scope.user.teacher = false;
 
-      document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+      // document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
 
       $state.go('home');
 
@@ -101,7 +101,7 @@ angular
       //     console.log(success);
       //     classroom.$remove();
       //     $scope.user.teacher = false;
-      //     document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+      //     // document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
       //     $state.go('home');
       //   })
       //   .catch(function(err){
