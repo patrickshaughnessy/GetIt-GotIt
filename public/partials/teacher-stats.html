@@ -1,28 +1,28 @@
 <div class="statsBackground" ng-init="loading = false">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-xs-12 text-center statsHeader">
-        <button class="btn btn-primary btn-lg pull-left statsBackButton" ui-sref="home">Back</button>
-        <h3>Check out your stats, {{user.name || 'yo'}}!</h3>
+    <div class="row statsHeader">
+      <div class="col-xs-12 text-center">
+        <button class="btn btn-primary btn-lg text-left statsBackButton" ui-sref="home">Back</button>
+        <h1>Check out your stats, {{user.name || 'yo'}}!</h1>
       </div>
     </div>
     <div class="row statsTotalsArea">
       <div class="col-xs-12">
-        <table class="table text-center">
+        <table class="table">
           <thead>
             <tr>
-              <th>Average Students Per Class</th>
-              <th>Average Comprehension Rate</th>
-              <th>Total Classes Taught</th>
-              <th>Total Students Taught</th>
+              <th class="text-center">Average Students Per Class</th>
+              <th class="text-center">Average Comprehension Rate</th>
+              <th class="text-center">Total Classes Taught</th>
+              <th class="text-center">Total Students Taught</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>{{averageStudentsPerClass}}</td>
-              <td>{{averageComprehensionPerClass}}</td>
-              <td>{{totalClassesTaught}}</td>
-              <td>{{totalStudentsTaught}}</td>
+              <td class="text-center">{{averageStudentsPerClass}}</td>
+              <td class="text-center">{{averageComprehensionPerClass}}</td>
+              <td class="text-center">{{totalClassesTaught}}</td>
+              <td class="text-center">{{totalStudentsTaught}}</td>
             </tr>
           </tbody>
         </table>

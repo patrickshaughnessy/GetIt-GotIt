@@ -18,6 +18,12 @@
   color: black;
 }
 
+.statsBackButton {
+  position: absolute;
+  height: 100%;
+  left: 0;
+}
+
 .statsHeader {
   background: linear-gradient(
     to bottom,
@@ -51,10 +57,6 @@
 }
 .statsTotalsArea tbody {
   font-size: 2em;
-}
-
-.statsBackButton {
-  margin-left: -15px;
 }
 
 .statsDataArea {
