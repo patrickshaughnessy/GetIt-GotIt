@@ -16,7 +16,7 @@ angular
         } else if ($scope.user.helper){
           $state.go('chatroom-helper', {classID: $state.params.classID, chatID: $scope.user.helper.chatID});
         }
-      }, 200)
+      }, 300)
     })
 
     var classroomRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);

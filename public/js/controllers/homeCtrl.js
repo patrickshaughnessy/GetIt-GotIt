@@ -12,7 +12,7 @@ angular
         if ($scope.user.teacher){
           $state.go('teacher-classroom', {classID: $scope.user.teacher});
         }
-      }, 200)
+      }, 300)
     })
 
     var classroomsRef = new Firebase("https://getitgotit.firebaseio.com/classrooms");
