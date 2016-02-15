@@ -9,7 +9,6 @@ angular
     user.$bindTo($scope, 'user')
 
     $scope.changeAvatar = function(newAvatar){
-      console.log('here', newAvatar);
       $scope.user.avatar = 'data:image/jpeg;base64,' + newAvatar.base64
     }
 
