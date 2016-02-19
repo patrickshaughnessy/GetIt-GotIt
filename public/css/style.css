@@ -33,3 +33,7 @@ body {
     rgba(172, 20, 26, 1)
     );
 }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}

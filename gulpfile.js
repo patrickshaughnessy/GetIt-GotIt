@@ -10,6 +10,7 @@ var rename = require('gulp-rename');
 var gulpUtil = require('gulp-util');
 var babel = require('gulp-babel');
 var sourcemaps = require('gulp-sourcemaps');
+var flatten = require('gulp-flatten');
 
 gulp.task('clean', function(cb){
 	del(['build/**/*']).then(paths => cb())
@@ -30,7 +31,7 @@ gulp.task('jsprod', ['clean'], function(cb){
 })
 
 gulp.task('jsdev', ['clean'], function(cb){
-	gulp.src(['public/main.js', 'public/js/**/*.js'])
+	gulp.src(['public/main.js', 'public/components/**/*.js', 'public/js/**/*.js'])
 		.pipe(concat('app.min.js'))
 		.pipe(gulp.dest('build'));
 		cb()
@@ -55,7 +56,8 @@ gulp.task('css', ['clean'], function(cb){
 })
 
 gulp.task('partials', ['clean'], function(cb){
-	gulp.src('public/partials/**/*')
+	gulp.src(['public/partials/**/*', 'public/components/**/*.html'])
+		.pipe(flatten())
 		.pipe(gulp.dest('build/partials'));
 		cb();
 })

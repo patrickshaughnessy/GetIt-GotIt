@@ -4,16 +4,19 @@ angular
   .module('app')
   .controller("homeCtrl", function(currentAuth, Auth, $state, $rootScope, $scope, $firebaseObject, $firebaseArray, $timeout) {
 
+    // $scope.auth = currentAuth;
+
     var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
     var user = $firebaseObject(userRef);
-    user.$bindTo($scope, 'user').then(function(){
-      // make sure user didn't use back button to leave
-      $timeout(function(){
-        if ($scope.user.teacher){
-          $state.go('teacher-classroom', {classID: $scope.user.teacher});
-        }
-      }, 300)
-    })
+    user.$bindTo($scope, 'user')
+    // .then(function(){
+    //   // make sure user didn't use back button to leave
+    //   $timeout(function(){
+    //     if ($scope.user.teacher){
+    //       $state.go('teacher-classroom', {classID: $scope.user.teacher});
+    //     }
+    //   }, 300)
+    // })
 
     var classroomsRef = new Firebase("https://getitgotit.firebaseio.com/classrooms");
     var classrooms = $firebaseObject(classroomsRef);

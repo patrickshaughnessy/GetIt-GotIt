@@ -1,4 +1,53 @@
-<div class="homeBackground">
+<div>
+  <gg-nav-bar></gg-nav-bar>
+  <div class="container-fluid">
+    <div class="row text-center">
+      <div class="col-xs-12 col-sm-6">
+        <div class="animated bounceIn">
+          <h1>Are you teaching today?</h1>
+          <p>Start a new class instance or view your stats page using the buttons below.</p>
+          <div class="col-xs-12">
+            <div class="col-xs-12 col-sm-5">
+              <button class="btn btn-success" ng-click="startNewClass()">Start A Class</button>
+            </div>
+            <div class="col-xs-12 col-sm-2">
+              OR
+            </div>
+            <div class="col-xs-12 col-sm-5">
+              <button class="btn btn-success" ui-sref="teacher-stats">View Stats</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <div class="col-xs-12" ng-show="!user.class" ng-init="showJoinButton = true">
+          <div class="homeStudentWrapper">
+            <div class="bounceIn animated">
+              <h1>Are you a student today?</h1>
+              <p>Enter the class ID number provided by your teacher.</p>
+            </div>
+            <div class="col-xs-12">
+              <form ng-submit="goToClass()">
+                <div class="input-group">
+                  <span class="input-group-addon" id="sizing-addon1">ID:</span>
+                  <input ui-mask="999-999-999" ng-model="classID" type="text" class="form-control" clearOnBlurPlaceholder="true" ui-mask-placeholder="###-###-###" aria-describedby="sizing-addon1">
+                  <span class="input-group-btn">
+                      <button class="btn btn-default" type="submit">Go!</button>
+                  </span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12" ng-show="user.class">
+          <button class="btn btn-primary btn-lg bounceIn animated" ng-click="rejoinClass()" ng-disabled="loading">Rejoin Class</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="homeBackground">
   <div class="homeWrapper" ng-init="loading = false">
     <button class="btn profileButton" ui-sref="profile" ng-disabled="loading">Profile</button>
     <button class="btn logoutButton" ng-click="logout()" ng-disabled="loading">Logout</button>
@@ -39,4 +88,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
