@@ -71,44 +71,39 @@ angular
 
 
     // track realtime classroom data over time
-    var recording = $interval(function(){
-      var info = {
-        time: Date.now(),
-        percentage: (!$scope.percentage || $scope.percentage == '...') ? 0 : +$scope.percentage.slice(0,-1),
-        chatrooms: $scope.chatrooms || null,
-        points: $scope.points || null,
-        students: $scope.students || null
-      };
-      $scope.timeData.$add(info);
-    }, 1000)
+    $scope.isRecording;
+    $scope.startRecording = function(){
+      $scope.isRecording = $interval(function(){
+        var info = {
+          time: Date.now(),
+          percentage: (!$scope.percentage || $scope.percentage == '...') ? 0 : +$scope.percentage.slice(0,-1),
+          chatrooms: $scope.chatrooms || null,
+          points: $scope.points || null,
+          students: $scope.students || null
+        };
+        $scope.timeData.$add(info);
+      }, 1000)
+    }
+
+    $scope.pauseRecording = function(){
+      if (!$scope.isRecording) return;
+      $interval.cancel($scope.isRecording);
+      $scope.isRecording = undefined;
+    }
+
 
     $scope.endClass = function(){
-      $scope.loading = true;
 
-      $interval.cancel(recording);
-
-      classroom.$remove();
-
+      if ($scope.isRecording){
+        $interval.cancel($scope.isRecording);
+      }
       $scope.user.teacher = false;
 
+      classroom.$remove().then(function(){
+        $state.go('home');
+      });
+
       // document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
-
-      $state.go('home');
-
-      // uncomment for MongoDB
-      // dataRef.once('value', function(classData){
-      //   DataService.save(classData.val()).then(function(success){
-      //     console.log(success);
-      //     classroom.$remove();
-      //     $scope.user.teacher = false;
-      //     // document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
-      //     $state.go('home');
-      //   })
-      //   .catch(function(err){
-      //     console.log('error', err);
-      //     $scope.loading = false;
-      //   })
-      // })
 
     }
 
