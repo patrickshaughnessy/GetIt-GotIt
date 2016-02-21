@@ -19,7 +19,7 @@
         <br>
         <p>Change Your Avatar Picture</p>
         <form ng-submit="changeAvatar(newAvatar)">
-          <input style="margin: auto" class="btn btn-success btn-sm" value="Change Avatar" id="newAvatarUpload" type="file" ng-model="newAvatar" base-sixty-four-input>
+          <input style="margin: auto" class="btn btn-success btn-sm" ng-change="changeAvatar(newAvatar)" value="Change Avatar" id="newAvatarUpload" type="file" ng-model="newAvatar" base-sixty-four-input>
         </form>
       </div>
       <div class="col-xs-12 col-sm-6" ng-hide="user">

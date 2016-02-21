@@ -157,3 +157,82 @@ body {
 .modal-body li {
   list-style: none;
 }
+
+
+.studentClassroomArea {
+  background: linear-gradient(
+    to bottom,
+    rgba(4, 83, 45, 0.7),
+    rgba(4, 83, 45, 0.1),
+    rgba(4, 83, 45, 0.7)
+    );
+  height: 100vh;
+  width: 100vw;
+  overflow:scroll;
+}
+
+
+.helpButtonWrapper {
+  /*display: flex;
+  justify-content: center;
+  align-items: center;*/
+}
+
+.needHelpButton {
+  border-radius: 50%;
+}
+
+.helpButton {
+  width: 100%;
+}
+
+.chatroomHelperArea {
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    rgba(27, 116, 156, 0.7),
+    rgba(126, 12, 16, 0.1),
+    rgba(27, 116, 156, 0.7)
+    );
+  overflow: scroll;
+}
+
+.chatroomHelpeeArea {
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    rgba(172, 20, 26, 0.7),
+    rgba(255, 255, 255, 0.1),
+    rgba(172, 20, 26, 0.7)
+    );
+  overflow: scroll;
+}
+
+.chatArea {
+  text-align: left;
+  margin-top: 2%;
+}
+.chatArea .container {
+  background-color: white;
+  border: 3px solid black;
+  height: 70vh;
+  width: 80%;
+  overflow-y: scroll;
+  transform: rotate(180deg);
+}
+.chatInput {
+  width: 80%;
+  left: 10%;
+  border: 3px solid black;
+}
+.chatArea li {
+  list-style: none;
+  transform: rotate(180deg);
+}
+.chatArea ul {
+  padding-left: 1%;
+}
+.myMessage {
+  background-color: beige;
+  text-align: left;
+}

@@ -1,24 +1,17 @@
-<div class="chatroomHelpeeBackground" ng-init="loading = false">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-xs-12 text-center">
-        <button class="btn btn-lg btn-primary backToClassHelpee" ng-click="backToClass()" ng-disabled="loading">Ok I'm good</button>
-      </div>
-    </div>
-  </div>
+<div class="chatroomHelpeeArea">
+  <gg-nav-bar></gg-nav-bar>
   <div class="chatArea">
     <div class="container">
       <div class="row">
         <div class="col-xs-12">
           <ul>
             <li ng-repeat="message in messages | orderBy:'-'" class="text-right" ng-class="{'myMessage': message.sender === user.$id}">{{displayMessage(message)}}</li>
-            <li id="bottom"></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="input-group chatInput">
-      <input class="form-control" type="text" placeholder="What do you need help with?" ng-model="newMessageText" ng-keydown="checkEnter($event)">
+      <input class="form-control" type="text" placeholder="Type your response here" ng-model="newMessageText" ng-keydown="checkEnter($event)">
       <span class="input-group-btn">
         <button class="btn btn-default" type="button" ng-click="addMessage()" ng-disabled="loading">Send!</button>
       </span>

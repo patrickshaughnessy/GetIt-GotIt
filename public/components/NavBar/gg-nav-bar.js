@@ -14,6 +14,9 @@ angular.module('app')
       scope.isProfile = $state.current.name === 'profile';
       scope.isTeacherClassroom = $state.current.name === 'teacher-classroom';
       scope.isTeacherStats = $state.current.name === 'teacher-stats';
+      scope.isStudentClassroom = $state.current.name === 'student-classroom';
+      scope.isChatroomHelpee = $state.current.name === 'chatroom-helpee';
+      scope.isChatroomHelper = $state.current.name === 'chatroom-helper';
       scope.navBarMargin = (scope.isProfile || scope.isTeacherStats) ? {} : {'margin-bottom':'0'};
     }
   }

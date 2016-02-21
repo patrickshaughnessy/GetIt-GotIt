@@ -64,5 +64,49 @@
       <p class="navbar-text" ng-show="user">{{user.name}}, here are your stats</p>
     </div>
 
+    <div class="collapse navbar-collapse" id="gg-nav" ng-if="isStudentClassroom">
+      <ul class="nav navbar-nav">
+        <li>
+          <a ui-sref="home">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Home
+          </a>
+        </li>
+      </ul>
+      <p class="navbar-text" ng-hide="user">Welcome!</p>
+      <p class="navbar-text" ng-show="user">Class #{{user.class.id}}</p>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a class="btn btn-danger" ui-sref="home" ng-click="leaveClass()">
+            Leave Class
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="collapse navbar-collapse" id="gg-nav" ng-if="isChatroomHelpee">
+      <p class="navbar-text">Helper</p>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a ng-click="backToClass()">
+            Ok, I'm good.
+            <i class="glyphicon glyphicon-chevron-right"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="collapse navbar-collapse" id="gg-nav" ng-if="isChatroomHelper">
+      <ul class="nav navbar-nav">
+        <li>
+          <a ng-click="backToClass()">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Sorry, I Can't Help
+          </a>
+        </li>
+      </ul>
+      <p class="navbar-text">Helper</p>
+    </div>
+
   </div>
 </nav>

@@ -2,7 +2,7 @@
 
 angular
   .module('app')
-  .controller("studentCtrl", function(Auth, currentAuth, $state, $rootScope, $scope, $firebaseObject, $firebaseArray, $timeout) {
+  .controller("studentCtrl", function(Auth, currentAuth, $state, $rootScope, $scope, $firebaseObject, $firebaseArray, $timeout, $window) {
 
     var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
     var user = $firebaseObject(userRef);
@@ -125,5 +125,21 @@ angular
         $state.go('splash');
       },200)
     }
+
+    $scope.needHelpButton = {}
+
+    function updateSize(){
+      var width = $window.innerWidth;
+      var height = $window.innerHeight;
+
+      $scope.needHelpButton.width = width > height ? Math.round(height*0.5)  : Math.round(width*0.7);
+      $scope.needHelpButton.margin = width > height ? Math.round(height*0.05)  : Math.round(width*0.05);
+
+    }
+    updateSize();
+    angular.element($window).bind('resize', function(){
+      $scope.$apply(updateSize);
+    });
+    // angular.element($window).bind('orientationchange', updateSize);
 
   });
