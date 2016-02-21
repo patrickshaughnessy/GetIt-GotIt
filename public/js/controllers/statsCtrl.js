@@ -71,6 +71,22 @@ angular
     /// POPULATE DATA PER CLASS ///
     ///////////////////////////////
 
+    $scope.showingClassID;
+    $scope.toggleClass = function(id){
+      $scope.showingClassID = $scope.showingClassID === id ? undefined : id;
+      if ($scope.showingClassID){
+        $scope.showClassDetails(id);
+      }
+    }
+
+    $scope.showingStudentID;
+    $scope.toggleStudent = function(id){
+      $scope.showingStudentID = $scope.showingStudentID === id ? undefined : id;
+      if ($scope.showingStudentID){
+        $scope.viewStudentStats(id);
+      }
+    }    
+
     $scope.showNone = true;
     $scope.showClassDetails = function(id){
       if (id === 'reset'){

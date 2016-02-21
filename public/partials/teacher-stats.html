@@ -37,103 +37,94 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-xs-2 col-xs-offset-5 text-center">
-      <div class="dropdown">
-        <button class="btn btn-primary btn-lg dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          View A Class
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-          <li>
-            <a ng-click="showClassDetails('reset')">Select A Date</a>
-          </li>
-          <li ng-repeat="class in classesData | orderBy:'-time'">
-            <a ng-click="showClassDetails(class.id)">{{class.time | date : 'medium'}}</a>
-          </li>
-        </ul>
+  <div class="row" ng-repeat="class in classesData | orderBy:'-time'">
+    <div class="col-xs-12 text-center">
+      <button class="btn btn-primary btn-lg" ng-click="toggleClass(class.id)">
+        {{class.time | date : 'MMMM d, yyyy'}} at {{class.time | date : 'shortTime'}}
+        <span class="glyphicon" ng-class="{'glyphicon-triangle-right': showingClassID !== class.id, 'glyphicon-triangle-bottom': showingClassID === class.id}"></span>
+      </button>
+    </div>
+    <div class="statsDataArea" ng-show="showingClassID === class.id">
+      <div class="col-xs-12 text-center studentStatsHeader">
+        <h3>Now viewing class data from</h3>
+        <h1>{{currentClassTime | date : 'medium'}}</h1>
       </div>
-    </div>
-  </div>
-  <div class="row statsDataArea" ng-if="!showNone">
-    <div class="col-xs-12 text-center studentStatsHeader">
-      <h3>Now viewing class data from</h3>
-      <h1>{{currentClassTime | date : 'medium'}}</h1>
-    </div>
-    <div class="col-xs-12 col-sm-6 percentageGraph">
-      <percentage-graph data="{{currentClassData}}"></percentage-graph>
-    </div>
-    <div class="col-xs-12 col-sm-6 statsClassTotalsArea">
-      <table class="table">
-        <tbody>
-          <tr>
-            <td>Total Students</td>
-            <td>:</td>
-            <td>{{totalStudents}}</td>
-          </tr>
-          <tr>
-            <td>Average Comprehension Rate</td>
-            <td>:</td>
-            <td>{{avgComp}}%</td>
-          </tr>
-          <tr>
-            <td>Duration</td>
-            <td>:</td>
-            <td>{{duration}}</td>
-          </tr>
-          <tr>
-            <td>Total Points</td>
-            <td>:</td>
-            <td>{{classPoints}}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="dropdown text-center">
-        <button class="btn btn-primary btn-lg dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          View A Student
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-          <li ng-repeat="student in studentList | orderBy:'name'">
-            <a ng-click="viewStudentStats(student.id)">{{student.name}}</a>
-          </li>
-        </ul>
+      <div class="col-xs-12 col-sm-6 percentageGraph">
+        <p>Comprehension Rate During Class</p>
+        <percentage-graph data="{{currentClassData}}"></percentage-graph>
       </div>
-    </div>
-
-    <div class="col-xs-12 studentStatsArea" ng-if="studentStats">
-      <div class="col-xs-12 col-sm-4 col-sm-offset-1">
-        <img class="studentProfileImg" ng-src="{{studentStats.studentInfo.avatar}}" alt="Profile Pic">
-      </div>
-      <div class="col-xs-12 col-sm-6 col-sm-offset-1">
-        <h2 class="text-center">{{studentStats.studentInfo.name}}</h2>
+      <div class="col-xs-12 col-sm-6 statsClassTotalsArea">
         <table class="table">
           <tbody>
             <tr>
-              <td>Total Time In Class</td>
+              <td>Total Students</td>
               <td>:</td>
-              <td>{{studentStats.totalTimeInClass}}</td>
-            </tr>
-            <tr>
-              <td>Time As Helpee</td>
-              <td>:</td>
-              <td>{{studentStats.helpeeTime}}</td>
-            </tr>
-            <tr>
-              <td>Time As Helper</td>
-              <td>:</td>
-              <td>{{studentStats.helperTime}}</td>
+              <td>{{totalStudents}}</td>
             </tr>
             <tr>
               <td>Average Comprehension Rate</td>
               <td>:</td>
-              <td>{{studentStats.avgComprehensionRate}}</td>
+              <td>{{avgComp}}%</td>
+            </tr>
+            <tr>
+              <td>Duration</td>
+              <td>:</td>
+              <td>{{duration}}</td>
+            </tr>
+            <tr>
+              <td>Total Points</td>
+              <td>:</td>
+              <td>{{classPoints}}</td>
             </tr>
           </tbody>
         </table>
-        <button type="button" class="btn btn-primary btn-lg text-center" data-toggle="modal" data-target="#chatHistoryModal">
-          Chat History
-        </button>
+        <div class="dropdown text-center">
+          <button class="btn btn-primary btn-lg dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            View A Student
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <li ng-repeat="student in studentList | orderBy:'name'">
+              <a ng-click="viewStudentStats(student.id)">{{student.name}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-xs-12 studentStatsArea" ng-if="studentStats">
+        <div class="col-xs-12 col-sm-4 col-sm-offset-1">
+          <img class="studentProfileImg" ng-src="{{studentStats.studentInfo.avatar}}" alt="Profile Pic">
+        </div>
+        <div class="col-xs-12 col-sm-6 col-sm-offset-1">
+          <h2 class="text-center">{{studentStats.studentInfo.name}}</h2>
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>Total Time In Class</td>
+                <td>:</td>
+                <td>{{studentStats.totalTimeInClass}}</td>
+              </tr>
+              <tr>
+                <td>Time As Helpee</td>
+                <td>:</td>
+                <td>{{studentStats.helpeeTime}}</td>
+              </tr>
+              <tr>
+                <td>Time As Helper</td>
+                <td>:</td>
+                <td>{{studentStats.helperTime}}</td>
+              </tr>
+              <tr>
+                <td>Average Comprehension Rate</td>
+                <td>:</td>
+                <td>{{studentStats.avgComprehensionRate}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn btn-primary btn-lg text-center" data-toggle="modal" data-target="#chatHistoryModal">
+            Chat History
+          </button>
+        </div>
       </div>
     </div>
   </div>
