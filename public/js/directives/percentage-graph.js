@@ -7,7 +7,7 @@ angular
     var link = function(scope, elem, attrs){
 
       var width = elem[0].clientWidth;
-      var height = $('.statsBackground')[0].clientHeight*0.5;
+      var height = $('.teacherStatsArea')[0].clientHeight*0.5;
 
       var margin = {
         left: width*0.1,
@@ -39,7 +39,7 @@ angular
         }
 
         width = $('.percentageGraph')[0].clientWidth;
-        height = $('.statsBackground')[0].clientHeight*0.5;
+        height = $('.teacherStatsArea')[0].clientHeight*0.5;
 
         margin = {
           left: width*0.1,

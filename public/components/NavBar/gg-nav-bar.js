@@ -12,8 +12,9 @@ angular.module('app')
 
       scope.isHome = $state.current.name === 'home';
       scope.isProfile = $state.current.name === 'profile';
-      scope.isTeacherClassroom = $state.current.name === 'teacher-classroom'
-      console.log('navbar name', $state.current.name)
+      scope.isTeacherClassroom = $state.current.name === 'teacher-classroom';
+      scope.isTeacherStats = $state.current.name === 'teacher-stats';
+      scope.navBarMargin = (scope.isProfile || scope.isTeacherStats) ? {} : {'margin-bottom':'0'};
     }
   }
 });

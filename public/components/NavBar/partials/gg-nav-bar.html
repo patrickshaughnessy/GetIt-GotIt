@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default" ng-show="isLoggedIn">
+<nav class="navbar navbar-default" ng-show="isLoggedIn" ng-style="navBarMargin">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#gg-nav" aria-expanded="false">
@@ -49,6 +49,19 @@
       </ul>
       <p class="navbar-text" ng-hide="user">Loading Your Class</p>
       <p class="navbar-text" ng-show="user">Class# {{user.teacher}}</p>
+    </div>
+
+    <div class="collapse navbar-collapse" id="gg-nav" ng-if="isTeacherStats">
+      <ul class="nav navbar-nav">
+        <li>
+          <a ui-sref="home">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Home
+          </a>
+        </li>
+      </ul>
+      <p class="navbar-text" ng-hide="user">Loading Your Stats</p>
+      <p class="navbar-text" ng-show="user">{{user.name}}, here are your stats</p>
     </div>
 
   </div>

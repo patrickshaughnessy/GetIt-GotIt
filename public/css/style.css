@@ -2,9 +2,66 @@ body {
   font-family: 'ABeeZee', sans-serif;
 }
 
+.navbar {
+  /*margin-bottom: 0;*/
+}
+
 .btn {
   border-radius: 0;
   cursor: pointer;
+}
+
+.teacherStatsArea {
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(
+    to bottom,
+    rgba(4, 83, 45, 0.7),
+    rgba(4, 83, 45, 0.1),
+    rgba(4, 83, 45, 0.7)
+    );
+  overflow: scroll;
+}
+
+.homeTeacherArea {
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    rgba(4, 83, 45, 0.7),
+    rgba(4, 83, 45, 0.1),
+    rgba(4, 83, 45, 0.7)
+    );
+  overflow: scroll;
+}
+.homeStudentArea {
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    rgba(27, 116, 156, 0.7),
+    rgba(126, 12, 16, 0.1),
+    rgba(27, 116, 156, 0.7)
+    );
+  overflow: scroll;
+}
+.profileArea {
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    rgba(27, 116, 156, 0.7),
+    rgba(126, 12, 16, 0.1),
+    rgba(27, 116, 156, 0.7)
+    );
+  overflow: scroll;
+}
+
+.profileImageWrapper {
+  height: 50vh;
+}
+
+.profileImg {
+  object-position: center;
+  height: 100%;
+  margin: auto;
 }
 
 /* teacher classroom */
@@ -39,34 +96,64 @@ body {
 }
 
 
-
-/*.btn-primary {
-  background: linear-gradient(
-    to bottom,
-    rgba(27, 116, 156, 0.6),
-    rgba(0, 0, 0, 0.8),
-    rgba(27, 116, 156, 0.6)
-    );
-}
-
-.btn-success {
-  background: linear-gradient(
-    to bottom,
-    rgba(4, 83, 45, 0.6),
-    rgba(0, 0, 0, 0.8),
-    rgba(4, 83, 45, 0.6)
-    );
-}
-
-.btn-warning {
-  background: linear-gradient(
-    to bottom,
-    rgba(172, 20, 26, 1),
-    rgba(0, 0, 0, 0.8),
-    rgba(172, 20, 26, 1)
-    );
-}*/
-
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
+}
+
+
+
+.statsHeader {
+  background: linear-gradient(
+    to bottom,
+    rgba(4, 83, 45, 0.05),
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 1),
+    rgba(4, 83, 45, 0.05)
+    );
+}
+
+.statsTotalsArea {
+  color: black;
+}
+
+.statsTotalsArea {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 1),
+    rgba(4, 83, 45, 0.05)
+    );
+}
+/*.statsTotalsArea thead {
+  font-size: 1.2em;
+}
+.statsTotalsArea tbody {
+  font-size: 2em;
+}*/
+
+.statsDataArea {
+  background-color: white;
+  border: 1vw solid rgba(4, 83, 45, 0.4);
+}
+
+.studentStatsHeader {
+  border-bottom: 1vw solid rgba(4, 83, 45, 0.4);
+}
+
+.percentageGraph {
+  border-right: 1vw solid rgba(4, 83, 45, 0.4);
+}
+
+.studentStatsArea {
+  border-top: 1vw solid rgba(4, 83, 45, 0.4);
+}
+
+.modal-body li {
+  list-style: none;
 }
