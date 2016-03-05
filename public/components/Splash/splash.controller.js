@@ -8,7 +8,7 @@ angular
       $state.go('home');
     }
 
-    var usersRef = new Firebase('https://getitgotit.firebaseio.com/users')
+    var usersRef = new Firebase('https://ch-getitgotit.firebaseio.com/users')
     var users = $firebaseObject(usersRef);
 
     $scope.loginWithFacebook = function(){

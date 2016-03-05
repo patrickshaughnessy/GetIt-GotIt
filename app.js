@@ -19,7 +19,7 @@ app.options('*', function(req, res, next){
   next();
 });
 
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/getitgotit');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/ch-getitgotit');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

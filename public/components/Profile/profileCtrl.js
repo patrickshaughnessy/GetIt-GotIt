@@ -4,7 +4,7 @@ angular
   .module('app')
   .controller("profileCtrl", function(currentAuth, Auth, $state, $rootScope, $scope, $firebaseObject, $firebaseArray, $timeout) {
 
-    var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
+    var userRef = new Firebase(`https://ch-getitgotit.firebaseio.com/users/${currentAuth.uid}`);
     var user = $firebaseObject(userRef);
     user.$bindTo($scope, 'user')
 

@@ -9,7 +9,7 @@ angular
     var isChrome = !!window.chrome && !!window.chrome.webstore;
     console.log('is chrome?', isChrome);
 
-    var classDataRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${$state.params.classID}`);
+    var classDataRef = new Firebase(`https://ch-getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${$state.params.classID}`);
     var classData = $firebaseObject(classDataRef);
     classData.$bindTo($scope, 'classData').then(function(){
       if (!$scope.classData.time){
@@ -17,24 +17,24 @@ angular
       }
     })
 
-    var dataRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${$state.params.classID}/data`);
+    var dataRef = new Firebase(`https://ch-getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${$state.params.classID}/data`);
     $scope.timeData = $firebaseArray(dataRef);
 
-    var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
+    var userRef = new Firebase(`https://ch-getitgotit.firebaseio.com/users/${currentAuth.uid}`);
     var user = $firebaseObject(userRef);
     user.$bindTo($scope, 'user');
 
-    var classroomRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);
+    var classroomRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);
     var classroom = $firebaseObject(classroomRef);
     classroom.$bindTo($scope, 'classroom');
 
-    var studentsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/students`);
+    var studentsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/${$state.params.classID}/students`);
     $scope.students = $firebaseArray(studentsRef);
 
-    var chatroomsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms`);
+    var chatroomsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms`);
     $scope.chatrooms = $firebaseArray(chatroomsRef);
 
-    var teacherChatroomsRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${$state.params.classID}/chatrooms`);
+    var teacherChatroomsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${$state.params.classID}/chatrooms`);
     $scope.teacherChatrooms = $firebaseArray(teacherChatroomsRef);
 
     // flash chatroom info to teacher chatrooms record on chatroom end

@@ -5,7 +5,6 @@ angular
   .directive('ggTimeData', function($window, $interval){
 
     var link = function(scope, elem, attrs){
-
       var width = $('.teacherClassroomArea')[0].clientWidth;
       var height = $('.teacherClassroomArea')[0].clientHeight - $('.teacherClassroomArea')[0].clientHeight*0.8;
 
@@ -148,7 +147,7 @@ angular
     }
 
     return {
-      template: '<div class="timeDataArea"></div>',
+      template: '<div></div>',
       replace: true,
       restrict: 'EA',
       scope: {

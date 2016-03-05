@@ -3,7 +3,7 @@
 
   <div class="container-fluid">
     <div class="row text-center">
-      <div class="col-xs-12">
+      <div class="col-xs-12 timeDataArea">
         <h4 ng-hide="isRecording">Use the following controls to record class data...</h2>
         <time-data data="{{timeData}}" ng-show="isRecording"></time-data>
       </div>
@@ -18,7 +18,7 @@
       </div>
       <div class="col-xs-12">
         <h2 ng-hide="students.length">Waiting for students to join...</h2>
-        <!-- <gg-student-circles students="{{students}}" percentage="{{percentage}}" ng-show="students.length"></gg-student-circles> -->
+        <gg-student-circles students="{{students}}" percentage="{{percentage}}" ng-show="students.length"></gg-student-circles>
       </div>
     </div>
   </div>

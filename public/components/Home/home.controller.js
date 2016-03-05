@@ -4,14 +4,14 @@ angular
   .module('app')
   .controller("homeCtrl", function(currentAuth, Auth, $state, $rootScope, $scope, $firebaseObject, $firebaseArray, $timeout) {
 
-    var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
+    var userRef = new Firebase(`https://ch-getitgotit.firebaseio.com/users/${currentAuth.uid}`);
     var user = $firebaseObject(userRef);
     user.$bindTo($scope, 'user')
 
-    var classroomsRef = new Firebase("https://getitgotit.firebaseio.com/classrooms");
+    var classroomsRef = new Firebase("https://ch-getitgotit.firebaseio.com/classrooms");
     var classrooms = $firebaseObject(classroomsRef);
     classrooms.$bindTo($scope, 'classrooms');
-    var classroomsIDsRef = new Firebase("https://getitgotit.firebaseio.com/classroomsIDs");
+    var classroomsIDsRef = new Firebase("https://ch-getitgotit.firebaseio.com/classroomsIDs");
     var classroomsIDs = $firebaseObject(classroomsIDsRef);
     classroomsIDs.$bindTo($scope, 'classroomsIDs');
 
@@ -63,7 +63,7 @@ angular
       };
 
       // otherwise, log them into the class
-      var studentsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${classID}/students`);
+      var studentsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/${classID}/students`);
       var students = $firebaseArray(studentsRef);
       students.$loaded().then(function(list){
         // set session points to 0 for student
@@ -78,14 +78,14 @@ angular
             id: classID,
             key: key
           };
-          $state.go('student-classroom', {classID: classID});
+          $state.go('student', {classID: classID});
         });
       })
     }
 
     $scope.rejoinClass = function(){
       $scope.loading = true;
-      $state.go('student-classroom', {classID: $scope.user.class.id});
+      $state.go('student', {classID: $scope.user.class.id});
     }
 
     $scope.logout = function(){

@@ -4,7 +4,7 @@ angular
   .module('app')
   .controller("studentCtrl", function(Auth, currentAuth, $state, $rootScope, $scope, $firebaseObject, $firebaseArray, $timeout, $window) {
 
-    var userRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}`);
+    var userRef = new Firebase(`https://ch-getitgotit.firebaseio.com/users/${currentAuth.uid}`);
     var user = $firebaseObject(userRef);
     user.$bindTo($scope, 'user').then(function(){
       // make sure user didn't use back button to leave
@@ -19,12 +19,12 @@ angular
       }, 300)
     })
 
-    var classroomRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);
+    var classroomRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);
     var classroom = $firebaseObject(classroomRef);
     classroom.$bindTo($scope, 'classroom');
 
     // remove student if teacher ends the class;
-    var classroomsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms`);
+    var classroomsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms`);
     classroomsRef.on('child_removed', function(removedClassroom){
       if (removedClassroom.key() === $state.params.classID) {
         $scope.user.helpee = false;
@@ -34,10 +34,10 @@ angular
       }
     });
 
-    var studentsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/students`);
+    var studentsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/${$state.params.classID}/students`);
     $scope.students = $firebaseArray(studentsRef);
 
-    var chatroomsRef = new Firebase(`https://getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms`);
+    var chatroomsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms`);
     $scope.chatrooms = $firebaseArray(chatroomsRef);
 
     // display help button
