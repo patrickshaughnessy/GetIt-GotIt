@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "serve ./build",
     "gulp": "export NODE_ENV=development && gulp",
     "deploy": "export NODE_ENV=production && gulp && firebase deploy"
   },

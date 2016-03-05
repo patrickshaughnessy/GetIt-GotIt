@@ -44,7 +44,7 @@ gulp.task('assets', ['clean'], function(cb){
 })
 
 gulp.task('bower', ['clean'], function(cb){
-	gulp.src('public/bower_components/**/*')
+	gulp.src(['public/bower_components/**/*', '!public/bower_components/bootstrap/node_modules/**/*'])
 		.pipe(gulp.dest('build/bower_components'));
 		cb();
 })
@@ -71,8 +71,8 @@ gulp.task('index', ['clean'], function(cb){
 
 gulp.task('statics', ['assets', 'bower', 'css', 'partials', 'index']);
 
-gulp.task('watch', ['jsdev', 'statics'], function(){
-	gulp.watch('public/**/*', ['default']);
+gulp.task('watch', ['clean', 'jsdev', 'statics'], function(){
+	gulp.watch(['public/**/*', '!public/bower_components/**/*'], ['default']);
 	gulp.watch('views/index.ejs', ['default']);
 });
 
