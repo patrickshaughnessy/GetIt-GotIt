@@ -2,7 +2,7 @@
 
 angular
   .module('app')
-  .directive('studentCircles', function($window){
+  .directive('ggStudentCircles', function($window){
 
     var link = function(scope, elem, attrs){
       var width = $('.teacherClassroomArea')[0].clientWidth;
@@ -188,7 +188,6 @@ angular
 
       var percentageColor = function(percent, students){
         var gradient = students.length ? (100 - percent)*0.01 : 0;
-        console.log('percentage,', percent, students)
         if (gradient == 0){
           return {
             'background': `linear-gradient(

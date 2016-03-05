@@ -12,12 +12,10 @@ angular.module('app')
 
       scope.isHome = $state.current.name === 'home';
       scope.isProfile = $state.current.name === 'profile';
-      scope.isTeacherClassroom = $state.current.name === 'teacher-classroom';
-      scope.isTeacherStats = $state.current.name === 'teacher-stats';
-      scope.isStudentClassroom = $state.current.name === 'student-classroom';
-      scope.isChatroomHelpee = $state.current.name === 'chatroom-helpee';
-      scope.isChatroomHelper = $state.current.name === 'chatroom-helper';
-      scope.navBarMargin = (scope.isProfile || scope.isTeacherStats) ? {} : {'margin-bottom':'0'};
+      scope.isTeacher = $state.current.name === 'teacher';
+      scope.isStudent = $state.current.name === 'student';
+
+      scope.navBarMargin = scope.isProfile ? {} : {'margin-bottom':'0'};
     }
   }
 });

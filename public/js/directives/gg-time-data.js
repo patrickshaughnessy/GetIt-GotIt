@@ -2,7 +2,7 @@
 
 angular
   .module('app')
-  .directive('timeData', function($window, $interval){
+  .directive('ggTimeData', function($window, $interval){
 
     var link = function(scope, elem, attrs){
 

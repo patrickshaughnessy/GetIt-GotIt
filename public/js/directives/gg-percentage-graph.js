@@ -2,7 +2,7 @@
 
 angular
   .module('app')
-  .directive('percentageGraph', function($window, $interval){
+  .directive('ggPercentageGraph', function($window, $interval){
 
     var link = function(scope, elem, attrs){
 

@@ -2,9 +2,12 @@
 
 angular
   .module('app')
-  .controller("teacherCtrl", function(DataService, Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray, $timeout, $interval) {
+  .controller("teacherCtrl", function(Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray, $timeout, $interval) {
 
     $scope.classID = $state.params.classID;
+
+    var isChrome = !!window.chrome && !!window.chrome.webstore;
+    console.log('is chrome?', isChrome);
 
     var classDataRef = new Firebase(`https://getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${$state.params.classID}`);
     var classData = $firebaseObject(classDataRef);
@@ -43,11 +46,11 @@ angular
     var updatePercentage = function(){
       if ($scope.students.length){
         $scope.percentage = Math.round((1 - ($scope.chatrooms.length / $scope.students.length))*100) + '%';
-        if ($scope.percentage == '100%' && !green){
-          // document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+        if ($scope.percentage == '100%' && !green && isChrome){
+          document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
           green = true;
-        } else if ($scope.percentage != '100%'){
-          // document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/redcircle.ico");
+        } else if ($scope.percentage != '100%' && isChrome){
+          document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/redcircle.ico");
           green = false;
         }
       } else {
@@ -103,7 +106,9 @@ angular
         $state.go('home');
       });
 
-      // document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+      if (isChrome){
+        document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+      }
 
     }
 
