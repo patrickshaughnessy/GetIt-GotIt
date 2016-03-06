@@ -49,7 +49,6 @@ angular
     }
 
     $scope.goToClass = function(classroom){
-      console.log('classroom', classroom);
       $scope.loading = true;
       // wait for firebase connection, return if not valid input
       if (!$scope.user || !$scope.classrooms || !classroom.id) {

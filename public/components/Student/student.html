@@ -1,19 +1,23 @@
-<div class="studentClassroomArea">
+<div class="studentClassroomArea" ng-style="studentBackground">
   <gg-nav-bar></gg-nav-bar>
 
   <div class="container">
     <div class="row">
       <div class="col-xs-6">
-        <button class="btn btn-default" ng-click="changeColor('gray')">Gray</button>
+        <button class="btn btn-default btn-block" ng-click="changeColor('gray')">Neutral</button>
       </div>
       <div class="col-xs-6">
-        <button class="btn btn-success" ng-click="changeColor('green')">Green</button>
+        <button class="btn btn-success btn-block" ng-click="changeColor('green')">I'm Good (Go Faster)</button>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+      <div class="col-xs-6">
+        <button class="btn btn-warning btn-block" ng-click="changeColor('yellow')">I'm OK (Don't Go Faster)</button>
       </div>
       <div class="col-xs-6">
-        <button class="btn btn-warning" ng-click="changeColor('yellow')">Yellow</button>
-      </div>
-      <div class="col-xs-6">
-        <button class="btn btn-danger" ng-click="changeColor('red')">Red</button>
+        <button class="btn btn-danger btn-block" ng-click="changeColor('red')">OH CRAP! (Too Fast)</button>
       </div>
     </div>
   </div>

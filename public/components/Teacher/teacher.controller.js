@@ -7,7 +7,6 @@ angular
     $scope.classID = $state.params.classID;
 
     var isChrome = !!window.chrome && !!window.chrome.webstore;
-    console.log('is chrome?', isChrome);
 
     var classDataRef = new Firebase(`https://ch-getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${$state.params.classID}`);
     var classData = $firebaseObject(classDataRef);
@@ -42,8 +41,6 @@ angular
 
         var percentage = (greens + yellows*0.5)/(greens + yellows + reds) || 0;
         var neutral = grays/(greens + yellows + reds);
-
-        console.log(totalStudents, percentage, neutral);
 
         if (neutral > 0){
           document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/graycircle.ico");
