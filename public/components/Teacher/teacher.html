@@ -1,26 +1,18 @@
 <div class="teacherClassroomArea">
-  <gg-nav-bar></gg-nav-bar>
-
-  <div class="container-fluid">
-    <div class="row text-center">
-      <div class="col-xs-12 timeDataArea">
-        <h4 ng-hide="isRecording">Use the following controls to record class data...</h2>
-        <gg-time-data data="{{timeData}}" ng-show="isRecording"></gg-time-data>
-        <div class="col-xs-4">
-          <button class="btn btn-success" ng-click="startRecording()">Start Recording</button>
-        </div>
-        <div class="col-xs-4">
-          <button class="btn btn-warning" ng-click="pauseRecording()">Pause Recording</button>
-        </div>
-        <div class="col-xs-4">
-          <button class="btn btn-danger" ng-click="endClass()">End Class</button>
-        </div>
-      </div>
-      <div class="col-xs-12">
-        <h2 ng-hide="students.length">Waiting for students to join...</h2>
-        <gg-student-circles students="{{students}}" percentage="{{percentage}}" ng-show="students.length"></gg-student-circles>
-      </div>
-    </div>
+  <div class="col-xs-12" ng-if="!auth">
+   <form name="loginForm" ng-submit="loginWithEmail(login)">
+     <div class="form-group">
+       <label for="loginEmail">Email address:</label>
+       <input type="email" class="form-control" id="loginEmail" placeholder="Email" ng-model="login.email" required>
+     </div>
+     <div class="form-group">
+       <label for="loginPassword">Password:</label>
+       <input type="password" class="form-control" id="loginPassword" placeholder="Password" ng-model="login.password" required>
+     </div>
+     <button type="submit" class="btn btn-success" ng-click="loginWithEmail(login)" ng-disabled="loggingIn" >{{loggingIn ? 'Logging In' : 'Login'}}</button>
+   </form>
   </div>
-
+  <div class="container-fluid" ng-if="auth">
+    <gg-teacher-view auth="{{auth}}"></gg-teacher-view>
+  </div>
 </div>

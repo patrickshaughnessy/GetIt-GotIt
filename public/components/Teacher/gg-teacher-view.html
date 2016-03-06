@@ -1,0 +1,16 @@
+<div class="row text-center">
+  <div class="col-xs-12 timeDataArea">
+    <h4 ng-hide="isRecording">Use the following controls to record class data...</h2>
+    <gg-time-data data="{{timeData}}" ng-show="isRecording"></gg-time-data>
+    <div class="col-xs-6">
+      <button class="btn btn-success" ng-click="startRecording()">Start Recording</button>
+    </div>
+    <div class="col-xs-6">
+      <button class="btn btn-danger" ng-click="stopRecording()">Stop Recording</button>
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <h2 ng-hide="students.length">Waiting for students to join...</h2>
+    <gg-student-circles students="{{students}}" percentage="{{percentage}}" ng-show="students.length"></gg-student-circles>
+  </div>
+</div>

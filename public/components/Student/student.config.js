@@ -3,7 +3,7 @@ angular
   .config(function($stateProvider) {
     $stateProvider
       .state('student', {
-        url: "/student/:classID",
+        url: "/student",
         templateUrl: "partials/student.html",
         controller: "studentCtrl",
         resolve: {

@@ -50,7 +50,7 @@ gulp.task('bower', ['clean'], function(cb){
 })
 
 gulp.task('css', ['clean'], function(cb){
-	gulp.src('public/css/**/*')
+	gulp.src(['public/css/**/*'])
 		.pipe(gulp.dest('build/css'));
 		cb();
 })

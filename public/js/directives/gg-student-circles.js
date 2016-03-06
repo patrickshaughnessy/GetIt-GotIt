@@ -154,11 +154,12 @@ angular
         width = $('.teacherClassroomArea')[0].clientWidth;
         height = $('.teacherClassroomArea')[0].clientHeight - $('.timeDataArea')[0].clientHeight;
 
-        var students = angular.fromJson(scope.students);
-
-        if (!students){
+        if (!scope.students){
           return;
         }
+
+        var students = angular.fromJson(scope.students);
+
 
         // separate students by color
         var greens = students

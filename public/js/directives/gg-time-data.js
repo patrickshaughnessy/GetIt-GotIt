@@ -37,6 +37,8 @@ angular
 
       var update = function(){
 
+        if (!scope.data.length) return;
+
         width = $('.teacherClassroomArea')[0].clientWidth;
         height = $('.teacherClassroomArea')[0].clientHeight - $('.teacherClassroomArea')[0].clientHeight*0.8;
 
@@ -70,6 +72,7 @@ angular
         });
 
         if (!data.length) return;
+
 
         var filler = Array(300).fill({x: 0, y: 0}).map(function(e, i){
           return {x: data[0].x - (1000*i), y:0}

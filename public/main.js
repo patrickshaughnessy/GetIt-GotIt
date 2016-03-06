@@ -1,12 +1,8 @@
 'use strict';
 
 angular
-  .module("app", ["firebase", "ui.router", 'ui.mask', 'naif.base64', 'ngAnimate', 'ngLodash'])
-  .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
-
-    // $httpProvider.defaults.useXDomain = true;
-    //
-    // delete $httpProvider.defaults.headers.common['X-Requested-With'];
+  .module("app", ["firebase", "ui.router", 'ui.mask', 'naif.base64', 'ngAnimate'])
+  .config(function($urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/");
 

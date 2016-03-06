@@ -3,12 +3,12 @@ angular
   .config(function($stateProvider) {
     $stateProvider
       .state('teacher', {
-        url: "/teacher/:classID",
+        url: "/teacher",
         templateUrl: "partials/teacher.html",
         controller: "teacherCtrl",
         resolve: {
           "currentAuth": ["Auth", function(Auth) {
-            return Auth.$requireAuth();
+            return Auth.$waitForAuth();
           }]
         }
       })
