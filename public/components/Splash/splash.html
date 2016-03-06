@@ -2,9 +2,9 @@
   <div class="splashWrapper" ng-init="loggingIn = false">
     <div class="splashTitle">
       <h1>Get It, Got It</h1>
-      <h3>Redefining the interactive classroom</h3>
-      <p>Use the buttons below to sign up with facebook or an email and password.</p>
-      <p>(Existing users, just sign in with your credentials!)</p>
+      <h3>Redefining the interactive classroom.</h3>
+      <p>Use the buttons below to sign up with facebook or github.</p>
+      <p>**Exclusively for Coding House!**</p>
       <div class="col-xs-12">
         <div class="row">
           <div class="hidden-xs">
@@ -20,23 +20,8 @@
             <h4>- or -</h4>
           </div>
           <div class="col-xs-12 col-sm-6">
-            <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#loginCollapse" aria-expanded="false" aria-controls="loginCollapse">
-              Login With Email
-            </button>
+            <button class="btn btn-default" role="button" ng-click="loginWithGithub()" ng-disabled="loggingIn" >{{loggingIn ? 'Logging In' : 'Login With Github'}}</button>
           </div>
-        </div>
-        <div class="collapse col-xs-11 col-sm-offset-3 col-sm-6" id="loginCollapse">
-          <form>
-            <div class="form-group">
-              <label for="loginEmail">Email address:</label>
-              <input type="email" class="form-control" id="loginEmail" placeholder="Email" ng-model="loginEmail">
-            </div>
-            <div class="form-group">
-              <label for="loginPassword">Password:</label>
-              <input type="password" class="form-control" id="loginPassword" placeholder="Password" ng-model="loginPassword">
-            </div>
-            <button type="submit" class="btn btn-success" ng-click="loginWithEmail()" ng-disabled="loggingIn" >{{loggingIn ? 'Logging In' : 'Login'}}</button>
-          </form>
         </div>
       </div>
     </div>

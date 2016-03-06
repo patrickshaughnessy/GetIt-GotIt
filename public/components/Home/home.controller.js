@@ -4,6 +4,8 @@ angular
   .module('app')
   .controller("homeCtrl", function(currentAuth, Auth, $state, $rootScope, $scope, $firebaseObject, $firebaseArray, $timeout) {
 
+    $scope.loading = false;
+
     var userRef = new Firebase(`https://ch-getitgotit.firebaseio.com/users/${currentAuth.uid}`);
     var user = $firebaseObject(userRef);
     user.$bindTo($scope, 'user')
@@ -17,10 +19,12 @@ angular
 
     var genClassID = function(){
       var id = (parseInt(Math.random()*1000000000, 10)).toString().replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3');
+      // first class ever
       if (!$scope.classroomsIDs){
         return id;
       }
-      return $scope.classroomsIDs[id] || id.length !== 11 ? genClassID() : id;
+      // previously used ID or invalid ID: try again
+      return ($scope.classroomsIDs[id] || id.length !== 11) ? genClassID() : id;
     }
 
     $scope.startNewClass = function(){
@@ -32,29 +36,28 @@ angular
 
       if (!$scope.user.teacher){
         var id = genClassID();
-        $scope.classroomsIDs[id] = {
-          teacher: currentAuth.uid
-        };
-        $scope.classrooms[id] = {
-          teacher: currentAuth.uid
-        };
+        // record teacherID to classroomIDs and set teacher in new classroom instance
+        $scope.classroomsIDs[id] = { teacher: currentAuth.uid };
+        $scope.classrooms[id] = { teacher: currentAuth.uid };
         $scope.user.teacher = id;
-        $state.go('teacher-classroom', {classID: id});
+        $state.go('teacher', {classID: id});
       } else {
+        // some error occurred
         $scope.loading = false;
       }
 
     }
 
-    $scope.goToClass = function(){
+    $scope.goToClass = function(classroom){
+      console.log('classroom', classroom);
       $scope.loading = true;
       // wait for firebase connection, return if not valid input
-      if (!$scope.user || !$scope.classrooms || !$scope.classID) {
+      if (!$scope.user || !$scope.classrooms || !classroom.id) {
         $scope.loading = false;
         return;
       }
 
-      var classID = $scope.classID.replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3');
+      var classID = classroom.id.replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3');
 
       // if no class with that ID exists, show error message
       if (!$scope.classrooms[classID]){
@@ -64,28 +67,16 @@ angular
 
       // otherwise, log them into the class
       var studentsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/${classID}/students`);
-      var students = $firebaseArray(studentsRef);
-      students.$loaded().then(function(list){
-        // set session points to 0 for student
-        var student = {};
-        angular.copy($scope.user, student);
-        student.points = 0;
-        student.classesData = null;
-        student.id = $scope.user.$id;
-        list.$add(student).then(function(ref){
-          var key = ref.key();
-          $scope.user.class = {
-            id: classID,
-            key: key
-          };
-          $state.go('student', {classID: classID});
-        });
-      })
-    }
-
-    $scope.rejoinClass = function(){
-      $scope.loading = true;
-      $state.go('student', {classID: $scope.user.class.id});
+      var students = $firebaseObject(studentsRef);
+      students.$bindTo($scope, 'students').then(function(){
+        var student = angular.copy($scope.user);
+        student.color= 'gray';
+        $scope.students[$scope.user.$id] = student;
+        $scope.user.classroom = {
+          id: classID
+        };
+        $state.go('student', {classID: classID});
+      });
     }
 
     $scope.logout = function(){

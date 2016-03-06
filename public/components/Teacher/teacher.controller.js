@@ -31,45 +31,48 @@ angular
     var studentsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/${$state.params.classID}/students`);
     $scope.students = $firebaseArray(studentsRef);
 
-    var chatroomsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms`);
-    $scope.chatrooms = $firebaseArray(chatroomsRef);
-
-    var teacherChatroomsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/users/${currentAuth.uid}/classesData/${$state.params.classID}/chatrooms`);
-    $scope.teacherChatrooms = $firebaseArray(teacherChatroomsRef);
-
-    // flash chatroom info to teacher chatrooms record on chatroom end
-    chatroomsRef.on('child_removed', function(snap){
-      $scope.teacherChatrooms.$add(snap.val());
-    })
-
-    var green;
     var updatePercentage = function(){
       if ($scope.students.length){
-        $scope.percentage = Math.round((1 - ($scope.chatrooms.length / $scope.students.length))*100) + '%';
-        if ($scope.percentage == '100%' && !green && isChrome){
-          document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
-          green = true;
-        } else if ($scope.percentage != '100%' && isChrome){
-          document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/redcircle.ico");
-          green = false;
+        var grays = $scope.students.filter(student => student.color === 'gray').length;
+        var greens = $scope.students.filter(student => student.color === 'green').length;
+        var yellows = $scope.students.filter(student => student.color === 'yellow').length;
+        var reds = $scope.students.filter(student => student.color === 'red').length;
+
+        var totalStudents = grays + greens + yellows + reds;
+
+        var percentage = (greens + yellows*0.5)/(greens + yellows + reds) || 0;
+        var neutral = grays/(greens + yellows + reds);
+
+        console.log(totalStudents, percentage, neutral);
+
+        if (neutral > 0){
+          document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/graycircle.ico");
+          $scope.percentage = '...';
+        } else {
+          var green, yellow, red;
+          $scope.percentage = Math.round(percentage * 100);
+          if ($scope.percentage > 80 && !green && isChrome){
+            document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+            green = true;
+            yellow = false;
+            red = false;
+          } else if ($scope.percentage > 60 && !yellow && isChrome){
+            document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/yellowcircle.ico");
+            green = false;
+            yellow = true;
+            red = false;
+          } else if ($scope.percentage <= 60 && !red && isChrome){
+            document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/redcircle.ico");
+            green = false;
+            yellow = false;
+            red = true;
+          }
         }
-      } else {
-        $scope.percentage = '...';
       }
     }
 
-    var updatePoints = function(){
-      $scope.points = $scope.students.reduce(function(a, student){
-        return a + student.points;
-      }, 0);
-    }
-
-    $scope.chatrooms.$watch(function(e){
-      updatePercentage();
-    });
     $scope.students.$watch(function(e){
       updatePercentage();
-      updatePoints();
     });
 
 
@@ -79,9 +82,7 @@ angular
       $scope.isRecording = $interval(function(){
         var info = {
           time: Date.now(),
-          percentage: (!$scope.percentage || $scope.percentage == '...') ? 0 : +$scope.percentage.slice(0,-1),
-          chatrooms: $scope.chatrooms || null,
-          points: $scope.points || null,
+          percentage: (!$scope.percentage || $scope.percentage == '...') ? 0 : $scope.percentage,
           students: $scope.students || null
         };
         $scope.timeData.$add(info);
@@ -100,7 +101,7 @@ angular
       if ($scope.isRecording){
         $interval.cancel($scope.isRecording);
       }
-      $scope.user.teacher = false;
+      $scope.user.teacher = null;
 
       classroom.$remove().then(function(){
         $state.go('home');

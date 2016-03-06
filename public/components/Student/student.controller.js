@@ -6,18 +6,7 @@ angular
 
     var userRef = new Firebase(`https://ch-getitgotit.firebaseio.com/users/${currentAuth.uid}`);
     var user = $firebaseObject(userRef);
-    user.$bindTo($scope, 'user').then(function(){
-      // make sure user didn't use back button to leave
-      $timeout(function(){
-        if (!$scope.user.class || $scope.user.class.id !== $state.params.classID){
-          $state.go('home');
-        } else if ($scope.user.helpee){
-          $state.go('chatroom-helpee', {classID: $state.params.classID, chatID: $scope.user.helpee});
-        } else if ($scope.user.helper){
-          $state.go('chatroom-helper', {classID: $state.params.classID, chatID: $scope.user.helper.chatID});
-        }
-      }, 300)
-    })
+    user.$bindTo($scope, 'user');
 
     var classroomRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/${$state.params.classID}`);
     var classroom = $firebaseObject(classroomRef);
@@ -27,119 +16,34 @@ angular
     var classroomsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms`);
     classroomsRef.on('child_removed', function(removedClassroom){
       if (removedClassroom.key() === $state.params.classID) {
-        $scope.user.helpee = false;
-        $scope.user.helper = false;
         $scope.user.class = null;
         $state.go('home');
       }
     });
 
     var studentsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/${$state.params.classID}/students`);
-    $scope.students = $firebaseArray(studentsRef);
+    var students = $firebaseObject(studentsRef);
+    students.$bindTo($scope, 'students')
 
-    var chatroomsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/${$state.params.classID}/chatrooms`);
-    $scope.chatrooms = $firebaseArray(chatroomsRef);
-
-    // display help button
-    chatroomsRef.on('value', function(snap){
-      if (!snap.val()){
-        $scope.displayHelp = false;
-      }
-      snap.forEach(function(child){
-        if (!child.val().helper){
-          $scope.displayHelp = true;
-          return true;
-        }
-        $scope.displayHelp = false;
-      })
-    })
-
-
-    $scope.needHelp = function(){
-      $scope.loading = true;
-      // create new chatroom for user
-      if (!$scope.user || !$scope.chatrooms) {
-        $scope.loading = false;
-        return;
-      }
-
-      $scope.chatrooms.$add({ helpee: currentAuth.uid }).then(function(chat){
-        var chatID = chat.key();
-        $scope.user.helpee = chatID;
-
-        // update students list in class for viz
-        var index = $scope.students.$indexFor($scope.user.class.key);
-        $scope.students.$getRecord($scope.user.class.key).helpee = chatID;
-        $scope.students.$save(index);
-
-        $state.go('chatroom-helpee', {classID: $state.params.classID, chatID: chatID});
-      })
-    }
-
-    $scope.helpSomeone = function(){
-      $scope.loading = true;
-      // join chatroom of user that needs help
-      chatroomsRef.once('value', function(chatrooms){
-
-        chatrooms.forEach(function(chatroom){
-          // find any chatroom with no helper
-          if (!chatroom.val().helper){
-            var index = $scope.chatrooms.$indexFor(chatroom.key())
-
-            $scope.chatrooms[index].helper = currentAuth.uid;
-            $scope.chatrooms.$save(index);
-
-            $scope.user.helper = {
-              helping: $scope.chatrooms[index].helpee,
-              chatID: chatroom.key()
-            }
-
-            // update students list in class for viz
-            var studentsIndex = $scope.students.$indexFor($scope.user.class.key);
-            $scope.students.$getRecord($scope.user.class.key).helper = {
-              helping: $scope.chatrooms[index].helpee,
-              chatID: chatroom.key()
-            }
-            $scope.students.$save(studentsIndex);
-
-            $state.go('chatroom-helper', {classID: $state.params.classID, chatID: chatroom.key()});
-            return true;
-          }
-        })
-      })
+    $scope.changeColor = function(color){
+      $scope.students[$scope.user.$id].color = color;
     }
 
     $scope.leaveClass = function(){
       $scope.loading = true;
-      $scope.students.$remove($scope.students.$getRecord($scope.user.class.key));
-      $scope.user.class = null;
+      $scope.students.$remove($scope.students.$getRecord($scope.user.classroom.key));
+      $scope.user.classroom = null;
       $state.go('home');
     }
 
     $scope.logout = function(){
       $scope.loading = true;
-      $scope.students.$remove($scope.students.$getRecord($scope.user.class.key));
-      $scope.user.class = null;
+      $scope.students.$remove($scope.students.$getRecord($scope.user.classroom.key));
+      $scope.user.classroom = null;
       $timeout(function(){
         Auth.$unauth();
         $state.go('splash');
-      },200)
+      },300)
     }
-
-    $scope.needHelpButton = {}
-
-    function updateSize(){
-      var width = $window.innerWidth;
-      var height = $window.innerHeight;
-
-      $scope.needHelpButton.width = width > height ? Math.round(height*0.5)  : Math.round(width*0.7);
-      $scope.needHelpButton.margin = width > height ? Math.round(height*0.05)  : Math.round(width*0.05);
-
-    }
-    updateSize();
-    angular.element($window).bind('resize', function(){
-      $scope.$apply(updateSize);
-    });
-    // angular.element($window).bind('orientationchange', updateSize);
 
   });

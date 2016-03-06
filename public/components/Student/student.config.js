@@ -6,9 +6,6 @@ angular
         url: "/student/:classID",
         templateUrl: "partials/student.html",
         controller: "studentCtrl",
-        params: {
-          studentKey: null
-        },
         resolve: {
           "currentAuth": ["Auth", function(Auth) {
             return Auth.$requireAuth();

@@ -8,49 +8,45 @@ angular
       var width = $('.teacherClassroomArea')[0].clientWidth;
       var height = $('.teacherClassroomArea')[0].clientHeight - $('.timeDataArea')[0].clientHeight;
 
-      height = height - height*0.2;
+      // height = height - height*0.2;
 
       var svg = d3.select(elem[0])
         .append('svg')
           .attr({width: width, height: height});
       svg.append('g');
 
-      ////////////////////////////
-      // Calculate All Greens   //
-      ////////////////////////////
 
-      var allGreenStudents = function(students){
-        return students.every(function(student){
-          return !student.helpee && !student.helper;
-        });
+      //////////////////////
+      // Calculate Grays  //
+      //////////////////////
+
+      var getGrayCoords = function(d, i, a){
+        return {x: cxGray(d, i, a), y: cyGray(d, i, a)}
       }
 
-      var getAllGreenCoords = function(d, i, s){
-        return {x: cxGreen(d, i, s), y: cyGreen(d, i, s)}
-      }
-
-      var cxGreen = function(d, i, s){
-        var numRows = Math.ceil(s.length/5);
+      var cxGray = function(d, i, a){
+        var numRows = Math.ceil(a.length/5);
         var currentRow = Math.ceil((i+1)/5);
         var interval;
-        if (s.length % 5 === 0 || currentRow !== numRows){
-          interval = Math.round(width/6);
+        if (a.length % 5 === 0 || currentRow !== numRows){
+          // interval = Math.round(width/6);
+          interval = Math.round(width/12);
         } else {
-          interval = Math.round(width/((s.length % 5) + 1));
+          interval = Math.round(width/(2*((a.length % 5) + 1)));
         }
         return ((i%5)+1) * interval;
       }
 
-      var cyGreen = function(d, i, s){
-        var numRows = Math.ceil(s.length/5);
-        var interval = Math.round(height/(numRows + 1));
+      var cyGray = function(d, i, a){
+        var numRows = Math.ceil(a.length/5);
+        // for full height, interval = height / rows so half height, change to half
+        var interval = Math.round(height/(2 * (numRows + 1)));
         var currentRow = Math.ceil((i+1)/5);
         return currentRow * interval;
       }
 
-      var crAllGreen = function(d, i, s){
-
-        return width/20;
+      var crGray = function(d, i, a){
+        return width/40;
       }
 
       ////////////////////////////
@@ -58,152 +54,98 @@ angular
       ////////////////////////////
 
       var getGreenCoords = function(d, i, g){
-        // split into left & right greens based on index
-        return (i%2 === 0) ? {x: cxLeft(d, i, g), y: cyLeft(d, i, g)} : {x: cxRight(d, i, g), y: cyRight(d, i, g)};
+        return {x: cxGreen(d, i, g), y: cyGreen(d, i, g)}
       }
 
-      var cxLeft = function(d, i, g){
-        // total colums for greens on left;
-        var columns = Math.ceil(g.length/5);
-
-        // width of left area is width/3
-        var interval = Math.round((width/3)/(columns + 1));
-
-        // current column for circle
-        var currentColumn = Math.ceil((i+1)/5);
-
-        // location is the current column of circle in the left area
-        return currentColumn * interval;
-      }
-
-      var cyLeft = function(d, i, g){
-        // total colums for greens on left
-        var columns = Math.ceil(g.length/5);
-
-        // current column for circle
-        var currentColumn = Math.ceil((i+1)/5);
-
+      var cxGreen = function(d, i, g){
+        var numRows = Math.ceil(g.length/5);
+        var currentRow = Math.ceil((i+1)/5);
         var interval;
-        if (g.length % 5 === 0 || currentColumn !== columns){
-          // 1) total greens on left is divisible by 5 or circle is in a row of 5
-          interval = Math.round((height)/6);
+        if (g.length % 5 === 0 || currentRow !== numRows){
+          // interval = Math.round(width/6);
+          interval = Math.round(width/12);
         } else {
-          // 2) circle is in a row with less than 5, space evenly
-          interval = Math.round((height)/((g.length % 5) + 1));
+          interval = Math.round(width/(2*((g.length % 5) + 1)));
         }
-
-        // interval calculated based on index
-        return (((i%5)+1) * interval);
+        return (((i%5)+1) * interval) + width/2;
       }
 
-      var cxRight = function(d, i, g){
-        // total colums for greens on right;
-        var columns = Math.ceil(g.length/5);
-
-        // width of right area is width/3
-        var interval = Math.round((width/3)/(columns + 1));
-
-        // current column for circle
-        var currentColumn = Math.ceil((i+1)/5);
-
-        // location is the current column of circle, offset by 2/3 width
-        return (currentColumn * interval) + (2*width)/3;
-      }
-
-      var cyRight = function(d, i, g){
-        // total colums for greens on right - same as left?
-        var columns = Math.ceil(g.length/5);
-        // current column for circle
-        var currentColumn = Math.ceil((i+1)/5);
-
-        var interval;
-        if (g.length % 5 === 0 || currentColumn !== columns){
-          // 1) total greens on right is divisible by 5 or circle is in a row of 5
-          interval = Math.round((height)/6);
-        } else {
-          // 2) circle is in a row with less than 5, space evenly
-          interval = Math.round((height)/((g.length % 5) + 1));
-        }
-        // interval calculated based on index
-        return (((i%5)+1) * interval);
+      var cyGreen = function(d, i, g){
+        var numRows = Math.ceil(g.length/5);
+        // for full height, interval = height / rows so half height, change to half
+        var interval = Math.round(height/(2 * (numRows + 1)));
+        var currentRow = Math.ceil((i+1)/5);
+        return currentRow * interval;
       }
 
       var crGreen = function(d, i, g){
-        //
-        return width > height ? width/20 : height/20;
+
+        return width/40;
       }
 
+      /////////////////////////////
+      // Calculate Yellow Coords //
+      /////////////////////////////
+
+      var getYellowCoords = function(d, i, y){
+        return {x: cxYellow(d, i, y), y: cyYellow(d, i, y)}
+      }
+
+      var cxYellow = function(d, i, y){
+        var numRows = Math.ceil(y.length/5);
+        var currentRow = Math.ceil((i+1)/5);
+        var interval;
+        if (y.length % 5 === 0 || currentRow !== numRows){
+          // interval = Math.round(width/6);
+          interval = Math.round(width/12);
+        } else {
+          interval = Math.round(width/(2*((y.length % 5) + 1)));
+        }
+        return (((i%5)+1) * interval);
+      }
+
+      var cyYellow = function(d, i, y){
+        var numRows = Math.ceil(y.length/5);
+        // for full height, interval = height / rows so half height, change to half
+        var interval = Math.round(height/(numRows + 1));
+        var currentRow = Math.ceil((i+1)/5);
+        return currentRow * interval;
+      }
+
+      var crYellow = function(d, i, y){
+        return width/40;
+      }
 
       //////////////////////////
       // Calculate Red Coords //
       //////////////////////////
 
       var getRedCoords = function(d, i, r){
-        return {x: cxRed(d, i, r), y: cyRed(d, i, r)};
+        return {x: cxRed(d, i, r), y: cyRed(d, i, r)}
       }
 
       var cxRed = function(d, i, r){
-        // reds will all be in the middle
-        return width/2;
-      }
-      var cyRed = function(d, i, r){
-        // scale based on how many reds there are
-        var interval = height/(r.length+1);
-        // return coordinate based on index, starting at 1
-        return (i+1) * interval
-      }
-      var crRed = function(d, i, r){
-        // fill middle section
-        // var colWidth = width/3;
-        // var colHeight = height;
-
-        // console.log('crred',  width > height)
-        // return width > height ? (width/(r.length+1))/2 : (height/(r.length+1))/2
-        return ((width/3)/(r.length+1))/2;
-      }
-
-
-      ///////////////////////////
-      // Calculate Blue Coords //
-      ///////////////////////////
-
-      var getBlueCoords = function(d, i, b, red){
-        return {x: cxBlue(d, i, b, red), y: cyBlue(d, i, b, red)};
-      }
-
-      // if !red fixes error from helpee closing chat with blue inside
-      var cxBlue = function(d, i, b, red){
-        if (!red) return 0;
-        return red.coords.x + (red.radius);
-      }
-      var cyBlue = function(d, i, b, red){
-        if (!red) return 0;
-        return red.coords.y
-      }
-      var crBlue = function(d, i, b, red){
-        if (!red) return 0;
-        // blue is 1/3 the size of red
-        return red.radius - (2*red.radius/3);
-      }
-
-      var percentageColor = function(percent, students){
-        var gradient = students.length ? (100 - percent)*0.01 : 0;
-        if (gradient == 0){
-          return {
-            'background': `linear-gradient(
-              to bottom,
-              rgba(4, 83, 45, 0.7),
-              rgba(4, 83, 45, 0.1),
-              rgba(4, 83, 45, 0.7)
-            `}
+        var numRows = Math.ceil(r.length/5);
+        var currentRow = Math.ceil((i+1)/5);
+        var interval;
+        if (r.length % 5 === 0 || currentRow !== numRows){
+          // interval = Math.round(width/6);
+          interval = Math.round(width/12);
+        } else {
+          interval = Math.round(width/(2*((r.length % 5) + 1)));
         }
-        return {
-          'background': `linear-gradient(
-            to bottom,
-            rgba(172, 20, 26, ${gradient}),
-            rgba(255, 255, 255, 1),
-            rgba(172, 20, 26, ${gradient})
-          `}
+        return (((i%5)+1) * interval) + width/2;
+      }
+
+      var cyRed = function(d, i, r){
+        var numRows = Math.ceil(r.length/5);
+        var interval = Math.round(height/(numRows + 1));
+        var currentRow = Math.ceil((i+1)/5);
+        return currentRow * interval;
+      }
+
+      var crRed = function(d, i, r){
+        return width/40;
       }
 
 
@@ -214,65 +156,54 @@ angular
 
         var students = angular.fromJson(scope.students);
 
-        if (allGreenStudents(students)){
-          // all green students = return evenly distributed
-          students = students.map(function(d, i, s){
-            d.color = 'green';
-            d.coords = getAllGreenCoords(d, i, s);
-            d.radius = crAllGreen(d, i, s);
-            return d;
-          });
-        } else {
-          // mix of reds, blues, greens
-          // first separate all
-
-          var greens = students
-            .filter(function(s){
-              return !s.helper && !s.helpee;
-            }).map(function(d, i, g){
-              d.color = 'green';
-              d.coords = getGreenCoords(d, i, g);
-              d.radius = crGreen(d, i, g)
-              return d
-            });
-
-          var reds = students
-            .filter(function(s){
-              return s.helpee;
-            })
-            .map(function(d, i, r){
-              d.color = 'red';
-              d.coords = getRedCoords(d, i, r);
-              d.radius = crRed(d, i, r);
-              return d;
-            });
-
-          var blues = students
-            .filter(function(s){
-              return s.helper;
-            }).map(function(d, i, b){
-              // get coords of helping
-              var chatID = d.helper.chatID;
-              var red = reds.find(function(r){
-                return r.helpee === chatID;
-              });
-              d.color = 'blue';
-              d.coords = getBlueCoords(d, i, b, red);
-              d.radius = crBlue(d, i, b, red);
-              return d;
-            });
-
-          // concat to array of students;
-          students = greens.concat(reds, blues);
-        }
-
         if (!students){
           return;
         }
 
-        var percentage = +scope.percentage.slice(0, -1);
+        // separate students by color
+        var greens = students
+          .filter(function(s){
+            return s.color === 'green'
+          }).map(function(d, i, g){
+            d.color = 'green';
+            d.coords = getGreenCoords(d, i, g);
+            d.radius = crGreen(d, i, g)
+            return d
+          });
 
-        $('.teacherClassroomArea').css(percentageColor(percentage, students));
+        var reds = students
+          .filter(function(s){
+            return s.color === 'red';
+          })
+          .map(function(d, i, r){
+            d.color = 'red';
+            d.coords = getRedCoords(d, i, r);
+            d.radius = crRed(d, i, r);
+            return d;
+          });
+
+        var yellows = students
+          .filter(function(s){
+            return s.color === 'yellow';
+          }).map(function(d, i, y){
+            d.color = 'yellow';
+            d.coords = getYellowCoords(d, i, y);
+            d.radius = crYellow(d, i, y);
+            return d;
+          });
+
+        var grays = students
+          .filter(function(s){
+            return s.color === 'gray';
+          }).map(function(d, i, a){
+            d.color = 'gray';
+            d.coords = getGrayCoords(d, i, a);
+            d.radius = crGray(d, i, a);
+            return d;
+          });
+
+        // concat to array of students;
+        students = greens.concat(reds, yellows, grays);
 
         svg
           .attr({width: width, height: height})
@@ -366,14 +297,14 @@ angular
           .transition()
             .attr("x", function(d, i) { return d.coords.x - d.radius })
             .attr("y", function(d, i) { return d.coords.y + d.radius + 25 })
-            .text(function(d, i) { return `${d.name} - ${d.points} points` });
+            .text(function(d, i) { return `${d.name}` });
 
         names
             .text('')
           .transition()
             .attr("x", function(d, i) { return d.coords.x - d.radius })
             .attr("y", function(d, i) { return d.coords.y + d.radius + 25 })
-            .text(function(d, i) { return `${d.name} - ${d.points} points` });
+            .text(function(d, i) { return `${d.name}` });
 
         names.exit()
           .transition()

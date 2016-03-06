@@ -17,7 +17,7 @@ gulp.task('clean', function(cb){
 });
 
 gulp.task('jsprod', ['clean'], function(cb){
-	gulp.src(['public/main.js', 'public/js/**/*.js'])
+	gulp.src(['public/main.js', 'public/components/**/*.js', 'public/js/**/*.js'])
 		.pipe(sourcemaps.init())
 		.pipe(concat('app.min.js'))
 		.pipe(ngAnnotate())
