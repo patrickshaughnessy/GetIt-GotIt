@@ -3,14 +3,10 @@ angular.module('app')
 
   function link(scope, elem, attrs){
 
-    console.log('here', scope);
     function update(){
       if (!scope.auth) return;
 
-
-      // var userRef = new Firebase(`https://ch-getitgotit.firebaseio.com/users/${currentAuth.uid}`);
-      // var user = $firebaseObject(userRef);
-      // user.$bindTo(scope, 'user');
+      console.log(elem[0])
 
       var classroomRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/static`);
       var classroom = $firebaseObject(classroomRef);
@@ -84,23 +80,16 @@ angular.module('app')
         scope.isRecording = undefined;
       }
 
+      scope.clearStudents = function(){
+        if (scope.isRecording){
+          $interval.cancel(scope.isRecording);
+        }
 
-      // scope.endClass = function(){
-      //
-      //   if (scope.isRecording){
-      //     $interval.cancel(scope.isRecording);
-      //   }
-      //   scope.user.teacher = null;
-      //
-      //   classroom.$remove().then(function(){
-      //     $state.go('home');
-      //   });
-      //
-      //   if (isChrome){
-      //     document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
-      //   }
-      //
-      // }
+        classroom.$remove();
+
+        document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+
+      }
 
     }
 

@@ -2,11 +2,14 @@
   <div class="col-xs-12 timeDataArea">
     <h4 ng-hide="isRecording">Use the following controls to record class data...</h2>
     <gg-time-data data="{{timeData}}" ng-show="isRecording"></gg-time-data>
-    <div class="col-xs-6">
+    <div class="col-xs-4">
       <button class="btn btn-success" ng-click="startRecording()">Start Recording</button>
     </div>
-    <div class="col-xs-6">
+    <div class="col-xs-4">
       <button class="btn btn-danger" ng-click="stopRecording()">Stop Recording</button>
+    </div>
+    <div class="col-xs-4">
+      <button class="btn btn-warning" ng-click="clearStudents()">Clear Students</button>
     </div>
   </div>
   <div class="col-xs-12">

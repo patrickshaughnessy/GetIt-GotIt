@@ -18,13 +18,15 @@ angular
     // classroom.$bindTo($scope, 'classroom');
 
     // remove student if teacher ends the class;
-    // var classroomsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms`);
-    // classroomsRef.on('child_removed', function(removedClassroom){
-    //   if (removedClassroom.key() === $state.params.classID) {
-    //     $scope.user.classroom = null;
-    //     $state.go('home');
-    //   }
-    // });
+    var classroomsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms`);
+    classroomsRef.on('child_removed', function(removedClassroom){
+      console.log(removedClassroom.key());
+      if (removedClassroom.key() === 'static') {
+        Auth.$unauth();
+        document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', `assets/greencircle.ico`);
+        $state.go('splash');
+      }
+    });
 
 
 
@@ -48,6 +50,7 @@ angular
       $scope.user.classroom = null;
       $timeout(function(){
         Auth.$unauth();
+        document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', `assets/greencircle.ico`);
         $state.go('splash');
       },300)
     }

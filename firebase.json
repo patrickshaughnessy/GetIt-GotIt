@@ -1,10 +1,4 @@
 {
   "firebase": "ch-getitgotit",
-  "public": "build",
-  "redirects": [ {
-	   "source" : "*",
-	    "destination" : "/#/*",
-	     "type" : 301
-     }
-   ]
+  "public": "build"
 }
