@@ -1,18 +1,22 @@
 <div class="teacherClassroomArea">
-  <div class="col-xs-12" ng-if="!auth">
-   <form name="loginForm" ng-submit="loginWithEmail(login)">
-     <div class="form-group">
-       <label for="loginEmail">Email address:</label>
-       <input type="email" class="form-control" id="loginEmail" placeholder="Email" ng-model="login.email" required>
-     </div>
-     <div class="form-group">
-       <label for="loginPassword">Password:</label>
-       <input type="password" class="form-control" id="loginPassword" placeholder="Password" ng-model="login.password" required>
-     </div>
-     <button type="submit" class="btn btn-success" ng-click="loginWithEmail(login)" ng-disabled="loggingIn" >{{loggingIn ? 'Logging In' : 'Login'}}</button>
-   </form>
-  </div>
-  <div class="container-fluid" ng-if="auth">
-    <gg-teacher-view auth="{{auth}}"></gg-teacher-view>
+  <div class="container-fluid">
+    <div class="row text-center">
+      <div class="col-xs-12" ng-if="!auth">
+        <form name="loginForm" ng-submit="loginWithEmail(login)">
+          <div class="form-group">
+            <label for="loginEmail">Email address:</label>
+            <input type="email" class="form-control" id="loginEmail" placeholder="Email" ng-model="login.email" required>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password:</label>
+            <input type="password" class="form-control" id="loginPassword" placeholder="Password" ng-model="login.password" required>
+          </div>
+          <button type="submit" class="btn btn-success" ng-click="loginWithEmail(login)" ng-disabled="loggingIn" >{{loggingIn ? 'Logging In' : 'Login'}}</button>
+        </form>
+      </div>
+      <div class="col-xs-12" ng-if="auth">
+        <gg-teacher-view auth="{{auth}}"></gg-teacher-view>
+      </div>
+    </div>
   </div>
 </div>

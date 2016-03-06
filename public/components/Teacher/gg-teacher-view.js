@@ -6,8 +6,6 @@ angular.module('app')
     function update(){
       if (!scope.auth) return;
 
-      console.log(elem[0])
-
       var classroomRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/static`);
       var classroom = $firebaseObject(classroomRef);
       classroom.$bindTo(scope, 'classroom');

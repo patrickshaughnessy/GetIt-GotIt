@@ -5,6 +5,7 @@ angular
   .directive('ggStudentCircles', function($window){
 
     var link = function(scope, elem, attrs){
+
       var width = $('.teacherClassroomArea')[0].clientWidth;
       var height = $('.teacherClassroomArea')[0].clientHeight - $('.timeDataArea')[0].clientHeight;
 
@@ -13,7 +14,33 @@ angular
       var svg = d3.select(elem[0])
         .append('svg')
           .attr({width: width, height: height});
-      svg.append('g');
+      svg.append('rect')
+          .attr('id', 'graybg')
+          .attr('width', width/2)
+          .attr('height', height/2)
+          .attr('fill', 'lightgray')
+      svg.append('rect')
+          .attr('id', 'greenbg')
+          .attr('width', width/2)
+          .attr('height', height/2)
+          .attr('x', width/2)
+          .attr('y', 0)
+          .attr('fill', '#5cb85c')
+      svg.append('rect')
+          .attr('id', 'yellowbg')
+          .attr('width', width/2)
+          .attr('height', height/2)
+          .attr('x', 0)
+          .attr('y', height/2)
+          .attr('fill', '#f0ad4e')
+      svg.append('rect')
+          .attr('id', 'redbg')
+          .attr('width', width/2)
+          .attr('height', height/2)
+          .attr('x', width/2)
+          .attr('y', height/2)
+          .attr('fill', '#d9534f')
+      svg.append('g')
 
 
       //////////////////////
@@ -107,9 +134,9 @@ angular
       var cyYellow = function(d, i, y){
         var numRows = Math.ceil(y.length/5);
         // for full height, interval = height / rows so half height, change to half
-        var interval = Math.round(height/(numRows + 1));
+        var interval = Math.round(height/(2 * (numRows + 1)));
         var currentRow = Math.ceil((i+1)/5);
-        return currentRow * interval;
+        return (currentRow * interval) + height/2;
       }
 
       var crYellow = function(d, i, y){
@@ -139,15 +166,26 @@ angular
 
       var cyRed = function(d, i, r){
         var numRows = Math.ceil(r.length/5);
-        var interval = Math.round(height/(numRows + 1));
+        var interval = Math.round(height/(2 * (numRows + 1)));
         var currentRow = Math.ceil((i+1)/5);
-        return currentRow * interval;
+        return (currentRow * interval) + height/2;
       }
 
       var crRed = function(d, i, r){
         return width/40;
       }
 
+      /////////////////////////////
+      // Update Background Color //
+      /////////////////////////////
+
+      var updateBG = function(percentage){
+
+      }
+
+      //////////////////////
+      // Receive New Data //
+      //////////////////////
 
       var update = function(){
 
@@ -209,6 +247,24 @@ angular
         svg
           .attr({width: width, height: height})
 
+        var graybg = svg.select('#graybg')
+            .attr('width', width/2)
+            .attr('height', height/2);
+        var greenbg = svg.select('#greenbg')
+            .attr('width', width/2)
+            .attr('height', height/2)
+            .attr('x', width/2)
+            .attr('y', 0);
+        var yellowbg = svg.select('#yellowbg')
+            .attr('width', width/2)
+            .attr('height', height/2)
+            .attr('x', 0)
+            .attr('y', height/2);
+        var redbg = svg.select('#redbg')
+            .attr('width', width/2)
+            .attr('height', height/2)
+            .attr('x', width/2)
+            .attr('y', height/2);
 
         var circle = svg.select('g').selectAll('circle')
             .data(students);
@@ -234,7 +290,7 @@ angular
             .attr('r', 0)
             .remove();
 
-        var defs = svg.selectAll('defs')
+        var defs = svg.select('g').selectAll('defs')
             .data(students);
         defs.enter().append('clipPath')
             .attr('id', function(d, i) { return `student${i}`})
@@ -327,7 +383,8 @@ angular
       restrict: 'EA',
       scope: {
         students: '@',
-        percentage: '@'
+        percentage: '@',
+        circlesbg: '='
       },
       link: link
     }
