@@ -191,7 +191,7 @@ angular
 
         width = $('.teacherClassroomArea')[0].clientWidth;
         height = $('.teacherClassroomArea')[0].clientHeight - $('.timeDataArea')[0].clientHeight;
-
+        console.log(width, height);
         if (!scope.students){
           return;
         }
