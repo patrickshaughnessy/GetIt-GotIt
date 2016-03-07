@@ -8,7 +8,24 @@ angular.module('app')
 
       var classroomRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/static`);
       var classroom = $firebaseObject(classroomRef);
-      classroom.$bindTo(scope, 'classroom');
+
+      var intervalID;
+      scope.setResetInterval = function(interval){
+        if (!interval || interval <= 0) return;
+        scope.classroom.interval = interval * 60000;
+        intervalID = $interval(function(){
+          classroomRef.child('students').once('value', function(students){
+            students.forEach(function(student){
+              student.ref().update({color: 'gray'})
+            })
+          })
+        }, scope.classroom.interval)
+      }
+
+      classroom.$bindTo(scope, 'classroom').then(function(){
+        scope.setResetInterval(5);
+      });
+
 
       var studentsRef = new Firebase(`https://ch-getitgotit.firebaseio.com/classrooms/static/students`);
       scope.students = $firebaseArray(studentsRef);
@@ -86,9 +103,6 @@ angular.module('app')
         document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
       }
 
-      scope.setResetInterval = function(interval){
-        scope.classroom.interval = interval * 60000
-      }
 
 
     }

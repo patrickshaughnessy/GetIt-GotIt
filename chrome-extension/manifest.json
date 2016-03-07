@@ -8,7 +8,7 @@
     "page":"background.html"
   },
   "browser_action": {
-    "default_icon": "./assets/greencircle.ico",
+    "default_icon": "./assets/greencircle.png",
     "default_popup": "./index.html",
     "default_title": "Get It, Got It"
   },

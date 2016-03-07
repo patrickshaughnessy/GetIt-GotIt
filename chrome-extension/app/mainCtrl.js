@@ -6,7 +6,6 @@ angular
 
     $scope.currentAuth = Auth.$getAuth();
 
-
     var usersRef = new Firebase('https://ch-getitgotit.firebaseio.com/users')
     var users = $firebaseObject(usersRef);
 
@@ -34,7 +33,7 @@ angular
       });
     }
 
-    if (localStorage.accessToken){
+    if (localStorage.accessToken && !$scope.currentAuth){
       $scope.loginWithFacebook();
     }
 

@@ -17,12 +17,8 @@
       <button class="btn btn-warning" ng-click="clearStudents()">Clear Students</button>
     </div>
     <div class="col-xs-6 col-md-3">
-      <form class="form-inline">
-        <div class="form-group">
-          <input class="form-control" type="number" ng-model="interval" placeholder="Clear Interval (min)">
-        </div>
-        <button class="btn btn-primary" ng-click="setResetInterval(interval)">Set</button>
-      </form>
+      <input id="intervalTime" type="number" ng-model="interval" min="1">
+      <button class="btn btn-primary" ng-click="setResetInterval(interval)" ng-disabled="(interval <= 0) || !interval">Set Interval (minutes)</button>
     </div>
   </div>
   <br>
