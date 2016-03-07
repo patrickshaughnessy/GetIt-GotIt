@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html ng-app='app'>
+<head>
+    <title>Angular Todo Chrome Extension</title>
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/sweetalert/sweetalert.css">
+    <link rel="stylesheet" type="text/css" href="css/splash.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <script type="text/javascript" src="background.js"></script>
+</head>
+<body ng-controller='mainCtrl'>
+  <div class="splashBackground" ng-if="!currentAuth">
+    <div class="splashWrapper" ng-init="loggingIn = false">
+      <div class="splashTitle">
+        <h1>Get It, Got It</h1>
+        <h3>Redefining the interactive classroom.</h3>
+        <p>Use the buttons below to login with Facebook or Github.</p>
+        <p>**Exclusively for Coding House!**</p>
+        <div class="col-xs-12">
+          <div class="row">
+            <div class="col-xs-12 text-center">
+              <a class="btn btn-primary" target="_blank" href="https://www.facebook.com/dialog/oauth?client_id=830474163747667&response_type=token&scope=email&redirect_uri=http://www.facebook.com/connect/login_success.html" ng-disabled="loggingIn" >{{loggingIn ? 'Logging In' : 'Login With Facebook'}}</a>
+            </div>
+            <div class="col-xs-12">
+              <h4>- or -</h4>
+            </div>
+            <div class="col-xs-12 text-center">
+              <button class="btn btn-default" role="button" ng-click="loginWithGithub()" ng-disabled="loggingIn" >{{loggingIn ? 'Logging In' : 'Login With Github'}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="studentClassroomArea" ng-style="studentBackground" ng-controller="studentCtrl" ng-if="currentAuth">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-6">
+          <button class="btn btn-default btn-block" ng-click="changeColor('gray')" ng-disabled="!ready">Neutral</button>
+        </div>
+        <div class="col-xs-6">
+          <button class="btn btn-success btn-block" ng-click="changeColor('green')" ng-disabled="!ready">I'm Good (Go Faster)</button>
+        </div>
+      </div>
+      <br>
+      <br>
+      <div class="row">
+        <div class="col-xs-6">
+          <button class="btn btn-warning btn-block" ng-click="changeColor('yellow')" ng-disabled="!ready">I'm OK (Don't Go Faster)</button>
+        </div>
+        <div class="col-xs-6">
+          <button class="btn btn-danger btn-block" ng-click="changeColor('red')" ng-disabled="!ready">OH CRAP! (Too Fast)</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+    <script type="text/javascript" src="lib/jquery/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="lib/firebase/firebase.js"></script>
+    <script type="text/javascript" src="lib/angular/angular.js"></script>
+    <script type="text/javascript" src="lib/angularfire/angularfire.min.js"></script>
+    <script type="text/javascript" src="lib/d3/d3.min.js"></script>
+    <script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="lib/sweetalert/sweetalert.min.js"></script>
+    <script type="text/javascript" src="app/app.js"></script>
+    <script type="text/javascript" src="app/mainCtrl.js"></script>
+    <script type="text/javascript" src="app/studentCtrl.js"></script>
+</body>
+</html>

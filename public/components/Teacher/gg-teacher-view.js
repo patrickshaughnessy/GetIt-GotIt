@@ -82,7 +82,7 @@ angular.module('app')
         if (scope.isRecording){
           $interval.cancel(scope.isRecording);
         }
-        classroom.$remove();
+        studentsRef.remove();
         document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
       }
 

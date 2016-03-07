@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+
+  "name": "Get It, Got It",
+  "description": "Your interactive classroom resource",
+  "version": "1.0",
+  "background": {
+    "page":"background.html"
+  },
+  "browser_action": {
+    "default_icon": "./assets/greencircle.ico",
+    "default_popup": "./index.html",
+    "default_title": "Get It, Got It"
+  },
+  "author": "Patrick Shaughnessy",
+  "permissions": [
+    "debugger",
+    "activeTab",
+    "tabs",
+    "https://ajax.googleapis.com/",
+    "http://*.facebook.net/*",
+    "http://*.facebook.com/*",
+    "https://ch-getitgotit.firebaseio.com/*"
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdn.firebase.com https://*.firebaseio.com https://connect.facebook.net/en_US/sdk.js; object-src 'self'"
+}
