@@ -82,11 +82,20 @@ angular.module('app')
         if (scope.isRecording){
           $interval.cancel(scope.isRecording);
         }
-
         classroom.$remove();
-
         document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
+      }
 
+      scope.resetInterval;
+      scope.setResetInterval = function(){
+        if (scope.resetInterval){
+          $interval.cancel(scope.resetInterval);
+          scope.resetInterval = undefined;
+        }
+        scope.resetInterval = $interval(function(){
+          scope.students.forEach(student => student.color = 'gray');
+          scope.students.$save();
+        })
       }
 
     }

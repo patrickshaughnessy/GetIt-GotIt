@@ -2,6 +2,8 @@
   <h4 ng-hide="isRecording">Use the following controls to record class data...</h2>
   <div class="row timeDataArea">
     <div class="col-xs-12">
+      <h4 ng-show="percentage >= 0">{{percentage}}% of students think your speed is good</h4>
+      <h4 ng-show="percentage === '...'">Not enough student engagement {{percentage}}</h4>
       <gg-time-data data="{{timeData}}" ng-show="isRecording"></gg-time-data>
     </div>
   </div>
@@ -17,7 +19,6 @@
     </div>
     <br>
   </div>
-      <h2 ng-hide="students.length">Waiting for students to join...</h2>
-      <gg-student-circles students="{{students}}" percentage="{{percentage}}" ng-show="students.length" ></gg-student-circles>
-
+  <h2 ng-hide="students.length">Waiting for students to join...</h2>
+  <gg-student-circles students="{{students}}" percentage="{{percentage}}" ng-show="students.length" ></gg-student-circles>
 </div>

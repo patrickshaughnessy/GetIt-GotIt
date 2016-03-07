@@ -40,6 +40,22 @@ angular
           .attr('x', width/2)
           .attr('y', height/2)
           .attr('fill', '#d9534f')
+      svg.append('text')
+          .attr('id', 'grayNum')
+          .attr('x', width*0.25)
+          .attr('y', height*0.05)
+      svg.append('text')
+          .attr('id', 'greenNum')
+          .attr('x', width*0.75)
+          .attr('y', height*0.05)
+      svg.append('text')
+          .attr('id', 'yellowNum')
+          .attr('x', width*0.25)
+          .attr('y', height*0.55)
+      svg.append('text')
+          .attr('id', 'redNum')
+          .attr('x', width*0.75)
+          .attr('y', height*0.55)
       svg.append('g')
 
 
@@ -247,24 +263,41 @@ angular
         svg
           .attr({width: width, height: height})
 
-        var graybg = svg.select('#graybg')
+        svg.select('#graybg')
             .attr('width', width/2)
             .attr('height', height/2);
-        var greenbg = svg.select('#greenbg')
+        svg.select('#greenbg')
             .attr('width', width/2)
             .attr('height', height/2)
             .attr('x', width/2)
             .attr('y', 0);
-        var yellowbg = svg.select('#yellowbg')
+        svg.select('#yellowbg')
             .attr('width', width/2)
             .attr('height', height/2)
             .attr('x', 0)
             .attr('y', height/2);
-        var redbg = svg.select('#redbg')
+        svg.select('#redbg')
             .attr('width', width/2)
             .attr('height', height/2)
             .attr('x', width/2)
             .attr('y', height/2);
+
+        svg.select('#grayNum')
+            .attr('x', width*0.25)
+            .attr('y', height*0.05)
+            .text(`Neutral: ${grays.length}`);
+        svg.select('#greenNum')
+            .attr('x', width*0.75)
+            .attr('y', height*0.05)
+            .text(`Good (speed up): ${greens.length}`);
+        svg.select('#yellowNum')
+            .attr('x', width*0.25)
+            .attr('y', height*0.55)
+            .text(`OK (don't speed up): ${yellows.length}`);
+        svg.select('#redNum')
+            .attr('x', width*0.75)
+            .attr('y', height*0.55)
+            .text(`OMG WTF (slow down): ${reds.length}`);
 
         var circle = svg.select('g').selectAll('circle')
             .data(students);
@@ -290,7 +323,7 @@ angular
             .attr('r', 0)
             .remove();
 
-        var defs = svg.select('g').selectAll('defs')
+        var defs = svg.select('g').selectAll('clipPath')
             .data(students);
         defs.enter().append('clipPath')
             .attr('id', function(d, i) { return `student${i}`})
@@ -316,7 +349,7 @@ angular
             .remove();
 
 
-        var images = svg.selectAll('image')
+        var images = svg.select('g').selectAll('image')
             .data(students);
         images.enter().append('svg:image')
             .attr('width', 0)
@@ -346,7 +379,7 @@ angular
             .attr('height', 0)
             .remove();
 
-        var names = svg.selectAll('text')
+        var names = svg.select('g').selectAll('text')
             .data(students);
 
         names.enter().append('text')
