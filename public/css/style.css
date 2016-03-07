@@ -110,4 +110,5 @@ body {
 .btn-block {
   height: 40vh;
   margin-top: 5%;
+  border-radius: 10%;
 }

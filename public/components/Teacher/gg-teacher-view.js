@@ -86,17 +86,10 @@ angular.module('app')
         document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/greencircle.ico");
       }
 
-      scope.resetInterval;
-      scope.setResetInterval = function(){
-        if (scope.resetInterval){
-          $interval.cancel(scope.resetInterval);
-          scope.resetInterval = undefined;
-        }
-        scope.resetInterval = $interval(function(){
-          scope.students.forEach(student => student.color = 'gray');
-          scope.students.$save();
-        })
+      scope.setResetInterval = function(interval){
+        scope.classroom.interval = interval * 60000
       }
+
 
     }
 
