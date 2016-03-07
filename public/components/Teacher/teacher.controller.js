@@ -4,7 +4,7 @@ angular
   .module('app')
   .controller("teacherCtrl", function(Auth, currentAuth, $state, $scope) {
 
-    if (currentAuth) {
+    if (currentAuth && currentAuth.provider === "password") {
       $scope.auth = currentAuth;
     }
 
