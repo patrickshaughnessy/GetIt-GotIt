@@ -42,6 +42,8 @@ angular
         width = $('.teacherClassroomArea')[0].clientWidth;
         height = $('.teacherClassroomArea')[0].clientHeight - $('.teacherClassroomArea')[0].clientHeight*0.8;
 
+        width = width/2;
+
         margin = {
           left: width*0.1,
           right: width*0.1,

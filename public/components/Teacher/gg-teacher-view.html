@@ -1,24 +1,30 @@
 <div class="">
   <div class="row timeDataArea">
-    <div class="col-xs-12">
-      <h1 ng-show="percentage >= 0">{{percentage}}% of students think your speed is good</h4>
-      <h1 ng-show="percentage === '...'">Not enough student engagement {{percentage}}</h4>
+    <div class="col-xs-6 ">
+      <h2 ng-show="percentage >= 0">{{percentage}}% of students think your speed is good</h2>
+      <h2 ng-show="percentage === '...'">Not enough student engagement {{percentage}}</h2>
       <gg-time-data data="{{timeData}}" ng-show="isRecording"></gg-time-data>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-6 col-md-3">
-      <button class="btn btn-success" ng-click="startRecording()">Start Recording</button>
-    </div>
-    <div class="col-xs-6 col-md-3">
-      <button class="btn btn-danger" ng-click="stopRecording()">Stop Recording</button>
-    </div>
-    <div class="col-xs-6 col-md-3">
-      <button class="btn btn-warning" ng-click="clearStudents()">Clear Students</button>
-    </div>
-    <div class="col-xs-6 col-md-3">
-      <input id="intervalTime" type="number" ng-model="interval" min="1">
-      <button class="btn btn-primary" ng-click="setResetInterval(interval)" ng-disabled="(interval <= 0) || !interval">Set Interval (minutes)</button>
+    <div class="col-xs-6">
+      <br>
+      <div class="row">
+        <div class="col-xs-6">
+          <button class="btn btn-success" ng-click="startRecording()">Start Recording</button>
+        </div>
+        <div class="col-xs-6">
+          <button class="btn btn-danger" ng-click="stopRecording()">Stop Recording</button>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-xs-6">
+          <button class="btn btn-warning" ng-click="clearStudents()">Clear Students</button>
+        </div>
+        <div class="col-xs-6">
+          <input id="intervalTime" type="number" ng-model="interval" min="1">
+          <button class="btn btn-primary" ng-click="setResetInterval(interval)" ng-disabled="(interval <= 0) || !interval">Set Interval (minutes)</button>
+        </div>
+      </div>
     </div>
   </div>
   <br>
