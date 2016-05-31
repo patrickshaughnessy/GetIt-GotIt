@@ -3,7 +3,7 @@
 angular
   .module('app')
   .controller("chatroomHelpeeCtrl", function(Auth, currentAuth, $state, $scope, $firebaseObject, $firebaseArray, $location, $anchorScroll) {
-
+    console.log('hello')
     // document.querySelectorAll("link[rel*='icon'")[0].setAttribute('href', "assets/redcircle.ico");
 
     var usersRef = new Firebase(`https://getitgotit.firebaseio.com/users`);
