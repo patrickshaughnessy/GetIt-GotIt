@@ -4,6 +4,8 @@ Good.
 
 This is a tool for teachers and students to increase engagement and redefine the interactive classroom.
 
+[Check it out](https://getitgotit.firebaseapp.com/#/ "Get It, Got It")
+
 
 ### For Teachers
 
