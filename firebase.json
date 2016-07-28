@@ -1,4 +1,4 @@
 {
   "firebase": "getitgotit",
-  "public": "build"
+  "src": "build"
 }
