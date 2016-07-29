@@ -3,6 +3,8 @@ const args = require('yargs').argv;
 const browserSync = require('browser-sync');
 const config = require('./gulp.config')();
 const del = require('del');
+const path = require('path');
+const _ = require('lodash');
 
 /* jshint ignore:start */
 const $ = require('gulp-load-plugins')({ lazy: true }); // const throwing redefine error
@@ -114,7 +116,21 @@ gulp.task('inject', ['wiredep', 'styles', 'templatecache'], function() {
 		.pipe(gulp.dest(config.client));
 });
 
-gulp.task('optimize', ['inject'], function(){
+gulp.task('build', ['optimize', 'images', 'fonts'], function() {
+  log('Building everything');
+
+  const msg = {
+    title: 'gulp build',
+    subtitle: 'Deployed to the build folder',
+    message: 'Running `gulp serve dist`'
+  };
+  del(config.temp);
+  log(msg);
+  notify(msg);
+
+});
+
+gulp.task('optimize', ['inject', 'test'], function(){
   log('Optimizing the js, css, html');
 
   const templateCache = config.temp + config.templateCache.file;
@@ -142,12 +158,6 @@ gulp.task('optimize', ['inject'], function(){
 		.pipe(indexHtmlFilter.restore)
 		.pipe($.revReplace())
     .pipe(gulp.dest(config.dist));
-    //
-    // .pipe($.if('*.js', $.ngAnnotate({ add: true })))
-    // .pipe($.if('*.js', $.uglify()))
-    // .pipe($.if('*.css', $.csso()))
-    // .pipe($.rev())
-    // .pipe($.revReplace())
 });
 
 /**
@@ -184,12 +194,19 @@ gulp.task('bump', function() {
 
 });
 
-gulp.task('serve-prod', ['optimize'], function() {
+gulp.task('serve-prod', ['build'], function() {
   serve(false /* isDev */);
 });
 
 gulp.task('serve-dev', ['inject'], function() {
   serve(true /* isDev */);
+});
+
+gulp.task('test', ['vet', 'templatecache'], function(done) {
+  startTests(true /* singleRun */, done);
+});
+gulp.task('autotest', ['vet', 'templatecache'], function(done) {
+  startTests(false /* singleRun */, done);
 });
 
 //////////// HELPER FUNCTIONS ////////////
@@ -230,6 +247,17 @@ function changeEvent(event) {
 	log('File ' + event.path.replace(srcPattern, '') + ' ' + event.type);
 }
 
+function notify(options) {
+  const notifier = require('node-notifier');
+  const notifyOptions = {
+    sound: 'Bottle',
+    contentImage: path.join(__dirname, 'gulp.png'),
+    icon: path.join(__dirname, 'gulp.png')
+  };
+  _.assign(notifyOptions, options);
+  notifier.notify(notifyOptions);
+}
+
 function startBrowserSync(isDev) {
 	if(args.nosync || browserSync.active) {
 		return;
@@ -268,6 +296,31 @@ function startBrowserSync(isDev) {
 	};
 
 	browserSync(options);
+}
+
+function startTests(singleRun, done) {
+  let excludeFiles = [];
+  const serverSpecs = config.serverIntegrationSpecs;
+  excludeFiles = serverSpecs;
+
+  const karmaOptions = {
+    configFile: __dirname + '/karma.conf.js',
+    exclude: excludeFiles,
+    singleRun: !!singleRun
+  };
+
+  const Server = require('karma').Server;
+  let server = new Server(karmaOptions, karmaCompleted);
+  server.start();
+
+  function karmaCompleted(karmaResult) {
+    log('Karma completed!');
+    if (karmaResult === 1) {
+      done('karma: tests failed with code ' + karmaResult);
+    } else {
+      done();
+    }
+  }
 }
 
 function clean(path, done) {
