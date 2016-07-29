@@ -209,11 +209,25 @@ gulp.task('test', ['vet', 'templatecache'], function(done) {
 gulp.task('autotest', ['vet', 'templatecache'], function(done) {
   startTests(false /* singleRun */, done);
 });
+
+gulp.task('serve-specs', ['build-specs'], function(done) {
+	log('run the spec runner');
+	serve(true /* isDev */, true /* specRunner */);
+	done();
+});
+
 gulp.task('build-specs', ['templatecache'], function() {
 	log('building the spec runner');
 
 	const wiredep = require('wiredep').stream;
 	const options = config.getWiredepDefaultOptions();
+	let specs = config.specs;
+
+	options.devDependencies = true;
+
+	if (args.startServers) {
+		specs = [].concat(specs, config.serverIntegrationSpecs);
+	}
 
 	return gulp
 		.src(config.specRunner)
@@ -226,8 +240,15 @@ gulp.task('build-specs', ['templatecache'], function() {
 		.pipe(gulp.dest(config.client));
 });
 
+// gulp 4
+// gulp.task('build', gulp.series(
+// 	gulp.parallel('vet', 'test'),
+// 	gulp.parallel('wiredep', 'styles', 'templatecache'),
+// 	'optimize'
+// ))
+
 //////////// HELPER FUNCTIONS ////////////
-function serve(isDev) {
+function serve(isDev, specRunner) {
 	const nodeOptions = {
 		script: config.nodeServer,
 		delayTime: 1,
@@ -249,7 +270,7 @@ function serve(isDev) {
 		})
 		.on('start', function(){
 			log('*** nodemon started');
-			startBrowserSync(isDev);
+			startBrowserSync(isDev, specRunner);
 		})
 		.on('crash', function(){
 			log('*** nodemon crashed');
@@ -275,7 +296,7 @@ function notify(options) {
   notifier.notify(notifyOptions);
 }
 
-function startBrowserSync(isDev) {
+function startBrowserSync(isDev, specRunner) {
 	if(args.nosync || browserSync.active) {
 		return;
 	}
@@ -311,6 +332,10 @@ function startBrowserSync(isDev) {
 		notify: true,
 		reloadDelay: 1000
 	};
+
+	if (specRunner) {
+		options.startPath = config.specRunnerFile;
+	}
 
 	browserSync(options);
 }
