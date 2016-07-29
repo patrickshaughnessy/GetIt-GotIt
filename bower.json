@@ -1,7 +1,8 @@
 {
-  "name": "getit-gotit",
+  "name": "GetIt-GotIt",
   "description": "",
   "main": "",
+  "version":"0.1.0",
   "authors": [
     "Patrick Shaughnessy <pshaughn86@gmail.com>"
   ],

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="app">
+<html ng-app="app" ng-strict-di>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,48 +8,25 @@
     <title>Get It, Got It</title>
 
     <link rel="shortcut icon" href="assets/greencircle.ico">
-    <link rel="stylesheet" href="/.tmp/styles.css" media="screen" title="no title" charset="utf-8">
+
+    <!-- build:css styles/lib.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="/bower_components/sweetalert/dist/sweetalert.css" />
     <!-- endbower -->
+    <!-- endbuild -->
 
-    <!-- <script src="controllers/splashCtrl.js"></script>
-    <script src="controllers/homeCtrl.js"></script>
-    <script src="controllers/teacherCtrl.js"></script>
-    <script src="controllers/studentCtrl.js"></script>
-    <script src="controllers/chatroomHelpeeCtrl.js"></script>
-    <script src="controllers/chatroomHelperCtrl.js"></script>
-    <script src="controllers/profileCtrl.js"></script> -->
-
-    <!-- <script src="services/Auth.js"></script>
-    <script src="services/DataService.js"></script> -->
-
-    <!-- <script src="directives/student-circles.js"></script>
-    <script src="directives/time-data.js"></script> -->
-
-    <!-- <link href='https://fonts.googleapis.com/css?family=ABeeZee' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel='stylesheet' href='css/animate.css'/>
-    <link rel='stylesheet' href='css/style.css'/>
-    <link rel="stylesheet" href="css/splash.css"/> -->
-    <!-- <link rel='stylesheet' href='css/gradientAnimation.css'/> -->
-    <!-- <link rel="stylesheet" href="css/home.css"/>
-    <link rel="stylesheet" href="css/profile.css"/>
-    <link rel="stylesheet" href="css/student.css"/>
-    <link rel="stylesheet" href="css/chatroom.css"/>
-    <link rel="stylesheet" href="css/teacher.css"/>
-    <link rel="stylesheet" href="css/stats.css"/> -->
-
-    <!-- <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css">
-    <script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
-
-    <script type="text/javascript" src="bower_components/angular-ui-mask/dist/mask.min.js"></script> -->
+    <!-- build:css styles/app.css -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="/.tmp/styles.css">
+    <!-- endinject -->
+    <!-- endbuild -->
 
   </head>
   <body>
     <h1>Hello</h1>
     <div ui-view></div>
 
+    <!-- build:js js/lib.js -->
     <!-- bower:js -->
     <script src="/bower_components/angular/angular.js"></script>
     <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
@@ -64,17 +41,22 @@
     <script src="/bower_components/angularfire/dist/angularfire.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <!-- endbower -->
+    <!-- endbuild -->
 
+    <!-- build:js js/app.js -->
     <!-- inject:js -->
     <script src="/src/client/app/app.module.js"></script>
     <script src="/src/client/app/app.config.js"></script>
     <script src="/src/client/app/app.core.js"></script>
+    <script src="/src/client/app/services/service.js"></script>
     <!-- endinject -->
 
-    <!-- <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- inject:templates:js -->
+    <!-- endinject -->
 
-    <script>
+    <!-- endbuild -->
+
+    <!-- <script>
       window.fbAsyncInit = function() {
         FB.init({
           appId      : '1554219404895973',
