@@ -6,6 +6,7 @@ const del = require('del');
 const path = require('path');
 const _ = require('lodash');
 
+
 /* jshint ignore:start */
 const $ = require('gulp-load-plugins')({ lazy: true }); // const throwing redefine error
 /* jshint ignore:end */
@@ -208,6 +209,22 @@ gulp.task('test', ['vet', 'templatecache'], function(done) {
 gulp.task('autotest', ['vet', 'templatecache'], function(done) {
   startTests(false /* singleRun */, done);
 });
+gulp.task('build-specs', ['templatecache'], function() {
+	log('building the spec runner');
+
+	const wiredep = require('wiredep').stream;
+	const options = config.getWiredepDefaultOptions();
+
+	return gulp
+		.src(config.specRunner)
+		.pipe(wiredep(options))
+		.pipe($.inject(gulp.src(config.testlibraries, {read:false}), {name:'inject:testlibraries'}))
+		.pipe($.inject(gulp.src(config.js, {read: false})))
+		.pipe($.inject(gulp.src(config.specHelpers, {read: false}), {name: 'inject:spechelpers'}))
+		.pipe($.inject(gulp.src(config.specs, {read: false}), {name: 'inject:specs'}))
+		.pipe($.inject(gulp.src(config.temp + config.templateCache.file, {read: false}), {name: 'inject:templates'}))
+		.pipe(gulp.dest(config.client));
+});
 
 //////////// HELPER FUNCTIONS ////////////
 function serve(isDev) {
@@ -299,9 +316,22 @@ function startBrowserSync(isDev) {
 }
 
 function startTests(singleRun, done) {
-  let excludeFiles = [];
-  const serverSpecs = config.serverIntegrationSpecs;
-  excludeFiles = serverSpecs;
+	let child;
+	const fork = require('child_process').fork;
+	let excludeFiles = [];
+	const serverSpecs = config.serverIntegrationSpecs;
+
+	if (args.startServers) { // gulp test --startServers
+		log('Starting server');
+		let savedEnv = process.env;
+		savedEnv.NODE_ENV = 'dev';
+		savedEnv.PORT = 8888;
+		child = fork(config.nodeServer);
+	} else {
+		if (serverSpecs && serverSpecs.length) {
+			excludeFiles = serverSpecs;
+		}
+	}
 
   const karmaOptions = {
     configFile: __dirname + '/karma.conf.js',
@@ -315,6 +345,11 @@ function startTests(singleRun, done) {
 
   function karmaCompleted(karmaResult) {
     log('Karma completed!');
+		if (child) {
+			log('Shutting down the child process');
+			child.kill();
+		}
+
     if (karmaResult === 1) {
       done('karma: tests failed with code ' + karmaResult);
     } else {
