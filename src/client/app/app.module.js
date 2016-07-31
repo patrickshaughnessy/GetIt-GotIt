@@ -3,6 +3,11 @@
 
     angular
         .module('app', [
-            'app.core'
+            /* Shared modules */
+            'app.core',
+
+            /* Feature areas */
+            'app.home'
+
         ]);
 })();

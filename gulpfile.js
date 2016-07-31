@@ -51,6 +51,28 @@ gulp.task('styles', ['clean-styles'], function() {
 		.pipe(gulp.dest(config.temp));
 });
 
+gulp.task('wiredep', function() {
+	log('Wire up the bower css js and app js into html');
+
+	const options = config.getWiredepDefaultOptions();
+	const wiredep = require('wiredep').stream;
+
+	return gulp
+		.src(config.index)
+		.pipe(wiredep(options))
+		.pipe($.inject(gulp.src(config.js)))
+		.pipe(gulp.dest(config.client));
+});
+
+gulp.task('inject', ['wiredep', 'styles', 'templatecache'], function() {
+	log('Wire up the app css into the html and call wiredep');
+
+	return gulp
+		.src(config.index)
+		.pipe($.inject(gulp.src(config.css)))
+		.pipe(gulp.dest(config.client));
+});
+
 gulp.task('clean', function(done){
 	const delconfig = [].concat(config.dist, config.temp);
 	log('Cleaning: ', $.util.colors.blue(delconfig));
@@ -93,28 +115,6 @@ gulp.task('templatecache', ['clean-code'], function() {
 			config.templateCache.options
 		))
 		.pipe(gulp.dest(config.temp));
-});
-
-gulp.task('wiredep', function() {
-	log('Wire up the bower css js and app js into html');
-
-	const options = config.getWiredepDefaultOptions();
-	const wiredep = require('wiredep').stream;
-
-	return gulp
-		.src(config.index)
-		.pipe(wiredep(options))
-		.pipe($.inject(gulp.src(config.js)))
-		.pipe(gulp.dest(config.client));
-});
-
-gulp.task('inject', ['wiredep', 'styles', 'templatecache'], function() {
-	log('Wire up the app css into the html and call wiredep');
-
-	return gulp
-		.src(config.index)
-		.pipe($.inject(gulp.src(config.css)))
-		.pipe(gulp.dest(config.client));
 });
 
 gulp.task('build', ['optimize', 'images', 'fonts'], function() {
@@ -288,7 +288,7 @@ function changeEvent(event) {
 function notify(options) {
   const notifier = require('node-notifier');
   const notifyOptions = {
-    sound: 'Bottle',
+    // sound: 'Bottle',
     contentImage: path.join(__dirname, 'gulp.png'),
     icon: path.join(__dirname, 'gulp.png')
   };
@@ -304,9 +304,14 @@ function startBrowserSync(isDev, specRunner) {
 	log('Starting browser synce on port ' + port);
 
   if (isDev) {
+		log('registering styles watch is dev mode');
+		// $.watch([config.less], function(files, cb){
+		// 	gulp.start('styles')
+		// })
     gulp.watch([config.less], ['styles'])
       .on('change', function(event) { changeEvent(event); });
   } else {
+		log('registering styles watch is prod mode');
     gulp.watch([config.less, config.js, config.html], ['optimize', browserSync.reload])
       .on('change', function(event) { changeEvent(event); });
   }
@@ -342,12 +347,13 @@ function startBrowserSync(isDev, specRunner) {
 
 function startTests(singleRun, done) {
 	let child;
-	const fork = require('child_process').fork;
 	let excludeFiles = [];
+	const fork = require('child_process').fork;
+	const Server = require('karma').Server;
 	const serverSpecs = config.serverIntegrationSpecs;
 
 	if (args.startServers) { // gulp test --startServers
-		log('Starting server');
+		log('Starting servers');
 		let savedEnv = process.env;
 		savedEnv.NODE_ENV = 'dev';
 		savedEnv.PORT = 8888;
@@ -364,7 +370,6 @@ function startTests(singleRun, done) {
     singleRun: !!singleRun
   };
 
-  const Server = require('karma').Server;
   let server = new Server(karmaOptions, karmaCompleted);
   server.start();
 

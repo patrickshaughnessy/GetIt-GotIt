@@ -3,10 +3,19 @@
 
     angular
         .module('app.core', [
-          'firebase',
+          /* Angular modules */
+          'ngAnimate',
+
+          /* Helper modules */
+          // 'blocks.exception',
+          // 'blocks.logger',
+          'blocks.router',
+
+          /* 3rd-party modules */
           'ui.router',
-          'ui.mask',
-          'naif.base64',
-          'ngAnimate'
+          'smoothScroll'
+          // 'ui.mask',
+          // 'firebase',
+          // 'naif.base64',
         ]);
 })();

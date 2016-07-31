@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html ng-app="app" ng-strict-di>
   <head>
+    <base href="/">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Get It, Got It</title>
 
-    <link rel="shortcut icon" href="assets/greencircle.ico">
+    <!-- <link rel="shortcut icon" href="assets/greencircle.ico"> -->
 
     <!-- build:css styles/lib.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="/bower_components/sweetalert/dist/sweetalert.css" />
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -23,8 +26,7 @@
 
   </head>
   <body>
-    <h1>Hello</h1>
-    <div ui-view></div>
+    <div ng-include="'app/layout/shell.html'"></div>
 
     <!-- build:js js/lib.js -->
     <!-- bower:js -->
@@ -40,15 +42,29 @@
     <script src="/bower_components/firebase/firebase.js"></script>
     <script src="/bower_components/angularfire/dist/angularfire.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/bower_components/ngSmoothScroll/lib/angular-smooth-scroll.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js js/app.js -->
     <!-- inject:js -->
     <script src="/src/client/app/app.module.js"></script>
+    <script src="/src/client/app/home/home.module.js"></script>
+    <script src="/src/client/app/blocks/exception/exception.module.js"></script>
+    <script src="/src/client/app/blocks/logger/logger.module.js"></script>
+    <script src="/src/client/app/blocks/router/router.module.js"></script>
     <script src="/src/client/app/app.config.js"></script>
     <script src="/src/client/app/app.core.js"></script>
+    <script src="/src/client/app/main.js"></script>
+    <script src="/src/client/app/home/home.controller.js"></script>
+    <script src="/src/client/app/home/home.route.js"></script>
+    <script src="/src/client/app/layout/shell.controller.js"></script>
+    <script src="/src/client/app/layout/topnav.controller.js"></script>
     <script src="/src/client/app/services/service.js"></script>
+    <script src="/src/client/app/blocks/exception/exception-handler.provider.js"></script>
+    <script src="/src/client/app/blocks/exception/exception.js"></script>
+    <script src="/src/client/app/blocks/logger/logger.js"></script>
+    <script src="/src/client/app/blocks/router/router-helper.provider.js"></script>
     <!-- endinject -->
 
     <!-- inject:templates:js -->
@@ -86,7 +102,6 @@
       };
       firebase.initializeApp(config);
     </script> -->
-
 
   </body>
 </html>

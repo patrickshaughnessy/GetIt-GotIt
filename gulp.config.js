@@ -31,7 +31,7 @@ module.exports = function() {
       clientApp + '**/*.js',
       '!' + clientApp + '**/*.spec.js'
     ],
-    less: client + '/styles/styles.less',
+    less: client + '/styles/*.less',
     report: report,
     root: root,
     server: server,
@@ -59,7 +59,7 @@ module.exports = function() {
      */
     bower: {
       json: require('./bower.json'),
-      directory: 'bower_components/',
+      directory: 'bower_components',
       ignorePath: '../..'
     },
     packages: [

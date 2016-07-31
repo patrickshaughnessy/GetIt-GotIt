@@ -11,10 +11,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var port = process.env.PORT || 3000;
 // var routes;
+var path = require('path');
 
 var environment = process.env.NODE_ENV;
 
-// app.use(favicon(__dirname + '/favicon.ico'));
+app.use(favicon(path.resolve(__dirname, 'assets/greencircle.ico')));
 app.use(bodyParser.urlencoded({
     extended: true
 }));

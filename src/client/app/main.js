@@ -1,29 +1,29 @@
-'use strict';
+// 'use strict';
+//
+// angular
+// .module("app", ["firebase", "ui.router", 'ui.mask', 'naif.base64', 'ngAnimate'])
+// .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
-angular
-.module("app", ["firebase", "ui.router", 'ui.mask', 'naif.base64', 'ngAnimate'])
-.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+  // $httpProvider.defaults.useXDomain = true;
+  //
+  // delete $httpProvider.defaults.headers.common['X-Requested-With'];
+  //
+  // $urlRouterProvider.otherwise("/");
 
-  $httpProvider.defaults.useXDomain = true;
-
-  delete $httpProvider.defaults.headers.common['X-Requested-With'];
-
-  $urlRouterProvider.otherwise("/");
-
-  $stateProvider
-    .state('splash', {
-      url: "/",
-      templateUrl: "partials/splash.html",
-      controller: "splashCtrl",
-      resolve: {
-        // controller will not be loaded until $waitForAuth resolves
-        // Auth refers to our $firebaseAuth wrapper in the example above
-        "currentAuth": ["Auth", function(Auth) {
-          // $waitForAuth returns a promise so the resolve waits for it to complete
-          return Auth.$waitForSignIn();
-        }]
-      }
-    })
+  // $stateProvider
+  //   .state('splash', {
+  //     url: "/",
+  //     templateUrl: "partials/splash.html",
+  //     controller: "splashCtrl",
+  //     resolve: {
+  //       // controller will not be loaded until $waitForAuth resolves
+  //       // Auth refers to our $firebaseAuth wrapper in the example above
+  //       "currentAuth": ["Auth", function(Auth) {
+  //         // $waitForAuth returns a promise so the resolve waits for it to complete
+  //         return Auth.$waitForSignIn();
+  //       }]
+  //     }
+  //   })
     // .state('home', {
     //   url: "/home",
     //   templateUrl: "partials/home.html",
@@ -102,13 +102,13 @@ angular
     //   }
     // })
 
-})
-.run(["$rootScope", "$state", function($rootScope, $state) {
-  $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
-    // We can catch the error thrown when the $requireAuth promise is rejected
-    // and redirect the user back to the home page
-    if (error === "AUTH_REQUIRED") {
-      $state.go("splash");
-    }
-  });
-}]);
+// })
+// .run(["$rootScope", "$state", function($rootScope, $state) {
+//   $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+//     // We can catch the error thrown when the $requireAuth promise is rejected
+//     // and redirect the user back to the home page
+//     if (error === "AUTH_REQUIRED") {
+//       $state.go("splash");
+//     }
+//   });
+// }]);
