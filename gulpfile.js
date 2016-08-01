@@ -122,8 +122,8 @@ gulp.task('build', ['optimize', 'images', 'fonts'], function() {
 
   const msg = {
     title: 'gulp build',
-    subtitle: 'Deployed to the build folder',
-    message: 'Running `gulp serve dist`'
+    subtitle: 'Deployed to the dist folder',
+    message: 'Running `gulp serve-prod`'
   };
   del(config.temp);
   log(msg);
