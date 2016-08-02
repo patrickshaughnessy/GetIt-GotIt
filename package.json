@@ -2,7 +2,8 @@
   "name": "GetIt-GotIt",
   "version": "0.1.0",
   "scripts": {
-    "start": "node src/server/app.js",
+    "start": "gulp build && export NODE_ENV=production && node src/server/app.js",
+    "docker": "",
     "test": "node src/server/test/routes.js"
   },
   "dependencies": {

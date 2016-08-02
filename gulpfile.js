@@ -119,16 +119,7 @@ gulp.task('templatecache', ['clean-code'], function() {
 
 gulp.task('build', ['optimize', 'images', 'fonts'], function() {
   log('Building everything');
-
-  const msg = {
-    title: 'gulp build',
-    subtitle: 'Deployed to the dist folder',
-    message: 'Running `gulp serve-prod`'
-  };
   del(config.temp);
-  log(msg);
-  notify(msg);
-
 });
 
 gulp.task('optimize', ['inject', 'test'], function(){
